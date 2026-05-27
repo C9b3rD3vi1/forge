@@ -30,6 +30,13 @@ type Tag struct {
     UpdatedAt time.Time `gorm:"autoUpdateTime"`
 }
 
+func (t *Tag) BeforeCreate(tx *gorm.DB) (err error) {
+    if t.ID == uuid.Nil {
+        t.ID = uuid.New()
+    }
+    return
+}
+
 func (p *Post) BeforeCreate(tx *gorm.DB) (err error) {
     if p.ID == uuid.Nil {
         p.ID = uuid.New()

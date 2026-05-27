@@ -1,6 +1,7 @@
-Go_blog
+Forge
 
-
+![code sample](./static/images/forge.png)
+![code sample](./static/images/forge1.png)
 ![code sample](./static/images/main.png)
 
 ## Projects struct sample code

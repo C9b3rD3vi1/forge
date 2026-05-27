@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"strings"
+	//"log"
 
 	"github.com/C9b3rD3vi1/forge/config"
 	"github.com/C9b3rD3vi1/forge/database"
@@ -39,7 +40,8 @@ func AdminCreateTag(c *fiber.Ctx) error {
 
 	tag := models.Tag{Name: name}
 	if err := database.DB.Create(&tag).Error; err != nil {
-		return c.Status(500).Render("/error/500", fiber.Map{
+		//log.Println(err)
+		return c.Status(500).Render("errors/500", fiber.Map{
 			"Message": "Error creating tag",
 		})
 	}
@@ -62,13 +64,15 @@ func AdminDeleteTag(c *fiber.Ctx) error {
 
 	var tag models.Tag
 	if err := database.DB.First(&tag, "id = ?", tagID).Error; err != nil {
-		return c.Status(404).Render("/error/404", fiber.Map{
+		return c.Status(404).Render("errors/404", fiber.Map{
 			"Message": "Tag not found",
 		})
 	}
 
 	if err := database.DB.Delete(&tag).Error; err != nil {
-		return c.Status(500).SendString("Error deleting tag")
+		return c.Status(500).Render("errors/500", fiber.Map{
+			"Message": "Error deleting tag",
+		})
 	}
 
 	return c.Redirect("/admin/tags")

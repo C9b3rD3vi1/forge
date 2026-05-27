@@ -1,118 +1,283 @@
-{{ define "title" }}Admin Login | Nickson Wekongo{{ end }}
+{{ define "title" }}Admin Login | Forge Hub{{ end }}
 
-{{ define "content" }}
-<div style="min-height: 80vh; display: flex; align-items: center; justify-content: center; padding: 2rem;">
-    <div style="width: 100%; max-width: 420px;">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Login | Forge Hub</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,600;1,300&family=Barlow+Condensed:wght@300;400;600;700;800;900&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
         
-        <!-- Login Card -->
-        <div style="background: var(--ink2); border: 1px solid var(--rule); padding: 2rem; position: relative;">
-            <div class="corner tl"></div>
-            <div class="corner tr"></div>
-            
-            <!-- Header -->
-            <div style="text-align: center; margin-bottom: 2rem;">
-                <div style="font-family: var(--cond); font-size: 1.8rem; font-weight: 800; color: var(--white); margin-bottom: 0.5rem;">
-                    Admin Login
-                </div>
-                <div style="font-family: var(--mono); font-size: 0.65rem; color: var(--teal);">
-                    Access Control Panel
-                </div>
-            </div>
-            
-            <!-- Flash Messages -->
-            {{ if .Success }}
-            <div style="background: rgba(45, 204, 122, 0.1); border: 1px solid var(--green); padding: 0.75rem; margin-bottom: 1.5rem; text-align: center;">
-                <span style="font-family: var(--mono); font-size: 0.7rem; color: var(--green);">{{ .Success }}</span>
-            </div>
-            {{ end }}
-            
-            {{ if .Error }}
-            <div style="background: var(--red-dim); border: 1px solid var(--red); padding: 0.75rem; margin-bottom: 1.5rem; text-align: center;">
-                <span style="font-family: var(--mono); font-size: 0.7rem; color: var(--red);">{{ .Error }}</span>
-            </div>
-            {{ end }}
-            
-            <!-- Login Form -->
-            <form method="POST" action="/admin/login">
-                
-                <!-- Email -->
-                <div style="margin-bottom: 1.25rem;">
-                    <label for="email" style="display: block; font-family: var(--mono); font-size: 0.6rem; color: var(--white3); letter-spacing: 0.1em; margin-bottom: 0.5rem;">
-                        EMAIL
-                    </label>
-                    <input 
-                        type="email" 
-                        id="email" 
-                        name="email" 
-                        placeholder="admin@example.com"
-                        style="width: 100%; background: var(--ink); border: 1px solid var(--rule); padding: 0.75rem 1rem; color: var(--white); font-family: var(--body); font-size: 0.85rem; transition: border-color 0.15s;"
-                        onfocus="this.style.borderColor='var(--teal)'" 
-                        onblur="this.style.borderColor='var(--rule)'"
-                        required
-                    />
-                </div>
-                
-                <!-- Password -->
-                <div style="margin-bottom: 1rem;">
-                    <label for="password" style="display: block; font-family: var(--mono); font-size: 0.6rem; color: var(--white3); letter-spacing: 0.1em; margin-bottom: 0.5rem;">
-                        PASSWORD
-                    </label>
-                    <input 
-                        type="password" 
-                        id="password" 
-                        name="password" 
-                        placeholder="********"
-                        style="width: 100%; background: var(--ink); border: 1px solid var(--rule); padding: 0.75rem 1rem; color: var(--white); font-family: var(--body); font-size: 0.85rem; transition: border-color 0.15s;"
-                        onfocus="this.style.borderColor='var(--teal)'" 
-                        onblur="this.style.borderColor='var(--rule)'"
-                        required
-                    />
-                </div>
-                
-                <!-- Remember Me -->
-                <div style="margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem;">
-                    <input 
-                        type="checkbox" 
-                        id="remember" 
-                        name="remember" 
-                        style="width: 14px; height: 14px; accent-color: var(--teal);"
-                    />
-                    <label for="remember" style="font-family: var(--mono); font-size: 0.6rem; color: var(--white3);">
-                        Remember me
-                    </label>
-                </div>
-                
-                <!-- Submit Button -->
-                <button 
-                    type="submit" 
-                    class="btn-primary" 
-                    style="width: 100%; cursor: pointer; padding: 0.75rem;"
-                >
-                    Login →
-                </button>
-            </form>
-            
-            <!-- Footer -->
-            <div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--rule); text-align: center;">
-                <span style="font-family: var(--mono); font-size: 0.55rem; color: var(--white3);">
-                    © {{ now }} Nickson Wekongo
-                </span>
-            </div>
+        :root {
+            --ink: #080c10;
+            --ink2: #111820;
+            --ink3: #1c2630;
+            --mid: #5a6a7a;
+            --faint: #9aacba;
+            --rule: #1e2e3e;
+            --rule2: #162030;
+            --paper: #060c14;
+            --teal: #00c9b1;
+            --teal2: #00a693;
+            --teal-glow: rgba(0, 201, 177, 0.08);
+            --teal-line: rgba(0, 201, 177, 0.25);
+            --green: #2dcc7a;
+            --red: #e03535;
+            --red-dim: rgba(224, 53, 53, 0.15);
+            --white: #e8f0f8;
+            --white2: rgba(232, 240, 248, 0.6);
+            --white3: rgba(232, 240, 248, 0.25);
+            --mono: 'IBM Plex Mono', monospace;
+            --cond: 'Barlow Condensed', sans-serif;
+            --body: 'Barlow', sans-serif;
+        }
+        
+        body {
+            background: var(--paper);
+            color: var(--white);
+            font-family: var(--body);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            position: relative;
+        }
+        
+        /* BG Grid */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: 
+                linear-gradient(rgba(0, 201, 177, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 201, 177, 0.03) 1px, transparent 1px);
+            background-size: 48px 48px;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        /* Scanline overlay */
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 0, 0, 0.08) 2px, rgba(0, 0, 0, 0.08) 4px);
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.4;
+        }
+        
+        .login-card {
+            background: var(--ink2);
+            border: 1px solid var(--rule);
+            padding: 2rem;
+            position: relative;
+            width: 100%;
+            max-width: 420px;
+            z-index: 1;
+        }
+        
+        .corner {
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            border-color: var(--teal);
+            border-style: solid;
+            opacity: 0.5;
+        }
+        
+        .corner.tl { top: 12px; left: 12px; border-width: 1px 0 0 1px; }
+        .corner.tr { top: 12px; right: 12px; border-width: 1px 1px 0 0; }
+        .corner.bl { bottom: 12px; left: 12px; border-width: 0 0 1px 1px; }
+        .corner.br { bottom: 12px; right: 12px; border-width: 0 1px 1px 0; }
+        
+        input {
+            width: 100%;
+            background: var(--ink);
+            border: 1px solid var(--rule);
+            padding: 0.75rem 1rem;
+            color: var(--white);
+            font-family: var(--body);
+            font-size: 0.85rem;
+            transition: border-color 0.15s;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: var(--teal);
+        }
+        
+        .btn-primary {
+            background: var(--teal);
+            color: var(--ink);
+            font-family: var(--mono);
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            padding: 0.85rem 2rem;
+            text-decoration: none;
+            display: inline-block;
+            transition: background 0.15s, transform 0.12s;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+        }
+        
+        .btn-primary:hover {
+            background: var(--teal2);
+            transform: translateY(-2px);
+        }
+        
+        .flash-success {
+            background: rgba(45, 204, 122, 0.1);
+            border: 1px solid var(--green);
+            padding: 0.75rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            font-family: var(--mono);
+            font-size: 0.7rem;
+            color: var(--green);
+            transition: opacity 0.5s;
+        }
+        
+        .flash-error {
+            background: var(--red-dim);
+            border: 1px solid var(--red);
+            padding: 0.75rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            font-family: var(--mono);
+            font-size: 0.7rem;
+            color: var(--red);
+            transition: opacity 0.5s;
+        }
+        
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="login-card">
+    <div class="corner tl"></div>
+    <div class="corner tr"></div>
+    <div class="corner bl"></div>
+    <div class="corner br"></div>
+    
+    <!-- Title -->
+    <div style="text-align: center; margin-bottom: 2rem;">
+        <div style="font-family: var(--cond); font-size: 1.8rem; font-weight: 800; color: var(--white); margin-bottom: 0.5rem;">
+            FORGE HUB
+        </div>
+        <div style="font-family: var(--mono); font-size: 0.65rem; color: var(--teal);">
+            Admin Access
+        </div>
+    </div>
+    
+    <!-- Flash Messages -->
+    {{ if .Success }}
+    <div id="flash-success" class="flash-success">
+        ✓ {{ .Success }}
+    </div>
+    {{ end }}
+    
+    {{ if .Error }}
+    <div id="flash-error" class="flash-error">
+        ✗ {{ .Error }}
+    </div>
+    {{ end }}
+    
+    <!-- Login Form -->
+    <form method="POST" action="/admin/login">
+        
+        <!-- Email -->
+        <div style="margin-bottom: 1.25rem;">
+            <label for="email" style="display: block; font-family: var(--mono); font-size: 0.6rem; color: var(--white3); letter-spacing: 0.1em; margin-bottom: 0.5rem;">
+                EMAIL
+            </label>
+            <input type="email" id="email" name="email" placeholder="admin@forge.hub" required />
         </div>
         
+        <!-- Password -->
+        <div style="margin-bottom: 1rem;">
+            <label for="password" style="display: block; font-family: var(--mono); font-size: 0.6rem; color: var(--white3); letter-spacing: 0.1em; margin-bottom: 0.5rem;">
+                PASSWORD
+            </label>
+            <input type="password" id="password" name="password" placeholder="••••••••" required />
+        </div>
+        
+        <!-- Remember Me -->
+        <div style="margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem;">
+            <input type="checkbox" id="remember" name="remember" style="width: 14px; height: 14px; accent-color: var(--teal);" />
+            <label for="remember" style="font-family: var(--mono); font-size: 0.6rem; color: var(--white3);">
+                Remember me
+            </label>
+        </div>
+        
+        <!-- Submit -->
+        <button type="submit" class="btn-primary">
+            Login →
+        </button>
+    </form>
+    
+    <!-- Footer -->
+    <div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--rule); text-align: center;">
+        <span style="font-family: var(--mono); font-size: 0.55rem; color: var(--white3);">
+            <span class="sbdot" style="display: inline-block; width: 6px; height: 6px; background: var(--green); border-radius: 50%; animation: pulse 2s ease infinite; margin-right: 0.5rem;"></span>
+            Secure Access Only
+        </span>
     </div>
 </div>
 
+<style>
+    .sbdot {
+        display: inline-block;
+        width: 6px;
+        height: 6px;
+        background: var(--green);
+        border-radius: 50%;
+        animation: pulse 2s ease infinite;
+    }
+    
+    @keyframes pulse {
+        0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(45, 204, 122, 0.5); }
+        50% { opacity: 0.6; box-shadow: 0 0 0 6px rgba(45, 204, 122, 0); }
+    }
+</style>
+
 <script>
     document.addEventListener("DOMContentLoaded", () => {
-        const alerts = document.querySelectorAll(".alert-success, .alert-error");
-        alerts.forEach((alert) => {
+        const successAlert = document.getElementById("flash-success");
+        const errorAlert = document.getElementById("flash-error");
+        
+        if (successAlert) {
             setTimeout(() => {
-                alert.style.opacity = "0";
-                alert.style.transition = "opacity 0.5s";
-                setTimeout(() => alert.remove(), 500);
+                successAlert.style.opacity = "0";
+                setTimeout(() => successAlert.remove(), 500);
             }, 4000);
-        });
+        }
+        
+        if (errorAlert) {
+            setTimeout(() => {
+                errorAlert.style.opacity = "0";
+                setTimeout(() => errorAlert.remove(), 4000);
+            }, 4000);
+        }
     });
 </script>
-{{ end }}
+</body>
+</html>

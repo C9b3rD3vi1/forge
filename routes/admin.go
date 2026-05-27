@@ -63,7 +63,7 @@ func SetupAdminRoutes(app *fiber.App) {
     admin.Get("/services/edit/:id", handlers.AdminEditServiceForm)  // Show edit form
     admin.Post("/services/edit/:id", handlers.AdminUpdateService)   // Handle update
     admin.Get("/services/delete/:id", handlers.AdminDeleteService)  // Delete
-    admin.Get("/services/:id", handlers.AdminViewService)       // View single service
+    admin.Get("/services/:slug", handlers.AdminViewService)       // View single service
     
     // Tech Stack Routes (admin)
     admin.Get("/techstacks", handlers.AdminTechStackList)
