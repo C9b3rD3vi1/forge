@@ -2,6 +2,8 @@ package database
 
 import (
 	"log"
+	"os"
+	"path/filepath"
 
 	"github.com/C9b3rD3vi1/forge/models"
 	"gorm.io/driver/sqlite"
@@ -15,41 +17,52 @@ var DB *gorm.DB
 // DBConnection is the function to connect to the database
 
 func InitDB() (*gorm.DB, error) {
-	// Connect to the SQLite database
-	db, err := gorm.Open(sqlite.Open("server.db"), &gorm.Config{})
-	if err != nil {
-		log.Fatal("Failed to connect to the database:", err)
-		//return nil, err
-	}
-	// Set the global DB variable
-	DB = db
-	// Log the database connection
-	log.Println("Connected to the database")
-{}
-
-   // Drop table
-   //db.Migrator().DropTable(&models.User{},&models.ContactMessage{},)
-
-	
-	
-	// Migrate the schema
-	if err := db.AutoMigrate(
-		&models.Post{}, 
-		&models.User{}, 
-		&models.Comment{}, 
-		&models.Projects{}, 
-		&models.Services{}, 
-		&models.Tag{},
-	 	&models.ContactMessage{},
-		&models.TechStack{}); err != nil {
-		log.Fatal("Failed to migrate the database schema:", err)
-		return nil, err
-	}
-	// Log the migration
-	log.Println("Database schema migrated successfully")
-
-	return db, nil
+    // Get database path from environment variable or use default
+    dbPath := os.Getenv("DB_PATH")
+    if dbPath == "" {
+        dbPath = "server.db"
+    }
+    
+    // Ensure the directory exists
+    dir := filepath.Dir(dbPath)
+    if err := os.MkdirAll(dir, 0755); err != nil {
+        log.Fatal("Failed to create data directory:", err)
+        return nil, err
+    }
+    
+    // Connect to the SQLite database
+    db, err := gorm.Open(sqlite.Open(dbPath), &gorm.Config{})
+    if err != nil {
+        log.Fatal("Failed to connect to the database:", err)
+        return nil, err
+    }
+    
+    // Set the global DB variable
+    DB = db
+    
+    // Log the database connection
+    log.Println("Connected to the database:", dbPath)
+    
+    // Migrate the schema
+    if err := db.AutoMigrate(
+        &models.Post{},
+        &models.User{},
+        &models.Comment{},
+        &models.Projects{},
+        &models.Services{},
+        &models.Tag{},
+        &models.ContactMessage{},
+        &models.TechStack{}); err != nil {
+        log.Fatal("Failed to migrate the database schema:", err)
+        return nil, err
+    }
+    
+    // Log the migration
+    log.Println("Database schema migrated successfully")
+    
+    return db, nil
 }
+
 
 // CreateAdminUser creates the initial admin user
 func CreateAdminUser(db *gorm.DB) error {

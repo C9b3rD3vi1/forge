@@ -5,11 +5,19 @@ services:
     ports:
       - "3031:3031"
     volumes:
-      - forge_data:/app/server.db
+      - forge_data:/app/data
       - forge_uploads:/app/uploads
     restart: unless-stopped
     environment:
       - TZ=Africa/Nairobi
+      - DB_PATH=/app/data/server.db    
+    healthcheck:
+          test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3031/health"]
+          interval: 30s
+          timeout: 10s
+          retries: 3
+          start_period: 40s
+
 
 volumes:
   forge_data:
