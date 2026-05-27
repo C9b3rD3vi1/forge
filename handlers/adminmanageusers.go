@@ -4,9 +4,9 @@ import (
     "github.com/gofiber/fiber/v2"
     "github.com/google/uuid"
 
-    "github.com/C9b3rD3vi1/Go_blog/database"
-    "github.com/C9b3rD3vi1/Go_blog/models"
-    "github.com/C9b3rD3vi1/Go_blog/utils"
+    "github.com/C9b3rD3vi1/forge/database"
+    "github.com/C9b3rD3vi1/forge/models"
+    "github.com/C9b3rD3vi1/forge/utils"
 )
 
 

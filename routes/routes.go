@@ -1,7 +1,7 @@
 package routes
 
 import (
-    "github.com/C9b3rD3vi1/Go_blog/handlers"
+    "github.com/C9b3rD3vi1/forge/handlers"
     "github.com/gofiber/fiber/v2"
 )
 

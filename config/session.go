@@ -4,8 +4,8 @@ import (
     "fmt"
     "time"
 
-    "github.com/C9b3rD3vi1/Go_blog/database"
-    "github.com/C9b3rD3vi1/Go_blog/models"
+    "github.com/C9b3rD3vi1/forge/database"
+    "github.com/C9b3rD3vi1/forge/models"
     "github.com/google/uuid"
     "github.com/gofiber/fiber/v2"
     "github.com/gofiber/fiber/v2/middleware/session"

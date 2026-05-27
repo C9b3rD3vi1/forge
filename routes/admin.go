@@ -1,9 +1,9 @@
 package routes
 
 import (
-	"github.com/C9b3rD3vi1/Go_blog/auth"
-	"github.com/C9b3rD3vi1/Go_blog/handlers"
-	"github.com/C9b3rD3vi1/Go_blog/middleware"
+	"github.com/C9b3rD3vi1/forge/auth"
+	"github.com/C9b3rD3vi1/forge/handlers"
+	"github.com/C9b3rD3vi1/forge/middleware"
 	"github.com/gofiber/fiber/v2"
 )
 

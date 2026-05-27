@@ -1,0 +1,70 @@
+{{ define "title" }}403 - Forbidden | Nickson Wekongo{{ end }}
+
+{{ define "content" }}
+<div style="min-height: 70vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 2rem;">
+    
+    <!-- 403 Code -->
+    <div style="font-family: var(--mono); font-size: 8rem; font-weight: 800; color: var(--teal); line-height: 1; margin-bottom: 1rem;">
+        403
+    </div>
+    
+    <!-- Terminal cursor line -->
+    <div style="font-family: var(--mono); font-size: 0.8rem; color: var(--teal); margin-bottom: 1rem;">
+        <span class="tp">nickson@simuxtech</span><span class="tdim">:~$</span> <span class="tc">sudo cat /restricted/page</span>
+    </div>
+    
+    <!-- Error Message -->
+    <div style="text-align: center; max-width: 500px;">
+        <div style="font-family: var(--mono); font-size: 0.7rem; color: var(--amber); background: rgba(240, 160, 48, 0.1); border: 1px solid var(--amber); padding: 0.5rem 1rem; margin-bottom: 1rem;">
+            <span class="to">Error:</span> Permission Denied
+        </div>
+        
+        <p style="font-family: var(--body); font-size: 0.9rem; color: var(--white2); margin-bottom: 1.5rem; line-height: 1.6;">
+            You don't have permission to access this page. Please check your credentials and try again.
+        </p>
+        
+        <div style="display: flex; justify-content: center; gap: 0.5rem;">
+            <span style="font-family: var(--mono); font-size: 0.6rem; color: var(--white3);">$</span>
+            <span style="font-family: var(--mono); font-size: 0.65rem; color: var(--teal);">./auth_request.sh</span>
+            <span class="tcursor" style="display: inline-block; width: 7px; height: 12px; background: var(--teal); vertical-align: middle; animation: blink 1.1s step-end infinite;"></span>
+        </div>
+    </div>
+    
+    <!-- Back Home Button -->
+    <div style="margin-top: 2rem;">
+        <a href="/" class="btn-primary" style="display: inline-block;">
+            ← Return Home
+        </a>
+    </div>
+    
+    <!-- Login Link -->
+    <div style="margin-top: 1rem;">
+        <a href="/login" class="btn-ghost" style="display: inline-block; font-size: 0.8rem;">
+            Sign in with different account →
+        </a>
+    </div>
+    
+    <!-- ASCII Art -->
+    <pre style="font-family: var(--mono); font-size: 0.55rem; color: var(--white3); margin-top: 3rem; text-align: center; line-height: 1.3;">
+    ╔══════════════════════════════════╗
+    ║         403 - FORBIDDEN          ║
+    ║    Access denied. You do not     ║
+    ║    have permission for this      ║
+    ║    resource.                     ║
+    ╚══════════════════════════════════╝
+    </pre>
+    
+</div>
+
+<style>
+    @keyframes blink {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0; }
+    }
+    
+    .tp { color: #4ec9b0; }
+    .tc { color: #9cdcfe; }
+    .to { color: #ce9178; }
+    .tdim { color: #333e4a; }
+</style>
+{{ end }}

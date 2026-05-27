@@ -5,17 +5,17 @@ import (
 	"log"
 	"time"
 
-	"github.com/C9b3rD3vi1/Go_blog/auth"
-	"github.com/C9b3rD3vi1/Go_blog/config"
-	"github.com/C9b3rD3vi1/Go_blog/database"
-	"github.com/C9b3rD3vi1/Go_blog/handlers"
-	"github.com/C9b3rD3vi1/Go_blog/routes"
-	"github.com/C9b3rD3vi1/Go_blog/utils"
+	"github.com/C9b3rD3vi1/forge/auth"
+	"github.com/C9b3rD3vi1/forge/config"
+	"github.com/C9b3rD3vi1/forge/database"
+	"github.com/C9b3rD3vi1/forge/handlers"
+	"github.com/C9b3rD3vi1/forge/routes"
+	"github.com/C9b3rD3vi1/forge/utils"
 
-	"github.com/C9b3rD3vi1/Go_blog/middleware"
+	"github.com/C9b3rD3vi1/forge/middleware"
 
-	//"github.com/C9b3rD3vi1/Go_blog/routes"
-	//"github.com/C9b3rD3vi1/Go_blog/models"
+	//"github.com/C9b3rD3vi1/forge/routes"
+	//"github.com/C9b3rD3vi1/forge/models"
 	"github.com/gofiber/fiber/v2"
 	"github.com/znbang/gofiber-layout/html"
 )
@@ -113,8 +113,8 @@ func main() {
 	app.Get("/api/github-stats", handlers.GitHubStatsHandler)
 
 	// app listen on port 3000
-	fmt.Println("Server is running on port 3000")
-	if err := app.Listen(":3000"); err != nil {
+	fmt.Println("Server is running on port 3031")
+	if err := app.Listen(":3031"); err != nil {
 		log.Fatal("Failed to start server:", err)
 	}
 }

@@ -1,381 +1,678 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>{{ block "title" . }}CyberDev Hub | Nickson Wekongo{{ end }}</title>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ block "title" . }}Nickson Wekongo — Senior Backend & Infrastructure Engineer{{ end }}</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,600;1,300&family=Barlow+Condensed:wght@300;400;600;700;800;900&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ========== GLOBAL RESET & VARIABLES ========== */
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
         
-        <!-- favicon -->
-        <link rel="icon" type="image/png" href="/static/favicon/favicon-96x96.png" sizes="96x96" />
-        <link rel="icon" type="image/svg+xml" href="/static/favicon/favicon.svg" />
-        <link rel="shortcut icon" href="/static/favicon/favicon.ico" />
-        <link rel="apple-touch-icon" sizes="180x180" href="/static/favicon/apple-touch-icon.png" />
-        <link rel="manifest" href="/static/site.webmanifest" />
-
+        :root {
+            --ink: #080c10;
+            --ink2: #111820;
+            --ink3: #1c2630;
+            --mid: #5a6a7a;
+            --faint: #9aacba;
+            --rule: #1e2e3e;
+            --rule2: #162030;
+            --paper: #060c14;
+            --teal: #00c9b1;
+            --teal2: #00a693;
+            --teal-glow: rgba(0, 201, 177, 0.08);
+            --teal-line: rgba(0, 201, 177, 0.25);
+            --teal-bright: rgba(0, 201, 177, 0.9);
+            --red: #e03535;
+            --red-dim: rgba(224, 53, 53, 0.15);
+            --amber: #f0a030;
+            --green: #2dcc7a;
+            --white: #e8f0f8;
+            --white2: rgba(232, 240, 248, 0.6);
+            --white3: rgba(232, 240, 248, 0.25);
+            --white4: rgba(232, 240, 248, 0.08);
+            --mono: 'IBM Plex Mono', monospace;
+            --cond: 'Barlow Condensed', sans-serif;
+            --body: 'Barlow', sans-serif;
+        }
         
-        <link href="https://cdn.jsdelivr.net/npm/daisyui@3.8.2/dist/full.css" rel="stylesheet" />
-        <script src="https://cdn.tailwindcss.com"></script>
+        html {
+            scroll-behavior: smooth;
+        }
         
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
-
-        <script src="https://unpkg.com/lucide@latest"></script>
-
-        <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet" />
-        <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
-
-        <style>
-            :root {
-                --tech-navy: #0f172a;
-                --tech-slate: #1e293b;
-                --tech-blue: #2563eb;
-                --tech-teal: #0ea5e9;
-                --tech-purple: #8b5cf6;
-                --tech-green: #10b981;
-                --tech-amber: #f59e0b;
+        body {
+            background: var(--paper);
+            color: var(--white);
+            font-family: var(--body);
+            overflow-x: hidden;
+            cursor: none;
+            line-height: 1.5;
+        }
+        
+        /* BG Grid */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: 
+                linear-gradient(rgba(0, 201, 177, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 201, 177, 0.03) 1px, transparent 1px);
+            background-size: 48px 48px;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        /* Scanline overlay */
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 0, 0, 0.08) 2px, rgba(0, 0, 0, 0.08) 4px);
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.4;
+        }
+        
+        /* ========== CUSTOM CURSOR ========== */
+        #cursor {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: var(--teal);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: width 0.15s, height 0.15s;
+            mix-blend-mode: screen;
+        }
+        
+        #cursor-ring {
+            position: fixed;
+            width: 32px;
+            height: 32px;
+            border: 1px solid var(--teal-line);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9998;
+            transform: translate(-50%, -50%);
+            transition: width 0.25s, height 0.25s, border-color 0.25s;
+        }
+        
+        /* ========== TICKER ========== */
+        .ticker {
+            background: var(--ink2);
+            border-bottom: 1px solid var(--teal-line);
+            font-family: var(--mono);
+            font-size: 0.63rem;
+            letter-spacing: 0.07em;
+            padding: 0.45rem 0;
+            overflow: hidden;
+            white-space: nowrap;
+            position: relative;
+            z-index: 10;
+        }
+        
+        .ticker-track {
+            display: inline-block;
+            animation: tick 40s linear infinite;
+        }
+        
+        @keyframes tick {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        
+        .tsep {
+            color: var(--teal);
+            margin: 0 1.2rem;
+        }
+        
+        .tok {
+            color: var(--teal);
+        }
+        
+        /* ========== NAVIGATION ========== */
+        nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(6, 12, 20, 0.92);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--rule);
+            display: flex;
+            align-items: stretch;
+            height: 54px;
+        }
+        
+        .nav-logo {
+            font-family: var(--cond);
+            font-weight: 900;
+            font-size: 1.1rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            padding: 0 2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            border-right: 1px solid var(--rule);
+            text-decoration: none;
+            color: var(--white);
+        }
+        
+        .nav-logo .ndot {
+            width: 8px;
+            height: 8px;
+            background: var(--teal);
+            border-radius: 50%;
+            box-shadow: 0 0 8px var(--teal);
+        }
+        
+        nav ul {
+            list-style: none;
+            display: flex;
+        }
+        
+        nav ul li a {
+            font-family: var(--mono);
+            font-size: 0.65rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--white3);
+            text-decoration: none;
+            padding: 0 1.3rem;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            border-right: 1px solid var(--rule);
+            transition: color 0.15s, background 0.15s;
+        }
+        
+        nav ul li a:hover {
+            color: var(--teal);
+            background: var(--teal-glow);
+        }
+        
+        .nav-right {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            border-left: 1px solid var(--rule);
+        }
+        
+        .nav-cta {
+            font-family: var(--mono);
+            font-size: 0.68rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--ink);
+            background: var(--teal);
+            text-decoration: none;
+            padding: 0 2rem;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            transition: background 0.15s;
+        }
+        
+        .nav-cta:hover {
+            background: var(--teal2);
+        }
+        
+        /* Mobile menu button */
+        .mobile-menu-btn {
+            display: none;
+            background: transparent;
+            border: none;
+            color: var(--white);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0 1.5rem;
+            font-family: var(--mono);
+        }
+        
+        /* ========== BUTTONS (reusable) ========== */
+        .btn-primary {
+            background: var(--teal);
+            color: var(--ink);
+            font-family: var(--mono);
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            padding: 0.85rem 2rem;
+            text-decoration: none;
+            display: inline-block;
+            transition: background 0.15s, transform 0.12s;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn-primary:hover {
+            background: var(--teal2);
+            transform: translateY(-2px);
+        }
+        
+        .btn-ghost {
+            background: transparent;
+            color: var(--white2);
+            border: 1px solid var(--rule);
+            font-family: var(--mono);
+            font-size: 0.75rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            padding: 0.85rem 2rem;
+            text-decoration: none;
+            display: inline-block;
+            transition: border-color 0.15s, color 0.15s, transform 0.12s;
+            cursor: pointer;
+        }
+        
+        .btn-ghost:hover {
+            border-color: var(--teal-line);
+            color: var(--teal);
+            transform: translateY(-2px);
+        }
+        
+        /* ========== SECTION STYLES (reusable) ========== */
+        .sec {
+            border-bottom: 1px solid var(--rule);
+            position: relative;
+            z-index: 1;
+        }
+        
+        .sec-head {
+            display: grid;
+            grid-template-columns: 220px 1fr;
+            border-bottom: 1px solid var(--rule2);
+        }
+        
+        .sec-num {
+            font-family: var(--mono);
+            font-size: 0.6rem;
+            letter-spacing: 0.1em;
+            color: var(--white3);
+            padding: 1.8rem 2rem;
+            border-right: 1px solid var(--rule2);
+        }
+        
+        .sec-num .teal {
+            color: var(--teal);
+        }
+        
+        .sec-title {
+            font-family: var(--cond);
+            font-weight: 900;
+            font-size: clamp(2rem, 3.5vw, 3.2rem);
+            text-transform: uppercase;
+            padding: 1.8rem 3rem;
+            color: var(--white);
+        }
+        
+        .sec-title span {
+            color: var(--teal);
+        }
+        
+        /* Status badge */
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            background: rgba(45, 204, 122, 0.1);
+            border: 1px solid rgba(45, 204, 122, 0.35);
+            color: var(--green);
+            font-family: var(--mono);
+            font-size: 0.6rem;
+            letter-spacing: 0.08em;
+            padding: 0.22rem 0.65rem;
+            border-radius: 2px;
+        }
+        
+        .sbdot {
+            width: 6px;
+            height: 6px;
+            background: var(--green);
+            border-radius: 50%;
+            animation: pulse 2s ease infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(45, 204, 122, 0.5); }
+            50% { opacity: 0.6; box-shadow: 0 0 0 6px rgba(45, 204, 122, 0); }
+        }
+        
+        /* Corner accents */
+        .corner {
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            border-color: var(--teal);
+            border-style: solid;
+            opacity: 0.5;
+        }
+        
+        .corner.tl { top: 12px; left: 12px; border-width: 1px 0 0 1px; }
+        .corner.tr { top: 12px; right: 12px; border-width: 1px 1px 0 0; }
+        .corner.bl { bottom: 12px; left: 12px; border-width: 0 0 1px 1px; }
+        .corner.br { bottom: 12px; right: 12px; border-width: 0 1px 1px 0; }
+        
+        /* ========== FOOTER ========== */
+        footer {
+            background: var(--ink);
+            border-top: 1px solid var(--teal-line);
+            padding: 3rem 3rem 1.5rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .footer-logo {
+            font-family: var(--cond);
+            font-weight: 900;
+            font-size: 1.2rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--white);
+            margin-bottom: 1rem;
+        }
+        
+        .footer-logo span {
+            color: var(--teal);
+        }
+        
+        .footer-desc {
+            font-size: 0.8rem;
+            color: var(--white3);
+            line-height: 1.6;
+        }
+        
+        .footer-title {
+            font-family: var(--mono);
+            font-size: 0.7rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--teal);
+            margin-bottom: 1rem;
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .footer-links a {
+            font-size: 0.8rem;
+            color: var(--white3);
+            text-decoration: none;
+            transition: color 0.15s;
+        }
+        
+        .footer-links a:hover {
+            color: var(--teal);
+        }
+        
+        .footer-bottom {
+            border-top: 1px solid var(--rule);
+            padding-top: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: var(--mono);
+            font-size: 0.6rem;
+            color: var(--white3);
+        }
+        
+        /* ========== REVEAL ANIMATION ========== */
+        .reveal {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.55s ease, transform 0.55s ease;
+        }
+        
+        .reveal.in {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Container utility */
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 1000px) {
+            .sec-head {
+                grid-template-columns: 1fr;
             }
-
-            body {
-                font-family: 'Inter', sans-serif;
-                background: linear-gradient(135deg, var(--tech-navy) 0%, var(--tech-slate) 100%);
-                color: #f8fafc;
+            .sec-num {
+                display: none;
             }
-
-            .code-font {
-                font-family: 'JetBrains Mono', monospace;
+            nav ul {
+                display: none;
             }
-
-            .hero-section {
-                background-image: 
-                    radial-gradient(circle at 20% 80%, rgba(14, 165, 233, 0.1) 0%, transparent 50%),
-                    radial-gradient(circle at 80% 20%, rgba(139, 92, 246, 0.1) 0%, transparent 50%),
-                    url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%230ea5e9' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zm0 14v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zM12 30v-4H8v4H4v2h4v4h4v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zm0 14v-4H8v4H4v2h4v4h4v-4h4v-2h-4zM36 46v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zM12 46v-4H8v4H4v2h4v4h4v-4h4v-2h-4zM48 14v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0 16v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zM48 46v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-                background-size: 60px 60px;
-                animation: move-pattern 20s linear infinite;
-            }
-
-            @keyframes move-pattern {
-                0% { background-position: 0 0; }
-                100% { background-position: 60px 60px; }
-            }
-
-            .tech-card {
-                background: rgba(30, 41, 59, 0.6);
-                backdrop-filter: blur(10px);
-                border: 1px solid rgba(255, 255, 255, 0.1);
-                transition: all 0.3s ease;
-            }
-
-            .tech-card:hover {
-                transform: translateY(-5px);
-                border-color: var(--tech-teal);
-                box-shadow: 0 20px 40px rgba(14, 165, 233, 0.15);
-            }
-
-            .cert-badge {
-                background: linear-gradient(45deg, var(--tech-purple), var(--tech-blue));
-                color: white;
-                padding: 0.5rem 1rem;
-                border-radius: 2rem;
-                font-size: 0.875rem;
-                font-weight: 600;
-                display: inline-flex;
+            .mobile-menu-btn {
+                display: flex;
                 align-items: center;
+            }
+            .footer-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 640px) {
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+            .footer-bottom {
+                flex-direction: column;
                 gap: 0.5rem;
+                text-align: center;
             }
-
-            .typewriter {
-                border-right: 2px solid var(--tech-teal);
-                animation: blink 1s infinite;
+            .container {
+                padding: 0 1rem;
             }
+        }
+    </style>
+    
+    {{ block "extra_css" . }}{{ end }}
+</head>
+<body>
 
-            @keyframes blink {
-                0%, 100% { border-color: transparent; }
-                50% { border-color: var(--tech-teal); }
-            }
+    <div id="cursor"></div>
+    <div id="cursor-ring"></div>
 
-            .skill-meter {
-                background: rgba(255, 255, 255, 0.1);
-                border-radius: 1rem;
-                overflow: hidden;
-                height: 0.5rem;
-            }
+    <!-- TICKER -->
+    <div class="ticker">
+      <div class="ticker-track">
+        NICKSON WEKONGO <span class="tsep">◆</span>
+        <span class="tok">SENIOR BACKEND ENGINEER</span> <span class="tsep">◆</span>
+        INFRASTRUCTURE <span class="tsep">·</span> GO <span class="tsep">·</span> PYTHON <span class="tsep">·</span> POSTGRESQL <span class="tsep">·</span> DOCKER <span class="tsep">·</span> LINUX <span class="tsep">·</span> AWS <span class="tsep">◆</span>
+        NAIROBI <span class="tsep">→</span> REMOTE OK <span class="tsep">◆</span>
+        FORTINET CERTIFIED ASSOCIATE <span class="tsep">◆</span>
+        AWS SECURITY FUNDAMENTALS <span class="tsep">◆</span>
+        8+ LIVE PRODUCTION SYSTEMS <span class="tsep">◆</span>
+        3+ YEARS SHIPPING REAL SOFTWARE <span class="tsep">◆</span>
+        <span class="tok">DEPLOY FAST. STAY UP. SHIP MORE.</span> <span class="tsep">◆</span>
+        NICKSON WEKONGO <span class="tsep">◆</span>
+        <span class="tok">SENIOR BACKEND ENGINEER</span> <span class="tsep">◆</span>
+        INFRASTRUCTURE <span class="tsep">·</span> GO <span class="tsep">·</span> PYTHON <span class="tsep">·</span> POSTGRESQL <span class="tsep">·</span> DOCKER <span class="tsep">·</span> LINUX <span class="tsep">·</span> AWS <span class="tsep">◆</span>
+        NAIROBI <span class="tsep">→</span> REMOTE OK <span class="tsep">◆</span>
+        FORTINET CERTIFIED ASSOCIATE <span class="tsep">◆</span>
+        AWS SECURITY FUNDAMENTALS <span class="tsep">◆</span>
+        8+ LIVE PRODUCTION SYSTEMS <span class="tsep">◆</span>
+        3+ YEARS SHIPPING REAL SOFTWARE <span class="tsep">◆</span>
+        <span class="tok">DEPLOY FAST. STAY UP. SHIP MORE.</span> <span class="tsep">◆</span>
+      </div>
+    </div>
 
-            .skill-level {
-                height: 100%;
-                border-radius: 1rem;
-                transition: width 2s ease-in-out;
-            }
-        </style>
-    </head>
-    <body class="min-h-screen flex flex-col">
-        <header class="navbar bg-slate-900/80 backdrop-blur shadow-sm border-b border-slate-700 sticky top-0 z-50">
-            <div class="container mx-auto px-4 flex justify-between items-center">
-                <a href="/" class="text-2xl font-bold text-white flex items-center gap-2">
-                    <i data-lucide="shield" class="w-6 h-6 text-teal-400"></i>
-                    <span>CyberDev</span>
-                    <span class="text-teal-400">Hub</span>
-                </a>
-                <div class="flex items-center space-x-2">
-                    <ul class="menu menu-horizontal px-1 hidden md:flex font-medium items-center text-slate-300">
-                        <li><a href="/" class="hover:text-teal-400">Home</a></li>
-                        <li><a href="/projects" class="hover:text-teal-400">Projects</a></li>
-                        <li><a href="/services" class="hover:text-teal-400">Services</a></li>
-                        <li><a href="/posts" class="hover:text-teal-400">Blog</a></li>
-                        <li><a href="/about" class="hover:text-teal-400">About</a></li>
-                        <li><a href="/contact" class="hover:text-teal-400">Contact</a></li>
-                        <div class="pl-4">
-                            {{- if .IsLoggedIn -}}
-                            <li><a href="/logout" class="btn btn-primary btn-sm bg-teal-600 border-teal-600 hover:bg-teal-700">Logout</a></li>
-                            {{- else -}}
-                            <li class="flex-row gap-2">
-                                <a href="/login" class="btn btn-ghost btn-sm text-slate-300">Log In</a>
-                                <a href="/register" class="btn btn-primary btn-sm bg-teal-600 border-teal-600 hover:bg-teal-700">Sign Up</a>
-                            </li>
-                            {{- end -}}
-                        </div>
-                    </ul>
-
-                    <div class="dropdown dropdown-end md:hidden">
-                        <label tabindex="0" class="btn btn-ghost text-slate-300">
-                            <i data-lucide="menu" class="w-6 h-6"></i>
-                        </label>
-                        <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-slate-800 rounded-box w-52 text-slate-300">
-                            <li><a href="/" class="hover:text-teal-400">Home</a></li>
-                            <li><a href="/projects" class="hover:text-teal-400">Projects</a></li>
-                            <li><a href="/services" class="hover:text-teal-400">Services</a></li>
-                            <li><a href="/posts" class="hover:text-teal-400">Blog</a></li>
-                            <li><a href="/about" class="hover:text-teal-400">About</a></li>
-                            <li><a href="/contact" class="hover:text-teal-400">Contact</a></li>
-                            {{- if .IsLoggedIn -}}
-                            <div class="divider"></div>
-                            <li><a href="/dashboard" class="hover:text-teal-400">Dashboard</a></li>
-                            <li><a href="/logout" class="text-red-400">Logout</a></li>
-                            {{- else -}}
-                            <div class="divider"></div>
-                            <li><a href="/login" class="hover:text-teal-400">Login</a></li>
-                            <li><a href="/register" class="hover:text-teal-400">Sign Up</a></li>
-                            {{- end -}}
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </header>
-
-        <main class="flex-1 container mx-auto px-4 py-8">
-            {{- block "content" . -}}
-            <!-- Default content that will be overridden by other templates -->
-            <section class="hero-section text-center py-20 rounded-box shadow-lg mb-16" data-aos="fade-up" data-aos-duration="1000">
-                <div class="max-w-4xl mx-auto">
-                    <!-- Personal Introduction -->
-                    <div class="flex items-center justify-center mb-8">
-                        <img src="https://placehold.co/100x100/1e293b/0ea5e9?text=NW" alt="Nickson Wekongo" class="w-20 h-20 rounded-full border-4 border-teal-500 mr-4">
-                        <div class="text-left">
-                            <h1 class="text-2xl font-bold text-white">Nickson Wekongo</h1>
-                            <p class="text-slate-400">Fortinet Certified Cybersecurity Professional & DevOps Engineer</p>
-                        </div>
-                    </div>
-
-                    <h1 class="text-5xl md:text-6xl font-extrabold text-white leading-tight mb-4" data-aos="fade-up" data-aos-delay="200">
-                        Building 
-                        <span class="bg-gradient-to-r from-teal-400 via-blue-500 to-purple-500 bg-clip-text text-transparent">
-                            Secure
-                        </span>
-                        , Scalable Systems
-                    </h1>
-                    <div class="text-xl text-slate-300 mb-8 h-8" data-aos="fade-up" data-aos-delay="400">
-                        <span class="typewriter">Cybersecurity • Cloud Infrastructure • DevOps Automation</span>
-                    </div>
-                    
-                    <!-- Certifications Badges -->
-                    <div class="flex flex-wrap justify-center gap-3 mb-8" data-aos="fade-up" data-aos-delay="600">
-                        <span class="cert-badge">
-                            <i data-lucide="shield-check" class="w-4 h-4"></i>
-                            Fortinet Certified
-                        </span>
-                        <span class="cert-badge">
-                            <i data-lucide="cloud" class="w-4 h-4"></i>
-                            AWS Security
-                        </span>
-                        <span class="cert-badge">
-                            <i data-lucide="database" class="w-4 h-4"></i>
-                            Oracle Cloud
-                        </span>
-                    </div>
-
-                    <div class="flex flex-col sm:flex-row justify-center items-center gap-4" data-aos="fade-up" data-aos-delay="800">
-                        <a href="/projects" class="btn btn-primary btn-lg shadow-lg bg-teal-600 border-teal-600 hover:bg-teal-700">
-                            <i data-lucide="rocket" class="w-5 h-5 mr-2"></i>
-                            View Live Projects
-                        </a>
-                        <a href="/contact" class="btn btn-outline btn-lg border-slate-600 text-slate-300 hover:border-teal-400 hover:text-teal-400">
-                            <i data-lucide="mail" class="w-5 h-5 mr-2"></i>
-                            Get In Touch
-                        </a>
-                    </div>
-                </div>
-            </section>
-            
-            <!-- Quick Stats -->
-            <section class="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-2xl mx-auto mb-16">
-                <div class="text-center tech-card rounded-xl p-6" data-aos="fade-up">
-                    <div class="text-2xl font-bold text-blue-400">25+</div>
-                    <div class="text-sm text-slate-400">Projects Built</div>
-                </div>
-                <div class="text-center tech-card rounded-xl p-6" data-aos="fade-up" data-aos-delay="100">
-                    <div class="text-2xl font-bold text-purple-400">15+</div>
-                    <div class="text-sm text-slate-400">Certifications</div>
-                </div>
-                <div class="text-center tech-card rounded-xl p-6" data-aos="fade-up" data-aos-delay="200">
-                    <div class="text-2xl font-bold text-green-400">99.5%</div>
-                    <div class="text-sm text-slate-400">Uptime Record</div>
-                </div>
-                <div class="text-center tech-card rounded-xl p-6" data-aos="fade-up" data-aos-delay="300">
-                    <div class="text-2xl font-bold text-amber-400">3+</div>
-                    <div class="text-sm text-slate-400">Years Experience</div>
-                </div>
-            </section>
-            
-            <section class="py-16">
-                <h2 class="text-4xl font-bold text-center mb-12 text-white" data-aos="fade-up">Core Expertise</h2>
-                <div class="grid md:grid-cols-3 gap-8">
-                    <div class="tech-card rounded-xl p-6" data-aos="fade-up" data-aos-delay="200">
-                        <div class="card-body items-center text-center">
-                            <i data-lucide="shield" class="w-12 h-12 text-red-400 mb-4"></i>
-                            <h3 class="card-title text-xl font-semibold text-white">Cybersecurity</h3>
-                            <p class="text-sm text-slate-300">
-                                Fortinet-certified security professional specializing in network security, penetration testing, and vulnerability assessment.
-                            </p>
-                        </div>
-                    </div>
-                    <div class="tech-card rounded-xl p-6" data-aos="fade-up" data-aos-delay="300">
-                        <div class="card-body items-center text-center">
-                            <i data-lucide="cloud" class="w-12 h-12 text-blue-400 mb-4"></i>
-                            <h3 class="card-title text-xl font-semibold text-white">Cloud & DevOps</h3>
-                            <p class="text-sm text-slate-300">
-                                AWS, Docker, CI/CD pipelines, and infrastructure automation for scalable, secure deployments.
-                            </p>
-                        </div>
-                    </div>
-                    <div class="tech-card rounded-xl p-6" data-aos="fade-up" data-aos-delay="400">
-                        <div class="card-body items-center text-center">
-                            <i data-lucide="code" class="w-12 h-12 text-green-400 mb-4"></i>
-                            <h3 class="card-title text-xl font-semibold text-white">Full-Stack Development</h3>
-                            <p class="text-sm text-slate-300">
-                                Python, Go, JavaScript - building secure, high-performance applications from concept to production.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            
-            <section class="bg-gradient-to-r from-teal-600 to-blue-600 text-white py-16 px-8 rounded-box shadow-xl text-center" data-aos="fade-up">
-                <h2 class="text-4xl font-bold mb-4">Ready to Secure Your Systems?</h2>
-                <p class="text-xl mb-8">
-                    Let's discuss your cybersecurity needs or DevOps requirements.
-                </p>
-                <a href="/contact" class="btn btn-secondary btn-lg shadow-lg bg-white text-slate-900 hover:bg-slate-100">
-                    <i data-lucide="message-circle" class="w-5 h-5 mr-2"></i>
-                    Start Conversation
-                </a>
-            </section>
-            
+    <!-- NAVIGATION -->
+    <nav>
+        <a href="/" class="nav-logo">
+            <div class="ndot"></div>
+            Forge.Hub
+        </a>
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/projects">Projects</a></li>
+            <li><a href="/services">Services</a></li>
+            <li><a href="/posts">Blog</a></li>
+            <li><a href="/about">About</a></li>
+            <li><a href="/contact">Contact</a></li>
+        </ul>
+        <div class="nav-right">
+            {{- if .IsLoggedIn -}}
+            <a href="/dashboard" class="nav-cta" style="background: var(--teal-glow); color: var(--teal);">Dashboard</a>
+            <a href="/logout" class="nav-cta" style="background: transparent; color: var(--white3);">Logout</a>
+            {{- else -}}
+            <a href="/login" class="nav-cta" style="background: transparent; color: var(--white3);">Login</a>
+            <a href="/register" class="nav-cta">Sign Up</a>
             {{- end -}}
-        </main>
+        </div>
+        <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+    </nav>
 
-        <!-- Footer -->
-        <footer class="bg-slate-900/50 border-t border-white/5 py-12 px-4">
-            <div class="max-w-7xl mx-auto">
-                <div class="grid md:grid-cols-4 gap-8">
-                    <div>
-                        <div class="flex items-center space-x-3 mb-6">
-                            <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
-                                <i data-lucide="shield" class="w-6 h-6 text-white"></i>
-                            </div>
-                            <div>
-                                <span class="text-xl font-bold">Nickson Wekongo</span>
-                                <div class="text-xs text-slate-400">Senior Security Engineer</div>
-                            </div>
-                        </div>
-                        <p class="text-slate-400 text-sm">
-                            Building secure, scalable infrastructure with expertise in cybersecurity, 
-                            cloud platforms, and DevOps automation.
-                        </p>
-                    </div>
-                    
-                    <div>
-                        <h3 class="font-semibold mb-4">Connect</h3>
-                        <div class="space-y-3">
-                            <a href="https://github.com/C9b3rD3v11" class="flex items-center gap-2 text-slate-400 hover:text-white transition-colors">
-                                <i data-lucide="github" class="w-4 h-4"></i>
-                                GitHub
-                            </a>
-                            <a href="https://linkedin.com/in/nicksonwekongo" class="flex items-center gap-2 text-slate-400 hover:text-white transition-colors">
-                                <i data-lucide="linkedin" class="w-4 h-4"></i>
-                                LinkedIn
-                            </a>
-                            <a href="mailto:nicksonwekongo@gmail.com" class="flex items-center gap-2 text-slate-400 hover:text-white transition-colors">
-                                <i data-lucide="mail" class="w-4 h-4"></i>
-                                Email
-                            </a>
-                        </div>
-                    </div>
-                    
-                    <div>
-                        <h3 class="font-semibold mb-4">Resources</h3>
-                        <div class="space-y-3">
-                            <a href="/blog" class="block text-slate-400 hover:text-white transition-colors">Technical Blog</a>
-                            <a href="/projects" class="block text-slate-400 hover:text-white transition-colors">Open Source</a>
-                            <a href="/tutorials" class="block text-slate-400 hover:text-white transition-colors">Tutorials</a>
-                        </div>
-                    </div>
-                    
-                    <div>
-                        <h3 class="font-semibold mb-4">Services</h3>
-                        <div class="space-y-3">
-                            <a href="/security-audit" class="block text-slate-400 hover:text-white transition-colors">Security Audit</a>
-                            <a href="/devops-consulting" class="block text-slate-400 hover:text-white transition-colors">DevOps Consulting</a>
-                            <a href="/training" class="block text-slate-400 hover:text-white transition-colors">Technical Training</a>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="border-t border-white/5 mt-12 pt-8 text-center text-slate-500 text-sm">
-                    <p>© 2024 Nickson Wekongo. All rights reserved. | Designed with precision for security and performance.</p>
-                </div>
+    <!-- MAIN CONTENT - Child pages go here -->
+    <main>
+        {{- block "content" . -}}
+        {{- end -}}
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-grid">
+            <div>
+                <div class="footer-logo">Forge.<span>Hub</span></div>
+                <p class="footer-desc">Senior Backend & Infrastructure Engineer. Building secure, scalable systems with Go, Docker, and Linux.</p>
             </div>
-        </footer>
+            <div>
+                <div class="footer-title">Connect</div>
+                <ul class="footer-links">
+                    <li><a href="https://github.com/C9b3rD3vi1" target="_blank">GitHub</a></li>
+                    <li><a href="https://linkedin.com/in/nickson-wekongo" target="_blank">LinkedIn</a></li>
+                    <li><a href="mailto:nicksonwekongo@gmail.com">Email</a></li>
+                </ul>
+            </div>
+            <div>
+                <div class="footer-title">Resources</div>
+                <ul class="footer-links">
+                    <li><a href="/posts">Technical Blog</a></li>
+                    <li><a href="/projects">Open Source</a></li>
+                    <li><a href="/tutorials">Tutorials</a></li>
+                </ul>
+            </div>
+            <div>
+                <div class="footer-title">Services</div>
+                <ul class="footer-links">
+                    <li><a href="/security-audit">Security Audit</a></li>
+                    <li><a href="/devops-consulting">DevOps Consulting</a></li>
+                    <li><a href="/training">Technical Training</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div>© 2025 Nickson Wekongo · All rights reserved</div>
+            <div>SIMUX<span style="color: var(--teal);">TECH</span></div>
+        </div>
+    </footer>
 
-        <script>
-            AOS.init();
-            lucide.createIcons();
-
-            // Animate skill meters on page load
-            document.addEventListener('DOMContentLoaded', function() {
-                const skillLevels = document.querySelectorAll('.skill-level');
-                skillLevels.forEach(level => {
-                    const width = level.style.width;
-                    level.style.width = '0%';
-                    setTimeout(() => {
-                        level.style.width = width;
-                    }, 500);
-                });
-
-                // Typewriter effect
-                const text = "Cybersecurity • Cloud Infrastructure • DevOps Automation";
-                const element = document.querySelector('.typewriter');
-                let i = 0;
-                
-                function type() {
-                    if (i < text.length) {
-                        element.innerHTML = text.substring(0, i + 1);
-                        i++;
-                        setTimeout(type, 100);
+    <script>
+        // Custom cursor
+        const cur = document.getElementById('cursor');
+        const ring = document.getElementById('cursor-ring');
+        let mx = 0, my = 0, rx = 0, ry = 0;
+        
+        document.addEventListener('mousemove', function(e) {
+            mx = e.clientX;
+            my = e.clientY;
+            cur.style.left = mx + 'px';
+            cur.style.top = my + 'px';
+        });
+        
+        function animateRing() {
+            rx += (mx - rx) * 0.12;
+            ry += (my - ry) * 0.12;
+            ring.style.left = rx + 'px';
+            ring.style.top = ry + 'px';
+            requestAnimationFrame(animateRing);
+        }
+        animateRing();
+        
+        // Hover effects for interactive elements
+        const interactive = document.querySelectorAll('a, button, .btn-primary, .btn-ghost');
+        interactive.forEach(function(el) {
+            el.addEventListener('mouseenter', function() {
+                cur.style.width = '6px';
+                cur.style.height = '6px';
+                ring.style.width = '52px';
+                ring.style.height = '52px';
+                ring.style.borderColor = 'var(--teal)';
+            });
+            el.addEventListener('mouseleave', function() {
+                cur.style.width = '10px';
+                cur.style.height = '10px';
+                ring.style.width = '32px';
+                ring.style.height = '32px';
+                ring.style.borderColor = 'var(--teal-line)';
+            });
+        });
+        
+        // Scroll reveal
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('in');
+                }
+            });
+        }, { threshold: 0.07 });
+        
+        document.querySelectorAll('.reveal').forEach(function(el) {
+            observer.observe(el);
+        });
+        
+        // Mobile menu
+        const mobileBtn = document.getElementById('mobileMenuBtn');
+        if (mobileBtn) {
+            mobileBtn.addEventListener('click', function() {
+                const navUl = document.querySelector('nav ul');
+                if (navUl) {
+                    if (navUl.style.display === 'flex') {
+                        navUl.style.display = '';
+                    } else {
+                        navUl.style.display = 'flex';
+                        navUl.style.flexDirection = 'column';
+                        navUl.style.position = 'absolute';
+                        navUl.style.top = '54px';
+                        navUl.style.left = '0';
+                        navUl.style.right = '0';
+                        navUl.style.background = 'var(--ink2)';
+                        navUl.style.borderBottom = '1px solid var(--rule)';
+                        navUl.style.padding = '1rem 0';
                     }
                 }
-                type();
             });
-        </script>
-    </body>
+        }
+    </script>
+    
+    {{ block "extra_js" . }}{{ end }}
+</body>
 </html>

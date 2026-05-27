@@ -1,0 +1,9 @@
+.git/
+.gitignore
+.github/
+.tmp/
+tmp/
+*.md
+*.log
+deploy.sh
+.air.toml

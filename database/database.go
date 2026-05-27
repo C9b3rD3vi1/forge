@@ -3,7 +3,7 @@ package database
 import (
 	"log"
 
-	"github.com/C9b3rD3vi1/Go_blog/models"
+	"github.com/C9b3rD3vi1/forge/models"
 	"gorm.io/driver/sqlite"
 	"github.com/google/uuid"
 	"gorm.io/gorm"

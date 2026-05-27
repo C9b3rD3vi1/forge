@@ -1,670 +1,278 @@
-{{ block "content" . }}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8" />
-    <title>{{ .Title }} | Admin Dashboard</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght=300;400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <style>
-        :root {
-            --primary: #6366f1;
-            --primary-dark: #4f46e5;
-            --surface: #ffffff;
-            --surface-alt: #f8fafc;
-            --border: #e2e8f0;
-            --text-primary: #1e293b;
-            --text-secondary: #64748b;
-            --text-tertiary: #94a3b8;
-            --success: #10b981;
-            --warning: #f59e0b;
-            --danger: #ef4444;
-            --radius: 0.75rem;
-            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-        }
+{{ define "content" }}
+<!-- Header -->
+<div style="margin-bottom: 2rem;">
+    <div style="font-family: var(--cond); font-size: 1.5rem; font-weight: 800; color: var(--white); margin-bottom: 0.5rem;">
+        Dashboard Overview
+    </div>
+    <p style="color: var(--white2); font-size: 0.85rem;">Welcome back, {{ .Admin.Username }}. Here's what's happening with your content.</p>
+</div>
 
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-            color: var(--text-primary);
-        }
+<!-- Search Bar -->
+<div style="margin-bottom: 2rem;">
+    <div style="position: relative; max-width: 400px;">
+        <input type="search" placeholder="Search content..." 
+               style="width: 100%; background: var(--ink2); border: 1px solid var(--rule); padding: 0.6rem 1rem 0.6rem 2rem; color: var(--white); font-family: var(--body); font-size: 0.8rem; border-radius: 2px;">
+    </div>
+</div>
 
-        /* Sidebar */
-        .sidebar {
-            background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
-            color: #e2e8f0;
-            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-        }
+<!-- Stats Grid -->
+<div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--rule); margin-bottom: 2rem;">
+    <div style="background: var(--ink2); padding: 1.5rem;">
+        <div style="font-family: var(--mono); font-size: 0.6rem; color: var(--white3); margin-bottom: 0.5rem;">TOTAL POSTS</div>
+        <div style="font-family: var(--cond); font-size: 2rem; font-weight: 800; color: var(--teal);">{{ len .Posts }}</div>
+        <div style="font-size: 0.7rem; color: var(--white3); margin-top: 0.5rem;">
+            {{ $published := 0 }}
+            {{ range .Posts }}
+                {{ if .Published }}{{ $published = add $published 1 }}{{ end }}
+            {{ end }}
+            <span style="color: var(--green);">{{ $published }}</span> published
+        </div>
+    </div>
+    
+    <div style="background: var(--ink2); padding: 1.5rem;">
+        <div style="font-family: var(--mono); font-size: 0.6rem; color: var(--white3); margin-bottom: 0.5rem;">PROJECTS</div>
+        <div style="font-family: var(--cond); font-size: 2rem; font-weight: 800; color: var(--teal);">{{ len .Projects }}</div>
+        <div style="font-size: 0.7rem; color: var(--white3); margin-top: 0.5rem;">
+            {{ $featured := 0 }}
+            {{ range .Projects }}
+                {{ if .Featured }}{{ $featured = add $featured 1 }}{{ end }}
+            {{ end }}
+            <span style="color: var(--teal);">{{ $featured }}</span> featured
+        </div>
+    </div>
+    
+    <div style="background: var(--ink2); padding: 1.5rem;">
+        <div style="font-family: var(--mono); font-size: 0.6rem; color: var(--white3); margin-bottom: 0.5rem;">SERVICES</div>
+        <div style="font-family: var(--cond); font-size: 2rem; font-weight: 800; color: var(--teal);">{{ len .Services }}</div>
+        <div style="font-size: 0.7rem; color: var(--white3); margin-top: 0.5rem;">All services active</div>
+    </div>
+    
+    <div style="background: var(--ink2); padding: 1.5rem;">
+        <div style="font-family: var(--mono); font-size: 0.6rem; color: var(--white3); margin-bottom: 0.5rem;">MESSAGES</div>
+        <div style="font-family: var(--cond); font-size: 2rem; font-weight: 800; color: var(--teal);">{{ len .Messages }}</div>
+        <div style="font-size: 0.7rem; color: var(--white3); margin-top: 0.5rem;">Total received</div>
+    </div>
+    
+    <div style="background: var(--ink2); padding: 1.5rem;">
+        <div style="font-family: var(--mono); font-size: 0.6rem; color: var(--white3); margin-bottom: 0.5rem;">USERS</div>
+        <div style="font-family: var(--cond); font-size: 2rem; font-weight: 800; color: var(--teal);">{{ len .Users }}</div>
+        <div style="font-size: 0.7rem; color: var(--white3); margin-top: 0.5rem;">
+            {{ $admins := 0 }}
+            {{ range .Users }}
+                {{ if .IsAdmin }}{{ $admins = add $admins 1 }}{{ end }}
+            {{ end }}
+            <span style="color: var(--teal);">{{ $admins }}</span> administrators
+        </div>
+    </div>
+</div>
 
-        .sidebar-logo {
-            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            font-weight: 800;
-            letter-spacing: -0.025em;
-        }
-
-        .nav-link {
-            display: flex;
-            align-items: center;
-            padding: 0.75rem 1rem;
-            border-radius: var(--radius);
-            color: #cbd5e1;
-            transition: all 0.2s ease;
-            font-weight: 500;
-            margin: 0.25rem 0;
-        }
-
-        .nav-link:hover {
-            background: rgba(255, 255, 255, 0.1);
-            color: #ffffff;
-            transform: translateX(4px);
-        }
-
-        .nav-link.active {
-            background: rgba(99, 102, 241, 0.2);
-            color: #ffffff;
-            border-left: 4px solid var(--primary);
-        }
-
-        /* Stats Cards */
-        .stat-card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 1.5rem;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .stat-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, var(--primary), #8b5cf6);
-            border-radius: var(--radius) var(--radius) 0 0;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-4px);
-            box-shadow: var(--shadow-lg);
-            border-color: var(--primary);
-        }
-
-        .stat-icon {
-            padding: 0.75rem;
-            border-radius: 0.75rem;
-            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
-            color: var(--primary);
-        }
-
-        /* Content Cards */
-        .content-card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 1.5rem;
-            transition: all 0.3s ease;
-        }
-
-        .content-card:hover {
-            box-shadow: var(--shadow-md);
-            border-color: var(--border);
-        }
-
-        /* Table Styles */
-        .data-table {
-            width: 100%;
-            border-collapse: separate;
-            border-spacing: 0;
-        }
-
-        .data-table th {
-            background: var(--surface-alt);
-            color: var(--text-secondary);
-            font-weight: 600;
-            text-transform: uppercase;
-            font-size: 0.75rem;
-            letter-spacing: 0.05em;
-            padding: 0.75rem 1rem;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .data-table td {
-            padding: 1rem;
-            border-bottom: 1px solid var(--border);
-            color: var(--text-primary);
-        }
-
-        .data-table tr:hover {
-            background: var(--surface-alt);
-        }
-
-        .data-table tr:last-child td {
-            border-bottom: none;
-        }
-
-        /* Buttons */
-        .btn {
-            padding: 0.5rem 1rem;
-            border-radius: 0.5rem;
-            font-weight: 500;
-            font-size: 0.875rem;
-            transition: all 0.2s ease;
-            border: 1px solid transparent;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            color: white;
-        }
-
-        .btn-primary:hover {
-            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.25);
-            transform: translateY(-1px);
-        }
-
-        .btn-edit {
-            background: rgba(59, 130, 246, 0.1);
-            color: #3b82f6;
-            border-color: rgba(59, 130, 246, 0.2);
-        }
-
-        .btn-edit:hover {
-            background: rgba(59, 130, 246, 0.2);
-            border-color: #3b82f6;
-        }
-
-        .btn-delete {
-            background: rgba(239, 68, 68, 0.1);
-            color: #ef4444;
-            border-color: rgba(239, 68, 68, 0.2);
-        }
-
-        .btn-delete:hover {
-            background: rgba(239, 68, 68, 0.2);
-            border-color: #ef4444;
-        }
-
-        /* Badges */
-        .badge {
-            padding: 0.25rem 0.5rem;
-            border-radius: 9999px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.25rem;
-        }
-
-        .badge-success {
-            background: rgba(16, 185, 129, 0.1);
-            color: var(--success);
-        }
-
-        .badge-warning {
-            background: rgba(245, 158, 11, 0.1);
-            color: var(--warning);
-        }
-
-        .badge-danger {
-            background: rgba(239, 68, 68, 0.1);
-            color: var(--danger);
-        }
-
-        /* Mobile sidebar overlay */
-        .sidebar-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 40;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-        }
-
-        .sidebar-overlay.active {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        @media (max-width: 768px) {
-            .sidebar {
-                position: fixed;
-                top: 0;
-                left: 0;
-                bottom: 0;
-                z-index: 50;
-                transform: translateX(-100%);
-            }
-            .sidebar.open {
-                transform: translateX(0);
-            }
-        }
-    </style>
-</head>
-
-<body class="min-h-screen">
-  
-        <!-- Main Content -->
-        <main class="flex-1 p-4 md:p-6 lg:p-8">
-            <div class="max-w-7xl mx-auto">
-                <!-- Header Section -->
-                <div class="mb-8">
-                    <h1 class="text-3xl font-bold text-slate-900 mb-2">Dashboard Overview</h1>
-                    <p class="text-slate-600">Welcome back, {{ .Admin.Username }}. Here's what's happening with your content.</p>
+<!-- Recent Posts & Projects Grid -->
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--rule); margin-bottom: 2rem;">
+    <!-- Recent Posts -->
+    <div style="background: var(--ink2);">
+        <div style="padding: 1.5rem; border-bottom: 1px solid var(--rule);">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <h3 style="font-family: var(--cond); font-size: 1.1rem; font-weight: 800; color: var(--white);">Recent Posts</h3>
+                    <p style="font-size: 0.7rem; color: var(--white3);">Latest content updates</p>
                 </div>
-
-                <!-- Search Bar -->
-                <div class="mb-8">
-                    <div class="relative max-w-md">
-                        <i data-lucide="search" class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-slate-400"></i>
-                        <input type="search" placeholder="Search content, users, or settings..." 
-                               class="w-full pl-10 pr-4 py-3 bg-white border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent placeholder-slate-400" />
+                <a href="/admin/posts" style="font-family: var(--mono); font-size: 0.6rem; color: var(--teal); text-decoration: none;">View All →</a>
+            </div>
+        </div>
+        <div>
+            {{ range .Posts }}
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 1rem 1.5rem; border-bottom: 1px solid var(--rule);">
+                <div>
+                    <div style="font-family: var(--cond); font-size: 0.9rem; font-weight: 600; color: var(--white);">{{ .Title }}</div>
+                    <div style="font-size: 0.65rem; margin-top: 0.25rem;">
+                        {{ if .Published }}<span style="color: var(--green);">● Live</span>{{ else }}<span style="color: var(--amber);">● Draft</span>{{ end }}
                     </div>
                 </div>
-
-                <!-- Stats Grid -->
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                    <div class="stat-card">
-                        <div class="flex items-center justify-between mb-4">
-                            <div class="stat-icon">
-                                <i data-lucide="file-text" class="w-6 h-6"></i>
-                            </div>
-                            <span class="text-sm font-medium text-slate-600">Total Posts</span>
-                        </div>
-                        <div class="text-3xl font-bold text-slate-900">{{ len .Posts }}</div>
-                        <div class="mt-2 text-sm text-slate-500">
-                            {{ $published := 0 }}
-                            {{ range .Posts }}
-                                {{ if .Published }}{{ $published = add $published 1 }}{{ end }}
-                            {{ end }}
-                            <span class="text-green-600 font-medium">{{ $published }}</span> published
-                        </div>
-                    </div>
-
-                    <div class="stat-card">
-                        <div class="flex items-center justify-between mb-4">
-                            <div class="stat-icon" style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(5, 150, 105, 0.1) 100%); color: #10b981;">
-                                <i data-lucide="folder-git-2" class="w-6 h-6"></i>
-                            </div>
-                            <span class="text-sm font-medium text-slate-600">Projects</span>
-                        </div>
-                        <div class="text-3xl font-bold text-slate-900">{{ len .Projects }}</div>
-                        <div class="mt-2 text-sm text-slate-500">
-                            {{ $featured := 0 }}
-                            {{ range .Projects }}
-                                {{ if .Featured }}{{ $featured = add $featured 1 }}{{ end }}
-                            {{ end }}
-                            <span class="text-purple-600 font-medium">{{ $featured }}</span> featured
-                        </div>
-                    </div>
-
-                    <div class="stat-card">
-                        <div class="flex items-center justify-between mb-4">
-                            <div class="stat-icon" style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(217, 119, 6, 0.1) 100%); color: #f59e0b;">
-                                <i data-lucide="settings" class="w-6 h-6"></i>
-                            </div>
-                            <span class="text-sm font-medium text-slate-600">Services</span>
-                        </div>
-                        <div class="text-3xl font-bold text-slate-900">{{ len .Services }}</div>
-                        <div class="mt-2 text-sm text-slate-500">All services active</div>
-                    </div>
-                    
-                    <div class="stat-card">
-                        <div class="flex items-center justify-between mb-4">
-                            <div class="stat-icon" style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(217, 119, 6, 0.1) 100%); color: #f59e0b;">
-                                <i data-lucide="message-square" class="w-6 h-6"></i>
-                            </div>
-                            <span class="text-sm font-medium text-slate-600">Messages</span>
-                        </div>
-                        <div class="text-3xl font-bold text-slate-900">{{ len .Messages }}</div>
-                        <div class="mt-2 text-sm text-slate-500">All Messages Received</div>
-                    </div>
-
-                    <div class="stat-card">
-                        <div class="flex items-center justify-between mb-4">
-                            <div class="stat-icon" style="background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(220, 38, 38, 0.1) 100%); color: #ef4444;">
-                                <i data-lucide="users" class="w-6 h-6"></i>
-                            </div>
-                            <span class="text-sm font-medium text-slate-600">Users</span>
-                        </div>
-                        <div class="text-3xl font-bold text-slate-900">{{ len .Users }}</div>
-                        <div class="mt-2 text-sm text-slate-500">
-                            {{ $admins := 0 }}
-                            {{ range .Users }}
-                                {{ if .IsAdmin }}{{ $admins = add $admins 1 }}{{ end }}
-                            {{ end }}
-                            <span class="text-indigo-600 font-medium">{{ $admins }}</span> administrators
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Content Grid -->
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-                    <!-- Recent Posts -->
-                    <div class="content-card">
-                        <div class="flex items-center justify-between mb-6">
-                            <div>
-                                <h3 class="text-lg font-semibold text-slate-900">Recent Posts</h3>
-                                <p class="text-sm text-slate-500">Latest content updates</p>
-                            </div>
-                            <a href="/admin/posts" class="text-sm font-medium text-indigo-600 hover:text-indigo-500 flex items-center gap-1">
-                                View All <i data-lucide="arrow-right" class="w-4 h-4"></i>
-                            </a>
-                        </div>
-                        <div class="space-y-4">
-                            {{ range .Posts }}
-                            <div class="flex items-center justify-between p-3 rounded-lg hover:bg-slate-50 transition-colors">
-                                <div class="flex items-center gap-3">
-                                    <div class="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center">
-                                        <i data-lucide="file-text" class="w-4 h-4 text-slate-600"></i>
-                                    </div>
-                                    <div>
-                                        <h4 class="font-medium text-slate-900 text-sm">{{ .Title }}</h4>
-                                        <p class="text-xs text-slate-500">Posted {{ if .Published }}<span class="badge badge-success">Live</span>{{ else }}<span class="badge badge-warning">Draft</span>{{ end }}</p>
-                                    </div>
-                                </div>
-                                <div class="flex items-center gap-2">
-                                    <a href="/admin/posts/edit/{{ .ID }}" class="btn btn-edit btn-sm">Edit</a>
-                                    <a href="/admin/posts/delete/{{ .ID }}" class="btn btn-delete btn-sm">Delete</a>
-                                </div>
-                            </div>
-                            {{ else }}
-                            <div class="text-center py-8 text-slate-500">
-                                <i data-lucide="file-x" class="w-12 h-12 mx-auto mb-2 opacity-50"></i>
-                                <p>No posts yet</p>
-                            </div>
-                            {{ end }}
-                        </div>
-                    </div>
-
-                    <!-- Projects -->
-                    <div class="content-card">
-                        <div class="flex items-center justify-between mb-6">
-                            <div>
-                                <h3 class="text-lg font-semibold text-slate-900">Projects</h3>
-                                <p class="text-sm text-slate-500">Development portfolio</p>
-                            </div>
-                            <a href="/admin/projects" class="text-sm font-medium text-indigo-600 hover:text-indigo-500 flex items-center gap-1">
-                                View All <i data-lucide="arrow-right" class="w-4 h-4"></i>
-                            </a>
-                        </div>
-                        <div class="space-y-4">
-                            {{ range .Projects }}
-                            <div class="flex items-center justify-between p-3 rounded-lg hover:bg-slate-50 transition-colors">
-                                <div class="flex items-center gap-3">
-                                    <div class="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center">
-                                        <i data-lucide="folder-git-2" class="w-4 h-4 text-blue-600"></i>
-                                    </div>
-                                    <div>
-                                        <h4 class="font-medium text-slate-900 text-sm">{{ .Title }}</h4>
-                                        <p class="text-xs text-slate-500">{{ .Category }} • {{ if .Featured }}<span class="badge badge-warning">Featured</span>{{ else }}<span class="text-slate-400">Standard</span>{{ end }}</p>
-                                    </div>
-                                </div>
-                                <div class="flex items-center gap-2">
-                                    <a href="/admin/projects/edit/{{ .ID }}" class="btn btn-edit btn-sm">Edit</a>
-                                    <a href="/admin/projects/delete/{{ .ID }}" class="btn btn-delete btn-sm">Delete</a>
-                                </div>
-                            </div>
-                            {{ else }}
-                            <div class="text-center py-8 text-slate-500">
-                                <i data-lucide="folder-x" class="w-12 h-12 mx-auto mb-2 opacity-50"></i>
-                                <p>No projects yet</p>
-                            </div>
-                            {{ end }}
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Users & Services Section -->
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    <!-- Services -->
-                    <div class="content-card">
-                        <div class="flex items-center justify-between mb-6">
-                            <div>
-                                <h3 class="text-lg font-semibold text-slate-900">Services</h3>
-                                <p class="text-sm text-slate-500">Available offerings</p>
-                            </div>
-                            <a href="/admin/services" class="text-sm font-medium text-indigo-600 hover:text-indigo-500 flex items-center gap-1">
-                                Manage <i data-lucide="arrow-right" class="w-4 h-4"></i>
-                            </a>
-                        </div>
-                        <div class="space-y-4">
-                            {{ range .Services }}
-                            <div class="flex items-center justify-between p-3 rounded-lg hover:bg-slate-50 transition-colors">
-                                <div class="flex items-center gap-3">
-                                    <div class="w-8 h-8 rounded-lg bg-green-100 flex items-center justify-center">
-                                        <i data-lucide="settings" class="w-4 h-4 text-green-600"></i>
-                                    </div>
-                                    <div>
-                                        <h4 class="font-medium text-slate-900 text-sm">{{ .Title }}</h4>
-                                        <p class="text-xs text-slate-500 truncate max-w-xs">{{ .Description }}</p>
-                                    </div>
-                                </div>
-                                <div class="flex items-center gap-2">
-                                    <a href="/admin/services/edit/{{ .ID }}" class="btn btn-edit btn-sm">Edit</a>
-                                    <a href="/admin/services/delete/{{ .ID }}" class="btn btn-delete btn-sm">Delete</a>
-                                </div>
-                            </div>
-                            {{ else }}
-                            <div class="text-center py-8 text-slate-500">
-                                <i data-lucide="wrench" class="w-12 h-12 mx-auto mb-2 opacity-50"></i>
-                                <p>No services yet</p>
-                            </div>
-                            {{ end }}
-                        </div>
-                    </div>
-
-                    <!-- Users Table -->
-                    <div class="content-card">
-                        <div class="flex items-center justify-between mb-6">
-                            <div>
-                                <h3 class="text-lg font-semibold text-slate-900">Users</h3>
-                                <p class="text-sm text-slate-500">System access management</p>
-                            </div>
-                            <a href="/admin/users" class="text-sm font-medium text-indigo-600 hover:text-indigo-500 flex items-center gap-1">
-                                Manage Users <i data-lucide="arrow-right" class="w-4 h-4"></i>
-                            </a>
-                        </div>
-                        <div class="overflow-x-auto rounded-lg border border-slate-200">
-                            <table class="data-table">
-                                <thead>
-                                    <tr>
-                                        <th>User</th>
-                                        <th>Role</th>
-                                        <th>Status</th>
-                                        <th class="text-right">Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {{ range .Users }}
-                                    <tr>
-                                        <td>
-                                            <div class="flex items-center gap-3">
-                                                <div class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center">
-                                                    <i data-lucide="user" class="w-4 h-4 text-slate-600"></i>
-                                                </div>
-                                                <div>
-                                                    <div class="font-medium text-slate-900 text-sm">{{ .Username }}</div>
-                                                    <div class="text-xs text-slate-500">{{ .Email }}</div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            {{ if .IsAdmin }}
-                                            <span class="badge badge-warning">Admin</span>
-                                            {{ else }}
-                                            <span class="badge badge-success">User</span>
-                                            {{ end }}
-                                        </td>
-                                        <td>
-                                            {{ if .IsActive }}
-                                            <span class="badge badge-success">Active</span>
-                                            {{ else }}
-                                            <span class="badge badge-danger">Inactive</span>
-                                            {{ end }}
-                                        </td>
-                                        <td class="text-right">
-                                            <div class="inline-flex items-center gap-2">
-                                                <a href="/admin/users/edit/{{ .ID }}" class="btn btn-edit btn-sm">Edit</a>
-                                                <a href="/admin/users/delete/{{ .ID }}" class="btn btn-delete btn-sm">Delete</a>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    {{ else }}
-                                    <tr>
-                                        <td colspan="4" class="text-center py-8 text-slate-500">
-                                            <i data-lucide="users" class="w-12 h-12 mx-auto mb-2 opacity-50"></i>
-                                            <p>No users found</p>
-                                        </td>
-                                    </tr>
-                                    {{ end }}
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Messages -->
-                {{ if .Messages }}
-                <div class="mt-10">
-                    <div class="bg-white shadow-xl rounded-xl p-6 border border-gray-100">
-                
-                        <div class="flex items-center justify-between mb-6">
-                            <h2 class="text-2xl font-semibold text-gray-800">Messages</h2>
-                
-                            <span class="text-sm text-gray-500">
-                                Total: {{ len .Messages }}
-                            </span>
-                        </div>
-                
-                        <div class="overflow-x-auto">
-                            <table class="min-w-full text-left text-sm">
-                                <thead>
-                                    <tr class="bg-gray-100 text-gray-700 uppercase text-xs tracking-wider">
-                                        <th class="px-4 py-3">Name</th>
-                                        <th class="px-4 py-3">Email</th>
-                                        <th class="px-4 py-3">Subject</th>
-                                        <th class="px-4 py-3 w-1/3">Message</th>
-                                        <th class="px-4 py-3">Created At</th>
-                                        <th class="px-4 py-3">Actions</th>
-                                    </tr>
-                                </thead>
-                
-                                <tbody class="divide-y divide-gray-200">
-                                    {{ range .Messages }}
-                                    <tr class="hover:bg-gray-50 transition">
-                
-                                        <!-- Name -->
-                                        <td class="px-4 py-3 font-medium text-gray-800">
-                                            {{ .Name }}
-                                        </td>
-                
-                                        <!-- Email -->
-                                        <td class="px-4 py-3 text-gray-700">
-                                            {{ .Email }}
-                                        </td>
-                
-                                        <!-- Subject (colored label) -->
-                                        <td class="px-4 py-3">
-                                            <span class="px-2 py-1 rounded-full text-xs font-semibold
-                                                {{ if eq .Subject "Support" }} bg-blue-100 text-blue-700 
-                                                {{ else if eq .Subject "Inquiry" }} bg-green-100 text-green-700
-                                                {{ else if eq .Subject "Complaint" }} bg-red-100 text-red-700
-                                                {{ else }} bg-gray-100 text-gray-700 {{ end }}">
-                                                {{ .Subject }}
-                                            </span>
-                                        </td>
-                
-                                        <!-- Message Preview -->
-                                        <td class="px-4 py-3 text-gray-600 line-clamp-2">
-                                            {{ .Message }}
-                                        </td>
-                
-                                        <!-- Created Date -->
-                                        <td class="px-4 py-3 text-gray-500 text-sm">
-                                            {{ .CreatedAt.Format "2006-01-02 15:04" }}
-                                        </td>
-                
-                                        <!-- ACTION BUTTONS -->
-                                        <td class="px-4 py-3 space-x-2 flex items-center">
-                
-                                            <!-- View Button -->
-                                            <a href="/admin/contacts/{{ .ID }}"
-                                               class="px-3 py-1 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-semibold shadow-sm transition">
-                                                View
-                                            </a>
-                
-                                            <!-- Delete Button -->
-                                            <form action="/admin/contacts/{{ .ID }}/delete" method="POST"
-                                                  onsubmit="return confirm('Are you sure you want to delete this message?');">
-                                                <button type="submit"
-                                                    class="px-3 py-1 bg-red-600 hover:bg-red-700 text-white rounded-lg text-xs font-semibold shadow-sm transition">
-                                                    Delete
-                                                </button>
-                                            </form>
-                                        </td>
-                
-                                    </tr>
-                                    {{ end }}
-                                </tbody>
-                            </table>
-                        </div>
-                
-                    </div>
-                </div>
-                {{ end }}
-
-
-
-                <!-- Footer Note -->
-                <div class="mt-8 pt-8 border-t border-slate-200">
-                    <div class="flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-slate-500">
-                        <div class="flex items-center gap-2">
-                            <i data-lucide="shield" class="w-4 h-4"></i>
-                            <span>Secure Admin Dashboard • Last updated: {{ .now}}</span>
-                        </div>
-                        <div>© {{ .now}} CyberHub Admin • v1.0.0</div>
-                    </div>
+                <div style="display: flex; gap: 0.5rem;">
+                    <a href="/admin/posts/edit/{{ .ID }}" style="font-family: var(--mono); font-size: 0.55rem; color: var(--teal); text-decoration: none;">Edit</a>
+                    <a href="/admin/posts/delete/{{ .ID }}" style="font-family: var(--mono); font-size: 0.55rem; color: var(--red); text-decoration: none;">Delete</a>
                 </div>
             </div>
-        </main>
+            {{ else }}
+            <div style="padding: 2rem; text-align: center; color: var(--white3);">No posts yet</div>
+            {{ end }}
+        </div>
     </div>
+    
+    <!-- Recent Projects -->
+    <div style="background: var(--ink2);">
+        <div style="padding: 1.5rem; border-bottom: 1px solid var(--rule);">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <h3 style="font-family: var(--cond); font-size: 1.1rem; font-weight: 800; color: var(--white);">Projects</h3>
+                    <p style="font-size: 0.7rem; color: var(--white3);">Development portfolio</p>
+                </div>
+                <a href="/admin/projects" style="font-family: var(--mono); font-size: 0.6rem; color: var(--teal); text-decoration: none;">View All →</a>
+            </div>
+        </div>
+        <div>
+            {{ range .Projects }}
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 1rem 1.5rem; border-bottom: 1px solid var(--rule);">
+                <div>
+                    <div style="font-family: var(--cond); font-size: 0.9rem; font-weight: 600; color: var(--white);">{{ .Title }}</div>
+                    <div style="font-size: 0.65rem; color: var(--white3); margin-top: 0.25rem;">{{ .Category }}</div>
+                </div>
+                <div style="display: flex; gap: 0.5rem;">
+                    <a href="/admin/projects/edit/{{ .ID }}" style="font-family: var(--mono); font-size: 0.55rem; color: var(--teal); text-decoration: none;">Edit</a>
+                    <a href="/admin/projects/delete/{{ .ID }}" style="font-family: var(--mono); font-size: 0.55rem; color: var(--red); text-decoration: none;">Delete</a>
+                </div>
+            </div>
+            {{ else }}
+            <div style="padding: 2rem; text-align: center; color: var(--white3);">No projects yet</div>
+            {{ end }}
+        </div>
+    </div>
+</div>
 
-    <script>
-        lucide.createIcons();
-        
-        // Sidebar toggle
-        const sidebarToggle = document.getElementById('sidebar-toggle');
-        const sidebar = document.getElementById('sidebar');
-        const sidebarOverlay = document.getElementById('sidebar-overlay');
-        
-        function toggleSidebar() {
-            sidebar.classList.toggle('open');
-            sidebarOverlay.classList.toggle('active');
-        }
-        
-        sidebarToggle.addEventListener('click', toggleSidebar);
-        sidebarOverlay.addEventListener('click', toggleSidebar);
-        
-        // Close sidebar on resize if needed
-        window.addEventListener('resize', () => {
-            if (window.innerWidth >= 768) {
-                sidebar.classList.remove('open');
-                sidebarOverlay.classList.remove('active');
-            }
-        });
-    </script>
-</body>
-</html>
+<!-- Services & Users Grid -->
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--rule); margin-bottom: 2rem;">
+    <!-- Services -->
+    <div style="background: var(--ink2);">
+        <div style="padding: 1.5rem; border-bottom: 1px solid var(--rule);">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <h3 style="font-family: var(--cond); font-size: 1.1rem; font-weight: 800; color: var(--white);">Services</h3>
+                    <p style="font-size: 0.7rem; color: var(--white3);">Available offerings</p>
+                </div>
+                <a href="/admin/services" style="font-family: var(--mono); font-size: 0.6rem; color: var(--teal); text-decoration: none;">Manage →</a>
+            </div>
+        </div>
+        <div>
+            {{ range .Services }}
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 1rem 1.5rem; border-bottom: 1px solid var(--rule);">
+                <div style="flex: 1;">
+                    <div style="font-family: var(--cond); font-size: 0.9rem; font-weight: 600; color: var(--white);">{{ .Title }}</div>
+                    <div style="font-size: 0.65rem; color: var(--white3); margin-top: 0.25rem; max-width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ .Description }}</div>
+                </div>
+                <div style="display: flex; gap: 0.5rem;">
+                    <a href="/admin/services/edit/{{ .ID }}" style="font-family: var(--mono); font-size: 0.55rem; color: var(--teal); text-decoration: none;">Edit</a>
+                    <a href="/admin/services/delete/{{ .ID }}" style="font-family: var(--mono); font-size: 0.55rem; color: var(--red); text-decoration: none;">Delete</a>
+                </div>
+            </div>
+            {{ else }}
+            <div style="padding: 2rem; text-align: center; color: var(--white3);">No services yet</div>
+            {{ end }}
+        </div>
+    </div>
+    
+    <!-- Users -->
+    <div style="background: var(--ink2);">
+        <div style="padding: 1.5rem; border-bottom: 1px solid var(--rule);">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <h3 style="font-family: var(--cond); font-size: 1.1rem; font-weight: 800; color: var(--white);">Users</h3>
+                    <p style="font-size: 0.7rem; color: var(--white3);">System access management</p>
+                </div>
+                <a href="/admin/users" style="font-family: var(--mono); font-size: 0.6rem; color: var(--teal); text-decoration: none;">Manage →</a>
+            </div>
+        </div>
+        <div style="overflow-x: auto;">
+            <table style="width: 100%; border-collapse: collapse;">
+                <thead>
+                    <tr style="background: var(--ink3);">
+                        <th style="text-align: left; padding: 0.75rem 1rem; font-family: var(--mono); font-size: 0.55rem; color: var(--white3);">User</th>
+                        <th style="text-align: left; padding: 0.75rem 1rem; font-family: var(--mono); font-size: 0.55rem; color: var(--white3);">Role</th>
+                        <th style="text-align: left; padding: 0.75rem 1rem; font-family: var(--mono); font-size: 0.55rem; color: var(--white3);">Status</th>
+                        <th style="text-align: right; padding: 0.75rem 1rem; font-family: var(--mono); font-size: 0.55rem; color: var(--white3);">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{ range .Users }}
+                    <tr style="border-bottom: 1px solid var(--rule);">
+                        <td style="padding: 0.75rem 1rem;">
+                            <div>
+                                <div style="font-family: var(--cond); font-size: 0.85rem; color: var(--white);">{{ .Username }}</div>
+                                <div style="font-size: 0.6rem; color: var(--white3);">{{ .Email }}</div>
+                            </div>
+                        </td>
+                        <td style="padding: 0.75rem 1rem;">
+                            {{ if .IsAdmin }}
+                            <span style="font-size: 0.55rem; color: var(--teal);">Admin</span>
+                            {{ else }}
+                            <span style="font-size: 0.55rem; color: var(--white3);">User</span>
+                            {{ end }}
+                        </td>
+                        <td style="padding: 0.75rem 1rem;">
+                            {{ if .IsActive }}
+                            <span style="font-size: 0.55rem; color: var(--green);">Active</span>
+                            {{ else }}
+                            <span style="font-size: 0.55rem; color: var(--red);">Inactive</span>
+                            {{ end }}
+                        </td>
+                        <td style="padding: 0.75rem 1rem; text-align: right;">
+                            <a href="/admin/users/edit/{{ .ID }}" style="font-family: var(--mono); font-size: 0.55rem; color: var(--teal); text-decoration: none; margin-right: 0.5rem;">Edit</a>
+                            <a href="/admin/users/delete/{{ .ID }}" style="font-family: var(--mono); font-size: 0.55rem; color: var(--red); text-decoration: none;">Delete</a>
+                        </td>
+                    </tr>
+                    {{ else }}
+                    <tr>
+                        <td colspan="4" style="padding: 2rem; text-align: center; color: var(--white3);">No users found</td>
+                    </tr>
+                    {{ end }}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Messages Section -->
+{{ if .Messages }}
+<div style="background: var(--ink2); border: 1px solid var(--rule); margin-bottom: 2rem;">
+    <div style="padding: 1.5rem; border-bottom: 1px solid var(--rule);">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div>
+                <h3 style="font-family: var(--cond); font-size: 1.1rem; font-weight: 800; color: var(--white);">Messages</h3>
+                <p style="font-size: 0.7rem; color: var(--white3);">Total: {{ len .Messages }}</p>
+            </div>
+        </div>
+    </div>
+    <div style="overflow-x: auto;">
+        <table style="width: 100%; border-collapse: collapse;">
+            <thead>
+                <tr style="background: var(--ink3);">
+                    <th style="text-align: left; padding: 0.75rem 1rem; font-family: var(--mono); font-size: 0.55rem; color: var(--white3);">Name</th>
+                    <th style="text-align: left; padding: 0.75rem 1rem; font-family: var(--mono); font-size: 0.55rem; color: var(--white3);">Email</th>
+                    <th style="text-align: left; padding: 0.75rem 1rem; font-family: var(--mono); font-size: 0.55rem; color: var(--white3);">Subject</th>
+                    <th style="text-align: left; padding: 0.75rem 1rem; font-family: var(--mono); font-size: 0.55rem; color: var(--white3);">Message</th>
+                    <th style="text-align: left; padding: 0.75rem 1rem; font-family: var(--mono); font-size: 0.55rem; color: var(--white3);">Created</th>
+                    <th style="text-align: right; padding: 0.75rem 1rem; font-family: var(--mono); font-size: 0.55rem; color: var(--white3);">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{ range .Messages }}
+                <tr style="border-bottom: 1px solid var(--rule);">
+                    <td style="padding: 0.75rem 1rem; font-size: 0.8rem; color: var(--white);">{{ .Name }}</td>
+                    <td style="padding: 0.75rem 1rem; font-size: 0.7rem; color: var(--white2);">{{ .Email }}</td>
+                    <td style="padding: 0.75rem 1rem;">
+                        <span style="font-size: 0.6rem; color: var(--teal);">{{ .Subject }}</span>
+                    </td>
+                    <td style="padding: 0.75rem 1rem; font-size: 0.7rem; color: var(--white2); max-width: 300px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ .Message }}</td>
+                    <td style="padding: 0.75rem 1rem; font-size: 0.65rem; color: var(--white3);">{{ .CreatedAt.Format "2006-01-02" }}</td>
+                    <td style="padding: 0.75rem 1rem; text-align: right;">
+                        <a href="/admin/contacts/{{ .ID }}" style="font-family: var(--mono); font-size: 0.55rem; color: var(--teal); text-decoration: none; margin-right: 0.5rem;">View</a>
+                        <form action="/admin/contacts/{{ .ID }}/delete" method="POST" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete this message?');">
+                            <button type="submit" style="font-family: var(--mono); font-size: 0.55rem; color: var(--red); background: none; border: none; cursor: pointer;">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                {{ end }}
+            </tbody>
+        </table>
+    </div>
+</div>
+{{ end }}
+
+<!-- Footer -->
+<div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--rule); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
+    <div style="display: flex; align-items: center; gap: 0.5rem;">
+        <span style="font-size: 0.6rem; color: var(--teal);">●</span>
+        <span style="font-family: var(--mono); font-size: 0.55rem; color: var(--white3);">Secure Admin Dashboard</span>
+    </div>
+    <div style="font-family: var(--mono); font-size: 0.55rem; color: var(--white3);">© {{ .now }} Nickson Wekongo</div>
+</div>
 {{ end }}

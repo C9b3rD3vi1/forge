@@ -1,591 +1,345 @@
-{{ block "content" . }}
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
-  body {
-    font-family: 'Inter', sans-serif;
-  }
-  .animate-fade-in-up {
-    animation: fadeInUp 0.6s ease-out forwards;
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  @keyframes fadeInUp {
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-</style>
+{{ define "title" }}Edit Project | Admin Panel{{ end }}
 
-<section class="bg-gray-950 text-gray-200 min-h-screen p-6 md:p-12">
-  <div class="w-full max-w-4xl mx-auto animate-fade-in-up">
+{{ define "content" }}
+<div style="max-width: 1000px; margin: 0 auto;">
+    
     <!-- Header -->
-    <div class="mb-8">
-      <a href="/admin/projects" class="inline-flex items-center text-sm text-gray-400 hover:text-white mb-6">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-        </svg>
-        Back to Projects
-      </a>
-      <div class="flex items-center space-x-4 mb-2">
-        <div class="p-3 bg-amber-600 rounded-full shadow-md shadow-amber-700/50">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-          </svg>
+    <div style="margin-bottom: 2rem;">
+        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.5rem;">
+            <a href="/admin/projects" style="font-family: var(--mono); font-size: 0.7rem; color: var(--teal); text-decoration: none;">← Back to Projects</a>
         </div>
-        <h1 class="text-3xl lg:text-4xl font-extrabold tracking-tight text-white">Edit Project</h1>
-      </div>
-      <p class="text-gray-400 ml-16">Update project details for {{ .Project.Title }}</p>
+        <div style="font-family: var(--cond); font-size: 1.5rem; font-weight: 800; color: var(--white); margin-bottom: 0.25rem;">
+            Edit Project
+        </div>
+        <p style="color: var(--white2); font-size: 0.8rem;">Update project details for {{ .Project.Title }}</p>
     </div>
 
     <!-- Form -->
-    <form method="POST" action="/admin/projects/edit/{{ .Project.ID }}" enctype="multipart/form-data" class="space-y-8">
-      <div class="bg-gray-800 p-8 md:p-10 rounded-3xl shadow-2xl border border-gray-700 space-y-6">
+    <form method="POST" action="/admin/projects/edit/{{ .Project.ID }}" enctype="multipart/form-data">
         
         <!-- Basic Information Section -->
-        <div class="border-b border-gray-700 pb-6">
-          <h2 class="text-xl font-bold text-white mb-4 flex items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            Basic Information
-          </h2>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <!-- Title -->
-            <div>
-              <label for="title" class="block text-sm font-semibold mb-2 text-gray-300">Project Title *</label>
-              <input type="text" id="title" name="title" value="{{ .Project.Title }}"
-                class="w-full px-4 py-2.5 rounded-xl bg-gray-700 text-white placeholder-gray-500 border border-gray-600 
-                       focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-colors" 
-                placeholder="e.g., NetGuardIQ - Phishing Simulation" required />
+        <div style="background: var(--ink2); border: 1px solid var(--rule); margin-bottom: 1px; padding: 1.5rem;">
+            <h2 style="font-family: var(--cond); font-size: 1.2rem; font-weight: 800; color: var(--teal); margin-bottom: 1rem;">Basic Information</h2>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                <div>
+                    <label for="title" style="display: block; font-family: var(--mono); font-size: 0.6rem; color: var(--white3); margin-bottom: 0.25rem;">TITLE *</label>
+                    <input type="text" id="title" name="title" value="{{ .Project.Title }}" required style="width: 100%; background: var(--ink); border: 1px solid var(--rule); padding: 0.6rem; color: var(--white);">
+                </div>
+                <div>
+                    <label for="category" style="display: block; font-family: var(--mono); font-size: 0.6rem; color: var(--white3); margin-bottom: 0.25rem;">CATEGORY *</label>
+                    <select id="category" name="category" style="width: 100%; background: var(--ink); border: 1px solid var(--rule); padding: 0.6rem; color: var(--white);">
+                        <option value="">Select Category</option>
+                        <option value="Cybersecurity" {{ if eq .Project.Category "Cybersecurity" }}selected{{ end }}>Cybersecurity</option>
+                        <option value="Web Development" {{ if eq .Project.Category "Web Development" }}selected{{ end }}>Web Development</option>
+                        <option value="DevOps" {{ if eq .Project.Category "DevOps" }}selected{{ end }}>DevOps</option>
+                        <option value="AI/ML" {{ if eq .Project.Category "AI/ML" }}selected{{ end }}>AI/ML</option>
+                        <option value="Mobile" {{ if eq .Project.Category "Mobile" }}selected{{ end }}>Mobile</option>
+                        <option value="Desktop" {{ if eq .Project.Category "Desktop" }}selected{{ end }}>Desktop</option>
+                        <option value="IoT" {{ if eq .Project.Category "IoT" }}selected{{ end }}>IoT</option>
+                    </select>
+                </div>
             </div>
 
-            <!-- Category -->
-            <div>
-              <label for="category" class="block text-sm font-semibold mb-2 text-gray-300">Category *</label>
-              <select id="category" name="category" 
-                class="w-full px-4 py-2.5 rounded-xl bg-gray-700 text-white border border-gray-600 
-                       focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-colors" required>
-                <option value="">Select Category</option>
-                <option value="Cybersecurity" {{ if eq .Project.Category "Cybersecurity" }}selected{{ end }}>Cybersecurity</option>
-                <option value="Web Development" {{ if eq .Project.Category "Web Development" }}selected{{ end }}>Web Development</option>
-                <option value="DevOps" {{ if eq .Project.Category "DevOps" }}selected{{ end }}>DevOps</option>
-                <option value="AI/ML" {{ if eq .Project.Category "AI/ML" }}selected{{ end }}>AI/ML</option>
-                <option value="Mobile" {{ if eq .Project.Category "Mobile" }}selected{{ end }}>Mobile</option>
-                <option value="Desktop" {{ if eq .Project.Category "Desktop" }}selected{{ end }}>Desktop</option>
-                <option value="IoT" {{ if eq .Project.Category "IoT" }}selected{{ end }}>IoT</option>
-              </select>
+            <div style="margin-bottom: 1rem;">
+                <label for="description" style="display: block; font-family: var(--mono); font-size: 0.6rem; color: var(--white3); margin-bottom: 0.25rem;">SHORT DESCRIPTION *</label>
+                <textarea id="description" name="description" rows="3" style="width: 100%; background: var(--ink); border: 1px solid var(--rule); padding: 0.6rem; color: var(--white);">{{ .Project.Description }}</textarea>
             </div>
-          </div>
 
-          <!-- Description -->
-          <div class="mt-6">
-            <label for="description" class="block text-sm font-semibold mb-2 text-gray-300">Short Description *</label>
-            <textarea id="description" name="description" rows="3" 
-              class="w-full px-4 py-2.5 rounded-xl bg-gray-700 text-white placeholder-gray-500 border border-gray-600 
-                     focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-colors resize-none" 
-              placeholder="A brief overview of the project (will be shown in listings)" required>{{ .Project.Description }}</textarea>
-          </div>
-
-          <!-- Long Description -->
-          <div class="mt-6">
-            <label for="long_description" class="block text-sm font-semibold mb-2 text-gray-300">Detailed Description</label>
-            <textarea id="long_description" name="long_description" rows="4" 
-              class="w-full px-4 py-2.5 rounded-xl bg-gray-700 text-white placeholder-gray-500 border border-gray-600 
-                     focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-colors resize-none" 
-              placeholder="Detailed project story, architecture, and implementation details...">{{ .Project.LongDescription }}</textarea>
-          </div>
+            <div>
+                <label for="long_description" style="display: block; font-family: var(--mono); font-size: 0.6rem; color: var(--white3); margin-bottom: 0.25rem;">DETAILED DESCRIPTION</label>
+                <textarea id="long_description" name="long_description" rows="4" style="width: 100%; background: var(--ink); border: 1px solid var(--rule); padding: 0.6rem; color: var(--white);">{{ .Project.LongDescription }}</textarea>
+            </div>
         </div>
 
         <!-- Problem & Solution Section -->
-        <div class="border-b border-gray-700 pb-6">
-          <h2 class="text-xl font-bold text-white mb-4 flex items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
-            </svg>
-            Problem & Solution
-          </h2>
-          
-          <div class="mb-6">
-            <label for="problem_statement" class="block text-sm font-semibold mb-2 text-gray-300">Problem Statement</label>
-            <textarea id="problem_statement" name="problem_statement" rows="3" 
-              class="w-full px-4 py-2.5 rounded-xl bg-gray-700 text-white placeholder-gray-500 border border-gray-600 
-                     focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-colors resize-none" 
-              placeholder="What problem does this project solve?">{{ .Project.ProblemStatement }}</textarea>
-          </div>
+        <div style="background: var(--ink2); border: 1px solid var(--rule); margin-bottom: 1px; padding: 1.5rem;">
+            <h2 style="font-family: var(--cond); font-size: 1.2rem; font-weight: 800; color: var(--teal); margin-bottom: 1rem;">Problem & Solution</h2>
+            
+            <div style="margin-bottom: 1rem;">
+                <label for="problem_statement" style="display: block; font-family: var(--mono); font-size: 0.6rem; color: var(--white3); margin-bottom: 0.25rem;">PROBLEM STATEMENT</label>
+                <textarea id="problem_statement" name="problem_statement" rows="3" style="width: 100%; background: var(--ink); border: 1px solid var(--rule); padding: 0.6rem; color: var(--white);">{{ .Project.ProblemStatement }}</textarea>
+            </div>
 
-          <div>
-            <label for="solution_approach" class="block text-sm font-semibold mb-2 text-gray-300">Solution Approach</label>
-            <textarea id="solution_approach" name="solution_approach" rows="3" 
-              class="w-full px-4 py-2.5 rounded-xl bg-gray-700 text-white placeholder-gray-500 border border-gray-600 
-                     focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-colors resize-none" 
-              placeholder="How does this project solve the problem?">{{ .Project.SolutionApproach }}</textarea>
-          </div>
+            <div>
+                <label for="solution_approach" style="display: block; font-family: var(--mono); font-size: 0.6rem; color: var(--white3); margin-bottom: 0.25rem;">SOLUTION APPROACH</label>
+                <textarea id="solution_approach" name="solution_approach" rows="3" style="width: 100%; background: var(--ink); border: 1px solid var(--rule); padding: 0.6rem; color: var(--white);">{{ .Project.SolutionApproach }}</textarea>
+            </div>
         </div>
 
         <!-- Links Section -->
-        <div class="border-b border-gray-700 pb-6">
-          <h2 class="text-xl font-bold text-white mb-4 flex items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
-            </svg>
-            Project Links
-          </h2>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <label for="link" class="block text-sm font-semibold mb-2 text-gray-300">Live Demo URL</label>
-              <input type="url" id="link" name="link" value="{{ .Project.Link }}"
-                class="w-full px-4 py-2.5 rounded-xl bg-gray-700 text-white placeholder-gray-500 border border-gray-600 
-                       focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-colors" 
-                placeholder="https://project-demo.example.com" />
+        <div style="background: var(--ink2); border: 1px solid var(--rule); margin-bottom: 1px; padding: 1.5rem;">
+            <h2 style="font-family: var(--cond); font-size: 1.2rem; font-weight: 800; color: var(--teal); margin-bottom: 1rem;">Project Links</h2>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <div>
+                    <label for="link" style="display: block; font-family: var(--mono); font-size: 0.6rem; color: var(--white3); margin-bottom: 0.25rem;">LIVE DEMO URL</label>
+                    <input type="url" id="link" name="link" value="{{ .Project.Link }}" style="width: 100%; background: var(--ink); border: 1px solid var(--rule); padding: 0.6rem; color: var(--white);">
+                </div>
+                <div>
+                    <label for="github_link" style="display: block; font-family: var(--mono); font-size: 0.6rem; color: var(--white3); margin-bottom: 0.25rem;">GITHUB REPOSITORY</label>
+                    <input type="url" id="github_link" name="github_link" value="{{ .Project.GithubLink }}" style="width: 100%; background: var(--ink); border: 1px solid var(--rule); padding: 0.6rem; color: var(--white);">
+                </div>
+                <div>
+                    <label for="demo_link" style="display: block; font-family: var(--mono); font-size: 0.6rem; color: var(--white3); margin-bottom: 0.25rem;">VIDEO DEMO URL</label>
+                    <input type="url" id="demo_link" name="demo_link" value="{{ .Project.DemoLink }}" style="width: 100%; background: var(--ink); border: 1px solid var(--rule); padding: 0.6rem; color: var(--white);">
+                </div>
+                <div>
+                    <label for="docs_link" style="display: block; font-family: var(--mono); font-size: 0.6rem; color: var(--white3); margin-bottom: 0.25rem;">DOCUMENTATION</label>
+                    <input type="url" id="docs_link" name="docs_link" value="{{ .Project.DocsLink }}" style="width: 100%; background: var(--ink); border: 1px solid var(--rule); padding: 0.6rem; color: var(--white);">
+                </div>
             </div>
-
-            <div>
-              <label for="github_link" class="block text-sm font-semibold mb-2 text-gray-300">GitHub Repository</label>
-              <input type="url" id="github_link" name="github_link" value="{{ .Project.GithubLink }}"
-                class="w-full px-4 py-2.5 rounded-xl bg-gray-700 text-white placeholder-gray-500 border border-gray-600 
-                       focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-colors" 
-                placeholder="https://github.com/username/project" />
-            </div>
-
-            <div>
-              <label for="demo_link" class="block text-sm font-semibold mb-2 text-gray-300">Video Demo URL</label>
-              <input type="url" id="demo_link" name="demo_link" value="{{ .Project.DemoLink }}"
-                class="w-full px-4 py-2.5 rounded-xl bg-gray-700 text-white placeholder-gray-500 border border-gray-600 
-                       focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-colors" 
-                placeholder="https://youtube.com/watch?v=..." />
-            </div>
-
-            <div>
-              <label for="docs_link" class="block text-sm font-semibold mb-2 text-gray-300">Documentation</label>
-              <input type="url" id="docs_link" name="docs_link" value="{{ .Project.DocsLink }}"
-                class="w-full px-4 py-2.5 rounded-xl bg-gray-700 text-white placeholder-gray-500 border border-gray-600 
-                       focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-colors" 
-                placeholder="https://docs.example.com" />
-            </div>
-          </div>
         </div>
 
         <!-- Tech Stack Section -->
-        <div class="border-b border-gray-700 pb-6">
-          <h2 class="text-xl font-bold text-white mb-4 flex items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
-            </svg>
-            Technology Stack
-          </h2>
-          
-          <!-- Tech Stacks Dropdown -->
-          <div id="tech-stacks-dropdown" class="relative">
-            <label for="techstacks" class="block text-sm font-semibold mb-2 text-gray-300">Select Tech Stacks</label>
-          
-            <!-- Hidden input for comma-separated IDs -->
+        <div style="background: var(--ink2); border: 1px solid var(--rule); margin-bottom: 1px; padding: 1.5rem;">
+            <h2 style="font-family: var(--cond); font-size: 1.2rem; font-weight: 800; color: var(--teal); margin-bottom: 1rem;">Technology Stack</h2>
+            
             <input type="hidden" id="techstacks_hidden" name="techstacks" value="{{ range $index, $ts := .Project.TechStacks }}{{ if $index }},{{ end }}{{ $ts.ID }}{{ end }}">
             
-            <!-- Dropdown button -->
-            <button type="button" id="dropdown-button"
-              class="w-full px-4 py-2.5 rounded-xl bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 flex justify-between items-center">
-              <span id="button-text">
-                {{ if .Project.TechStacks }}
-                  {{ len .Project.TechStacks }} selected
-                {{ else }}
-                  Select tech stacks
-                {{ end }}
-              </span>
-              <svg class="w-5 h-5 ml-2 text-gray-400 transform transition-transform duration-200" id="dropdown-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-              </svg>
-            </button>
-          
-            <!-- Dropdown list -->
-            <div id="dropdown-list"
-              class="hidden absolute mt-1 w-full bg-gray-700 border border-gray-600 rounded-xl shadow-lg z-50 max-h-60 overflow-auto">
-              {{ range .AllTechStacks }}
-              <label class="flex items-center px-4 py-2 cursor-pointer hover:bg-gray-600">
-                <input type="checkbox" name="techstacks_checkbox" value="{{ .ID }}" data-name="{{ .Name }}"
-                  class="techstack-checkbox mr-2 rounded-lg text-indigo-500 bg-gray-600 border-gray-500 focus:ring-indigo-500"
-                  {{ if $.HasTechStack .ID }}checked{{ end }}>
-                <span class="text-gray-200">{{ .Name }}</span>
-              </label>
-              {{ end }}
+            <div id="tech-stacks-dropdown" style="position: relative;">
+                <button type="button" id="dropdown-button" style="width: 100%; background: var(--ink); border: 1px solid var(--rule); padding: 0.6rem; color: var(--white); text-align: left; cursor: pointer;">
+                    <span id="button-text">{{ if .Project.TechStacks }}{{ len .Project.TechStacks }} selected{{ else }}Select tech stacks{{ end }}</span>
+                    <span style="float: right;">▼</span>
+                </button>
+                
+                <div id="dropdown-list" style="display: none; position: absolute; top: 100%; left: 0; right: 0; background: var(--ink2); border: 1px solid var(--rule); max-height: 200px; overflow-y: auto; z-index: 10;">
+                    {{ range .AllTechStacks }}
+                    <label style="display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem; cursor: pointer;">
+                        <input type="checkbox" name="techstacks_checkbox" value="{{ .ID }}" data-name="{{ .Name }}" class="techstack-checkbox" {{ if $.HasTechStack .ID }}checked{{ end }}>
+                        <span style="color: var(--white2);">{{ .Name }}</span>
+                    </label>
+                    {{ end }}
+                </div>
             </div>
             
-            <!-- Selected items display -->
-            <div id="selected-items" class="mt-2 flex flex-wrap gap-2 min-h-8">
-              {{ range .Project.TechStacks }}
-              <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">
-                {{ .Name }}
-                <button type="button" class="ml-1.5 text-indigo-300 hover:text-white remove-techstack" data-id="{{ .ID }}">
-                  ×
-                </button>
-              </span>
-              {{ end }}
+            <div id="selected-items" style="margin-top: 0.5rem; display: flex; flex-wrap: wrap; gap: 0.5rem;">
+                {{ range .Project.TechStacks }}
+                <span style="font-family: var(--mono); font-size: 0.6rem; color: var(--teal); background: var(--teal-glow); border: 1px solid var(--teal-line); padding: 0.2rem 0.6rem;">
+                    {{ .Name }}
+                    <button type="button" class="remove-techstack" data-id="{{ .ID }}" style="background: none; border: none; color: var(--teal); margin-left: 0.3rem; cursor: pointer;">×</button>
+                </span>
+                {{ end }}
             </div>
-          </div>
         </div>
 
         <!-- Project Details Section -->
-        <div class="border-b border-gray-700 pb-6">
-          <h2 class="text-xl font-bold text-white mb-4 flex items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-            </svg>
-            Project Details
-          </h2>
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div>
-              <label for="project_type" class="block text-sm font-semibold mb-2 text-gray-300">Project Type</label>
-              <select id="project_type" name="project_type" 
-                class="w-full px-4 py-2.5 rounded-xl bg-gray-700 text-white border border-gray-600 
-                       focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-colors">
-                <option value="">Select Type</option>
-                <option value="Open Source" {{ if eq .Project.ProjectType "Open Source" }}selected{{ end }}>Open Source</option>
-                <option value="Personal Project" {{ if eq .Project.ProjectType "Personal Project" }}selected{{ end }}>Personal Project</option>
-                <option value="Client Work" {{ if eq .Project.ProjectType "Client Work" }}selected{{ end }}>Client Work</option>
-                <option value="Enterprise" {{ if eq .Project.ProjectType "Enterprise" }}selected{{ end }}>Enterprise</option>
-                <option value="Academic" {{ if eq .Project.ProjectType "Academic" }}selected{{ end }}>Academic</option>
-              </select>
+        <div style="background: var(--ink2); border: 1px solid var(--rule); margin-bottom: 1px; padding: 1.5rem;">
+            <h2 style="font-family: var(--cond); font-size: 1.2rem; font-weight: 800; color: var(--teal); margin-bottom: 1rem;">Project Details</h2>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                <div>
+                    <label for="project_type" style="display: block; font-family: var(--mono); font-size: 0.6rem; color: var(--white3); margin-bottom: 0.25rem;">PROJECT TYPE</label>
+                    <select id="project_type" name="project_type" style="width: 100%; background: var(--ink); border: 1px solid var(--rule); padding: 0.6rem; color: var(--white);">
+                        <option value="">Select Type</option>
+                        <option value="Open Source" {{ if eq .Project.ProjectType "Open Source" }}selected{{ end }}>Open Source</option>
+                        <option value="Personal Project" {{ if eq .Project.ProjectType "Personal Project" }}selected{{ end }}>Personal Project</option>
+                        <option value="Client Work" {{ if eq .Project.ProjectType "Client Work" }}selected{{ end }}>Client Work</option>
+                        <option value="Enterprise" {{ if eq .Project.ProjectType "Enterprise" }}selected{{ end }}>Enterprise</option>
+                        <option value="Academic" {{ if eq .Project.ProjectType "Academic" }}selected{{ end }}>Academic</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="difficulty" style="display: block; font-family: var(--mono); font-size: 0.6rem; color: var(--white3); margin-bottom: 0.25rem;">DIFFICULTY</label>
+                    <select id="difficulty" name="difficulty" style="width: 100%; background: var(--ink); border: 1px solid var(--rule); padding: 0.6rem; color: var(--white);">
+                        <option value="">Select Level</option>
+                        <option value="beginner" {{ if eq .Project.Difficulty "beginner" }}selected{{ end }}>Beginner</option>
+                        <option value="intermediate" {{ if eq .Project.Difficulty "intermediate" }}selected{{ end }}>Intermediate</option>
+                        <option value="advanced" {{ if eq .Project.Difficulty "advanced" }}selected{{ end }}>Advanced</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="status" style="display: block; font-family: var(--mono); font-size: 0.6rem; color: var(--white3); margin-bottom: 0.25rem;">STATUS</label>
+                    <select id="status" name="status" style="width: 100%; background: var(--ink); border: 1px solid var(--rule); padding: 0.6rem; color: var(--white);">
+                        <option value="planned" {{ if eq .Project.Status "planned" }}selected{{ end }}>Planned</option>
+                        <option value="in-progress" {{ if eq .Project.Status "in-progress" }}selected{{ end }}>In Progress</option>
+                        <option value="completed" {{ if eq .Project.Status "completed" }}selected{{ end }}>Completed</option>
+                        <option value="maintenance" {{ if eq .Project.Status "maintenance" }}selected{{ end }}>Maintenance</option>
+                        <option value="archived" {{ if eq .Project.Status "archived" }}selected{{ end }}>Archived</option>
+                    </select>
+                </div>
+            </div>
+
+            <div style="margin-bottom: 1rem;">
+                <label for="key_features" style="display: block; font-family: var(--mono); font-size: 0.6rem; color: var(--white3); margin-bottom: 0.25rem;">KEY FEATURES (JSON array)</label>
+                <textarea id="key_features" name="key_features" rows="3" style="width: 100%; background: var(--ink); border: 1px solid var(--rule); padding: 0.6rem; color: var(--white); font-family: var(--mono); font-size: 0.7rem;">{{ .Project.KeyFeatures }}</textarea>
             </div>
 
             <div>
-              <label for="difficulty" class="block text-sm font-semibold mb-2 text-gray-300">Difficulty Level</label>
-              <select id="difficulty" name="difficulty" 
-                class="w-full px-4 py-2.5 rounded-xl bg-gray-700 text-white border border-gray-600 
-                       focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-colors">
-                <option value="">Select Level</option>
-                <option value="beginner" {{ if eq .Project.Difficulty "beginner" }}selected{{ end }}>Beginner</option>
-                <option value="intermediate" {{ if eq .Project.Difficulty "intermediate" }}selected{{ end }}>Intermediate</option>
-                <option value="advanced" {{ if eq .Project.Difficulty "advanced" }}selected{{ end }}>Advanced</option>
-              </select>
+                <label for="tags" style="display: block; font-family: var(--mono); font-size: 0.6rem; color: var(--white3); margin-bottom: 0.25rem;">TAGS (comma separated)</label>
+                <input type="text" id="tags" name="tags" value="{{ .Project.Tags }}" style="width: 100%; background: var(--ink); border: 1px solid var(--rule); padding: 0.6rem; color: var(--white);">
             </div>
-
-            <div>
-              <label for="status" class="block text-sm font-semibold mb-2 text-gray-300">Project Status</label>
-              <select id="status" name="status" 
-                class="w-full px-4 py-2.5 rounded-xl bg-gray-700 text-white border border-gray-600 
-                       focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-colors">
-                <option value="planned" {{ if eq .Project.Status "planned" }}selected{{ end }}>Planned</option>
-                <option value="in-progress" {{ if eq .Project.Status "in-progress" }}selected{{ end }}>In Progress</option>
-                <option value="completed" {{ if eq .Project.Status "completed" }}selected{{ end }}>Completed</option>
-                <option value="maintenance" {{ if eq .Project.Status "maintenance" }}selected{{ end }}>Maintenance</option>
-                <option value="archived" {{ if eq .Project.Status "archived" }}selected{{ end }}>Archived</option>
-              </select>
-            </div>
-          </div>
-
-          <!-- Key Features -->
-          <div class="mt-6">
-            <label for="key_features" class="block text-sm font-semibold mb-2 text-gray-300">Key Features (JSON array)</label>
-            <textarea id="key_features" name="key_features" rows="3" 
-              class="w-full px-4 py-2.5 rounded-xl bg-gray-700 text-white placeholder-gray-500 border border-gray-600 
-                     focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-colors resize-none font-mono text-sm" 
-              placeholder='["Feature 1", "Feature 2", "Feature 3"]'>{{ .Project.KeyFeatures }}</textarea>
-            <p class="text-xs text-gray-500 mt-1">Enter as JSON array format: ["Feature 1", "Feature 2"]</p>
-          </div>
-
-          <!-- Tags -->
-          <div class="mt-6">
-            <label for="tags" class="block text-sm font-semibold mb-2 text-gray-300">Tags (comma separated)</label>
-            <input type="text" id="tags" name="tags" value="{{ .Project.Tags }}"
-              class="w-full px-4 py-2.5 rounded-xl bg-gray-700 text-white placeholder-gray-500 border border-gray-600 
-                     focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-colors" 
-              placeholder="go, security, web-application, enterprise" />
-          </div>
         </div>
 
         <!-- Statistics Section -->
-        <div class="border-b border-gray-700 pb-6">
-          <h2 class="text-xl font-bold text-white mb-4 flex items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-            </svg>
-            Statistics & Metrics
-          </h2>
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div>
-              <label for="development_time" class="block text-sm font-semibold mb-2 text-gray-300">Development Time</label>
-              <input type="text" id="development_time" name="development_time" value="{{ .Project.DevelopmentTime }}"
-                class="w-full px-4 py-2.5 rounded-xl bg-gray-700 text-white placeholder-gray-500 border border-gray-600 
-                       focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-colors" 
-                placeholder="e.g., 3 months" />
+        <div style="background: var(--ink2); border: 1px solid var(--rule); margin-bottom: 1px; padding: 1.5rem;">
+            <h2 style="font-family: var(--cond); font-size: 1.2rem; font-weight: 800; color: var(--teal); margin-bottom: 1rem;">Statistics & Metrics</h2>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                <div>
+                    <label for="development_time" style="display: block; font-family: var(--mono); font-size: 0.6rem; color: var(--white3); margin-bottom: 0.25rem;">DEVELOPMENT TIME</label>
+                    <input type="text" id="development_time" name="development_time" value="{{ .Project.DevelopmentTime }}" style="width: 100%; background: var(--ink); border: 1px solid var(--rule); padding: 0.6rem; color: var(--white);">
+                </div>
+                <div>
+                    <label for="team_size" style="display: block; font-family: var(--mono); font-size: 0.6rem; color: var(--white3); margin-bottom: 0.25rem;">TEAM SIZE</label>
+                    <input type="number" id="team_size" name="team_size" value="{{ .Project.TeamSize }}" style="width: 100%; background: var(--ink); border: 1px solid var(--rule); padding: 0.6rem; color: var(--white);">
+                </div>
+                <div>
+                    <label for="lines_of_code" style="display: block; font-family: var(--mono); font-size: 0.6rem; color: var(--white3); margin-bottom: 0.25rem;">LINES OF CODE</label>
+                    <input type="text" id="lines_of_code" name="lines_of_code" value="{{ .Project.LinesOfCode }}" style="width: 100%; background: var(--ink); border: 1px solid var(--rule); padding: 0.6rem; color: var(--white);">
+                </div>
+                <div>
+                    <label for="users_count" style="display: block; font-family: var(--mono); font-size: 0.6rem; color: var(--white3); margin-bottom: 0.25rem;">USERS/LOADS</label>
+                    <input type="text" id="users_count" name="users_count" value="{{ .Project.UsersCount }}" style="width: 100%; background: var(--ink); border: 1px solid var(--rule); padding: 0.6rem; color: var(--white);">
+                </div>
             </div>
 
-            <div>
-              <label for="team_size" class="block text-sm font-semibold mb-2 text-gray-300">Team Size</label>
-              <input type="number" id="team_size" name="team_size" min="1" value="{{ .Project.TeamSize }}"
-                class="w-full px-4 py-2.5 rounded-xl bg-gray-700 text-white placeholder-gray-500 border border-gray-600 
-                       focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-colors" 
-                placeholder="1" />
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <div>
+                    <label for="uptime" style="display: block; font-family: var(--mono); font-size: 0.6rem; color: var(--white3); margin-bottom: 0.25rem;">UPTIME</label>
+                    <input type="text" id="uptime" name="uptime" value="{{ .Project.Uptime }}" style="width: 100%; background: var(--ink); border: 1px solid var(--rule); padding: 0.6rem; color: var(--white);">
+                </div>
+                <div>
+                    <label for="response_time" style="display: block; font-family: var(--mono); font-size: 0.6rem; color: var(--white3); margin-bottom: 0.25rem;">RESPONSE TIME</label>
+                    <input type="text" id="response_time" name="response_time" value="{{ .Project.ResponseTime }}" style="width: 100%; background: var(--ink); border: 1px solid var(--rule); padding: 0.6rem; color: var(--white);">
+                </div>
             </div>
-
-            <div>
-              <label for="lines_of_code" class="block text-sm font-semibold mb-2 text-gray-300">Lines of Code</label>
-              <input type="text" id="lines_of_code" name="lines_of_code" value="{{ .Project.LinesOfCode }}"
-                class="w-full px-4 py-2.5 rounded-xl bg-gray-700 text-white placeholder-gray-500 border border-gray-600 
-                       focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-colors" 
-                placeholder="e.g., 15,000+" />
-            </div>
-
-            <div>
-              <label for="users_count" class="block text-sm font-semibold mb-2 text-gray-300">Users/Downloads</label>
-              <input type="text" id="users_count" name="users_count" value="{{ .Project.UsersCount }}"
-                class="w-full px-4 py-2.5 rounded-xl bg-gray-700 text-white placeholder-gray-500 border border-gray-600 
-                       focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-colors" 
-                placeholder="e.g., 25K+" />
-            </div>
-          </div>
-
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-            <div>
-              <label for="uptime" class="block text-sm font-semibold mb-2 text-gray-300">Uptime</label>
-              <input type="text" id="uptime" name="uptime" value="{{ .Project.Uptime }}"
-                class="w-full px-4 py-2.5 rounded-xl bg-gray-700 text-white placeholder-gray-500 border border-gray-600 
-                       focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-colors" 
-                placeholder="e.g., 99.5%" />
-            </div>
-
-            <div>
-              <label for="response_time" class="block text-sm font-semibold mb-2 text-gray-300">Response Time</label>
-              <input type="text" id="response_time" name="response_time" value="{{ .Project.ResponseTime }}"
-                class="w-full px-4 py-2.5 rounded-xl bg-gray-700 text-white placeholder-gray-500 border border-gray-600 
-                       focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-colors" 
-                placeholder="e.g., 200ms" />
-            </div>
-          </div>
         </div>
 
         <!-- Media Section -->
-        <div class="border-b border-gray-700 pb-6">
-          <h2 class="text-xl font-bold text-white mb-4 flex items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-pink-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-            </svg>
-            Media & Images
-          </h2>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <!-- Main Image -->
-            <div>
-              <label for="image" class="block text-sm font-semibold mb-2 text-gray-300">Main Cover Image</label>
-              <div class="mb-3">
+        <div style="background: var(--ink2); border: 1px solid var(--rule); margin-bottom: 1px; padding: 1.5rem;">
+            <h2 style="font-family: var(--cond); font-size: 1.2rem; font-weight: 800; color: var(--teal); margin-bottom: 1rem;">Media & Images</h2>
+            
+            <div style="margin-bottom: 1rem;">
+                <label for="image" style="display: block; font-family: var(--mono); font-size: 0.6rem; color: var(--white3); margin-bottom: 0.25rem;">MAIN COVER IMAGE</label>
                 {{ if .Project.ImageURL }}
-                  <div class="relative inline-block">
-                    <img src="{{ .Project.ImageURL }}" alt="{{ .Project.Title }}" class="w-32 h-32 object-cover rounded-lg border border-gray-600" />
-                    <div class="absolute top-1 right-1 bg-gray-900/80 text-xs px-2 py-1 rounded">Current</div>
-                  </div>
-                {{ else }}
-                  <div class="w-32 h-32 bg-gray-700 rounded-lg border border-gray-600 flex items-center justify-center">
-                    <span class="text-gray-400">No image</span>
-                  </div>
+                <div style="margin-bottom: 0.5rem;">
+                    <img src="{{ .Project.ImageURL }}" alt="{{ .Project.Title }}" style="width: 80px; height: 80px; object-fit: cover; border: 1px solid var(--rule);">
+                </div>
                 {{ end }}
-              </div>
-              <div class="flex items-center space-x-4">
-                <input type="file" id="image" name="image" accept="image/*"
-                  class="w-full text-sm text-gray-400
-                    file:mr-4 file:py-2 file:px-4
-                    file:rounded-full file:border-0
-                    file:text-sm file:font-semibold
-                    file:bg-indigo-600 file:text-white
-                    hover:file:bg-indigo-700 transition-colors cursor-pointer"/>
-              </div>
-              <p class="text-xs text-gray-500 mt-1">Leave empty to keep current image</p>
+                <input type="file" id="image" name="image" accept="image/*" style="background: var(--ink); border: 1px solid var(--rule); padding: 0.6rem; color: var(--white);">
             </div>
 
-            <!-- Gallery Images -->
             <div>
-              <label for="gallery" class="block text-sm font-semibold mb-2 text-gray-300">Gallery Images (Multiple)</label>
-              {{ if .Project.Gallery }}
-                <div class="mb-3">
-                  <div class="flex flex-wrap gap-2">
-                    {{ $gallery := parseJSON .Project.Gallery }}
-                    {{ range $gallery }}
-                      <img src="{{ . }}" class="w-16 h-16 object-cover rounded border border-gray-600" />
-                    {{ end }}
-                  </div>
-                  <p class="text-xs text-gray-500 mt-1">{{ len $gallery }} image(s) in gallery</p>
-                </div>
-              {{ end }}
-              <input type="file" id="gallery" name="gallery" multiple accept="image/*"
-                class="w-full text-sm text-gray-400
-                  file:mr-4 file:py-2 file:px-4
-                  file:rounded-full file:border-0
-                  file:text-sm file:font-semibold
-                  file:bg-purple-600 file:text-white
-                  hover:file:bg-purple-700 transition-colors cursor-pointer"/>
-              <p class="text-xs text-gray-500 mt-1">Select new images to add to gallery (won't replace existing)</p>
+                <label for="gallery" style="display: block; font-family: var(--mono); font-size: 0.6rem; color: var(--white3); margin-bottom: 0.25rem;">GALLERY IMAGES (Multiple)</label>
+                <input type="file" id="gallery" name="gallery" multiple accept="image/*" style="background: var(--ink); border: 1px solid var(--rule); padding: 0.6rem; color: var(--white);">
             </div>
-          </div>
         </div>
 
         <!-- Dates Section -->
-        <div class="border-b border-gray-700 pb-6">
-          <h2 class="text-xl font-bold text-white mb-4 flex items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-            </svg>
-            Timeline
-          </h2>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <label for="started_at" class="block text-sm font-semibold mb-2 text-gray-300">Start Date</label>
-              <input type="date" id="started_at" name="started_at" 
-                class="w-full px-4 py-2.5 rounded-xl bg-gray-700 text-white border border-gray-600 
-                       focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-colors" 
-                value="{{ if .Project.StartedAt }}{{ .Project.StartedAt.Format "2006-01-02" }}{{ end }}" />
+        <div style="background: var(--ink2); border: 1px solid var(--rule); margin-bottom: 1px; padding: 1.5rem;">
+            <h2 style="font-family: var(--cond); font-size: 1.2rem; font-weight: 800; color: var(--teal); margin-bottom: 1rem;">Timeline</h2>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <div>
+                    <label for="started_at" style="display: block; font-family: var(--mono); font-size: 0.6rem; color: var(--white3); margin-bottom: 0.25rem;">START DATE</label>
+                    <input type="date" id="started_at" name="started_at" value="{{ if .Project.StartedAt }}{{ .Project.StartedAt.Format "2006-01-02" }}{{ end }}" style="width: 100%; background: var(--ink); border: 1px solid var(--rule); padding: 0.6rem; color: var(--white);">
+                </div>
+                <div>
+                    <label for="completion_date" style="display: block; font-family: var(--mono); font-size: 0.6rem; color: var(--white3); margin-bottom: 0.25rem;">COMPLETION DATE</label>
+                    <input type="date" id="completion_date" name="completion_date" value="{{ if .Project.CompletionDate }}{{ .Project.CompletionDate.Format "2006-01-02" }}{{ end }}" style="width: 100%; background: var(--ink); border: 1px solid var(--rule); padding: 0.6rem; color: var(--white);">
+                </div>
             </div>
-
-            <div>
-              <label for="completion_date" class="block text-sm font-semibold mb-2 text-gray-300">Completion Date</label>
-              <input type="date" id="completion_date" name="completion_date" 
-                class="w-full px-4 py-2.5 rounded-xl bg-gray-700 text-white border border-gray-600 
-                       focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-colors" 
-                value="{{ if .Project.CompletionDate }}{{ .Project.CompletionDate.Format "2006-01-02" }}{{ end }}" />
-            </div>
-          </div>
         </div>
 
         <!-- Settings Section -->
-        <div>
-          <h2 class="text-xl font-bold text-white mb-4 flex items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-            </svg>
-            Settings
-          </h2>
-          <div class="flex items-center space-x-8">
-            <label class="flex items-center space-x-2 cursor-pointer">
-              <input type="checkbox" id="featured" name="featured" value="on"
-                class="w-4 h-4 rounded-lg text-indigo-500 bg-gray-600 border-gray-500 focus:ring-indigo-500"
-                {{ if .Project.Featured }}checked{{ end }}>
-              <span class="text-gray-300 font-medium">Featured Project</span>
-              <span class="text-xs text-gray-500">(Show prominently on homepage)</span>
-            </label>
-
-            <label class="flex items-center space-x-2 cursor-pointer">
-              <input type="checkbox" id="published" name="published" value="on"
-                class="w-4 h-4 rounded-lg text-green-500 bg-gray-600 border-gray-500 focus:ring-green-500"
-                {{ if .Project.Published }}checked{{ end }}>
-              <span class="text-gray-300 font-medium">Published</span>
-              <span class="text-xs text-gray-500">(Visible to public)</span>
-            </label>
-          </div>
+        <div style="background: var(--ink2); border: 1px solid var(--rule); margin-bottom: 1px; padding: 1.5rem;">
+            <h2 style="font-family: var(--cond); font-size: 1.2rem; font-weight: 800; color: var(--teal); margin-bottom: 1rem;">Settings</h2>
+            
+            <div style="display: flex; gap: 1.5rem;">
+                <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                    <input type="checkbox" id="featured" name="featured" value="on" {{ if .Project.Featured }}checked{{ end }} style="accent-color: var(--teal);">
+                    <span style="font-family: var(--mono); font-size: 0.7rem; color: var(--white2);">Featured Project</span>
+                </label>
+                <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                    <input type="checkbox" id="published" name="published" value="on" {{ if .Project.Published }}checked{{ end }} style="accent-color: var(--teal);">
+                    <span style="font-family: var(--mono); font-size: 0.7rem; color: var(--white2);">Published</span>
+                </label>
+            </div>
         </div>
-      </div>
 
-      <!-- Submit Buttons -->
-      <div class="flex justify-end space-x-4 pt-6">
-        <a href="/admin/projects" 
-          class="px-8 py-3 text-base font-semibold rounded-xl border border-gray-600 text-gray-300 
-                 hover:bg-gray-700 hover:text-white transition-all duration-300">
-          Cancel
-        </a>
-        <button type="submit" 
-          class="px-8 py-3 text-base font-semibold rounded-xl shadow-lg text-white 
-                 bg-amber-600 hover:bg-amber-700 focus:outline-none focus:ring-2 
-                 focus:ring-offset-2 focus:ring-amber-500 transition-all duration-300 ease-in-out">
-          Update Project
-        </button>
-      </div>
+        <!-- Submit Buttons -->
+        <div style="display: flex; justify-content: flex-end; gap: 1rem; margin-top: 1.5rem;">
+            <a href="/admin/projects" class="btn-ghost" style="padding: 0.6rem 1.5rem;">Cancel</a>
+            <button type="submit" class="btn-primary" style="cursor: pointer; padding: 0.6rem 1.5rem;">Update Project →</button>
+        </div>
     </form>
-  </div>
-</section>
+</div>
 
 <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    // Tech Stack Dropdown Logic
-    const dropdownContainer = document.getElementById('tech-stacks-dropdown');
-    const dropdownButton = document.getElementById('dropdown-button');
-    const dropdownList = document.getElementById('dropdown-list');
-    const buttonTextSpan = document.getElementById('button-text');
-    const dropdownArrow = document.getElementById('dropdown-arrow');
-    const checkboxes = document.querySelectorAll('.techstack-checkbox');
-    const hiddenInput = document.getElementById('techstacks_hidden');
-    const selectedItemsContainer = document.getElementById('selected-items');
-    
-    // Initialize selected IDs from hidden input
-    let selectedIDs = hiddenInput.value ? hiddenInput.value.split(',').filter(id => id !== '') : [];
-
-    dropdownButton.addEventListener('click', () => {
-      dropdownList.classList.toggle('hidden');
-      dropdownArrow.classList.toggle('rotate-180');
-    });
-
-    checkboxes.forEach(checkbox => {
-      checkbox.addEventListener('change', () => {
-        if (checkbox.checked) {
-          if (!selectedIDs.includes(checkbox.value)) {
-            selectedIDs.push(checkbox.value);
-          }
-        } else {
-          selectedIDs = selectedIDs.filter(id => id !== checkbox.value);
-        }
+    document.addEventListener('DOMContentLoaded', () => {
+        // Tech Stack Dropdown Logic
+        const dropdownButton = document.getElementById('dropdown-button');
+        const dropdownList = document.getElementById('dropdown-list');
+        const buttonTextSpan = document.getElementById('button-text');
+        const checkboxes = document.querySelectorAll('.techstack-checkbox');
+        const hiddenInput = document.getElementById('techstacks_hidden');
+        const selectedItemsContainer = document.getElementById('selected-items');
         
-        // Update hidden input with comma-separated IDs
-        hiddenInput.value = selectedIDs.join(',');
-        
-        // Update button text
-        if (selectedIDs.length > 0) {
-          buttonTextSpan.textContent = selectedIDs.length + ' selected';
-        } else {
-          buttonTextSpan.textContent = 'Select tech stacks';
-        }
-        
-        // Update selected items display
-        updateSelectedItemsDisplay();
-      });
-    });
+        let selectedIDs = hiddenInput.value ? hiddenInput.value.split(',').filter(id => id !== '') : [];
 
-    function updateSelectedItemsDisplay() {
-      selectedItemsContainer.innerHTML = '';
-      
-      checkboxes.forEach(checkbox => {
-        if (checkbox.checked) {
-          const itemName = checkbox.getAttribute('data-name');
-          const itemId = checkbox.value;
-          
-          const badge = document.createElement('span');
-          badge.className = 'inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-indigo-500/20 text-indigo-300 border border-indigo-500/30';
-          badge.innerHTML = `
-            ${itemName}
-            <button type="button" class="ml-1.5 text-indigo-300 hover:text-white remove-techstack" data-id="${itemId}">
-              ×
-            </button>
-          `;
-          
-          selectedItemsContainer.appendChild(badge);
+        if (dropdownButton) {
+            dropdownButton.addEventListener('click', () => {
+                dropdownList.style.display = dropdownList.style.display === 'none' ? 'block' : 'none';
+            });
         }
-      });
-      
-      // Add event listeners to remove buttons
-      document.querySelectorAll('.remove-techstack').forEach(button => {
-        button.addEventListener('click', (e) => {
-          e.preventDefault();
-          const idToRemove = e.target.getAttribute('data-id');
-          const checkboxToUncheck = document.querySelector(`.techstack-checkbox[value="${idToRemove}"]`);
-          if (checkboxToUncheck) {
-            checkboxToUncheck.checked = false;
-            checkboxToUncheck.dispatchEvent(new Event('change'));
-          }
+
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', () => {
+                if (checkbox.checked) {
+                    if (!selectedIDs.includes(checkbox.value)) {
+                        selectedIDs.push(checkbox.value);
+                    }
+                } else {
+                    selectedIDs = selectedIDs.filter(id => id !== checkbox.value);
+                }
+                
+                hiddenInput.value = selectedIDs.join(',');
+                
+                if (selectedIDs.length > 0) {
+                    buttonTextSpan.textContent = selectedIDs.length + ' selected';
+                } else {
+                    buttonTextSpan.textContent = 'Select tech stacks';
+                }
+                
+                updateSelectedItemsDisplay();
+            });
         });
-      });
-    }
 
-    // Initialize selected items display
-    updateSelectedItemsDisplay();
+        function updateSelectedItemsDisplay() {
+            selectedItemsContainer.innerHTML = '';
+            
+            checkboxes.forEach(checkbox => {
+                if (checkbox.checked) {
+                    const itemName = checkbox.getAttribute('data-name');
+                    const itemId = checkbox.value;
+                    
+                    const badge = document.createElement('span');
+                    badge.style.cssText = 'font-family: var(--mono); font-size: 0.6rem; color: var(--teal); background: var(--teal-glow); border: 1px solid var(--teal-line); padding: 0.2rem 0.6rem;';
+                    badge.innerHTML = `${itemName}<button type="button" class="remove-techstack" data-id="${itemId}" style="background: none; border: none; color: var(--teal); margin-left: 0.3rem; cursor: pointer;">×</button>`;
+                    
+                    selectedItemsContainer.appendChild(badge);
+                }
+            });
+            
+            document.querySelectorAll('.remove-techstack').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const idToRemove = button.getAttribute('data-id');
+                    const checkboxToUncheck = document.querySelector(`.techstack-checkbox[value="${idToRemove}"]`);
+                    if (checkboxToUncheck) {
+                        checkboxToUncheck.checked = false;
+                        checkboxToUncheck.dispatchEvent(new Event('change'));
+                    }
+                });
+            });
+        }
 
-    document.addEventListener('click', (event) => {
-      if (!dropdownContainer.contains(event.target)) {
-        dropdownList.classList.add('hidden');
-        dropdownArrow.classList.remove('rotate-180');
-      }
+        document.addEventListener('click', (event) => {
+            if (dropdownButton && dropdownList && !dropdownButton.contains(event.target) && !dropdownList.contains(event.target)) {
+                dropdownList.style.display = 'none';
+            }
+        });
     });
-
-    // Format date inputs if empty
-    const completionDateInput = document.getElementById('completion_date');
-    if (completionDateInput && !completionDateInput.value) {
-      const today = new Date().toISOString().split('T')[0];
-      completionDateInput.value = today;
-    }
-  });
 </script>
 {{ end }}

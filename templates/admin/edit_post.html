@@ -1,197 +1,80 @@
-{{ block "content" .}}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ .Title }}</title>
-    <link rel="stylesheet" href="/styles.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        /* Embed this CSS or link it from a separate styles.css file */
-        :root {
-            --bg-color: #f4f7f9;
-            --container-bg: #ffffff;
-            --text-color: #333;
-            --header-color: #1c2b36;
-            --primary-color: #2e6ff2;
-            --cancel-color: #6c757d;
-            --border-color: #e0e0e0;
-            --shadow-color: rgba(0, 0, 0, 0.05);
-            --input-bg: #f8f9fa;
-            --error-color: #dc3545;
-            --font-family: 'Inter', sans-serif;
-        }
+{{ define "title" }}Edit Post | Admin Panel{{ end }}
 
-        body {
-            font-family: var(--font-family);
-            background-color: var(--bg-color);
-            margin: 0;
-            padding: 2rem;
-            color: var(--text-color);
-            display: flex;
-            justify-content: center;
-        }
+{{ define "content" }}
+<div style="max-width: 900px; margin: 0 auto;">
+    
+    <!-- Header -->
+    <div style="margin-bottom: 2rem;">
+        <div style="font-family: var(--cond); font-size: 1.5rem; font-weight: 800; color: var(--white); margin-bottom: 0.25rem;">
+            Edit Post
+        </div>
+        <p style="color: var(--white2); font-size: 0.8rem;">Update your blog content</p>
+    </div>
 
-        .form-container {
-            max-width: 700px;
-            width: 100%;
-            background-color: var(--container-bg);
-            border-radius: 8px;
-            box-shadow: 0 4px 12px var(--shadow-color);
-            padding: 2.5rem;
-        }
+    <!-- Error Message -->
+    {{ if .Error }}
+    <div style="background: var(--red-dim); border: 1px solid var(--red); padding: 0.75rem 1rem; margin-bottom: 1.5rem; color: var(--red); font-family: var(--mono); font-size: 0.8rem;">
+        {{ .Error }}
+    </div>
+    {{ end }}
 
-        .form-header {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-
-        .form-title {
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--header-color);
-            margin: 0;
-        }
-
-        .error-message {
-            color: var(--error-color);
-            background-color: #f8d7da;
-            border: 1px solid var(--error-color);
-            padding: 1rem;
-            border-radius: 6px;
-            margin-bottom: 1.5rem;
-            text-align: center;
-        }
-
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 600;
-            color: var(--header-color);
-        }
-
-        .form-group input[type="text"],
-        .form-group textarea {
-            width: 100%;
-            padding: 0.75rem;
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            font-size: 1rem;
-            background-color: var(--input-bg);
-            color: var(--text-color);
-            box-sizing: border-box;
-        }
-
-        .form-group textarea {
-            resize: vertical;
-        }
-
-        .image-preview {
-            margin-bottom: 1rem;
-        }
-
-        .image-preview img {
-            max-width: 150px;
-            height: auto;
-            border-radius: 4px;
-            border: 1px solid var(--border-color);
-        }
-
-        .no-image {
-            color: var(--cancel-color);
-            font-style: italic;
-        }
+    <!-- Form -->
+    <form action="/admin/posts/update/{{ .Post.ID }}/" method="POST" enctype="multipart/form-data" style="background: var(--ink2); border: 1px solid var(--rule); padding: 2rem;">
         
-        .form-actions {
-            display: flex;
-            justify-content: flex-end;
-            gap: 1rem;
-            margin-top: 2rem;
-        }
+        <!-- Title -->
+        <div style="margin-bottom: 1.5rem;">
+            <label for="title" style="display: block; font-family: var(--mono); font-size: 0.65rem; color: var(--teal); letter-spacing: 0.1em; margin-bottom: 0.5rem;">
+                TITLE
+            </label>
+            <input type="text" id="title" name="title" value="{{ .Post.Title }}" required 
+                   style="width: 100%; background: var(--ink); border: 1px solid var(--rule); padding: 0.75rem 1rem; color: var(--white); font-family: var(--body); font-size: 0.9rem;">
+        </div>
 
-        .btn {
-            padding: 0.75rem 1.5rem;
-            border-radius: 6px;
-            font-weight: 600;
-            text-decoration: none;
-            text-align: center;
-            cursor: pointer;
-            transition: background-color 0.3s, color 0.3s;
-        }
+        <!-- Content -->
+        <div style="margin-bottom: 1.5rem;">
+            <label for="content" style="display: block; font-family: var(--mono); font-size: 0.65rem; color: var(--teal); letter-spacing: 0.1em; margin-bottom: 0.5rem;">
+                CONTENT
+            </label>
+            <textarea id="content" name="content" rows="12" 
+                      style="width: 100%; background: var(--ink); border: 1px solid var(--rule); padding: 0.75rem 1rem; color: var(--white); font-family: var(--body); font-size: 0.85rem; resize: vertical;">{{ .Post.Content }}</textarea>
+        </div>
 
-        .btn-primary {
-            background-color: var(--primary-color);
-            color: white;
-            border: none;
-        }
+        <!-- Tags -->
+        <div style="margin-bottom: 1.5rem;">
+            <label for="tags" style="display: block; font-family: var(--mono); font-size: 0.65rem; color: var(--teal); letter-spacing: 0.1em; margin-bottom: 0.5rem;">
+                TAGS (comma-separated)
+            </label>
+            <input type="text" id="tags" name="tags" value="{{ .Post.Tags }}" 
+                   style="width: 100%; background: var(--ink); border: 1px solid var(--rule); padding: 0.75rem 1rem; color: var(--white); font-family: var(--body); font-size: 0.85rem;">
+        </div>
 
-        .btn-primary:hover {
-            background-color: #2558c7;
-        }
-
-        .btn-secondary {
-            background-color: transparent;
-            color: var(--cancel-color);
-            border: 1px solid var(--border-color);
-        }
-
-        .btn-secondary:hover {
-            background-color: var(--border-color);
-        }
-    </style>
-</head>
-<body>
-    <main class="form-container">
-        <header class="form-header">
-            <h1 class="form-title">Edit Post</h1>
-        </header>
-
-        {{ if .Error }}
-        <p class="error-message">{{ .Error }}</p>
-        {{ end }}
-
-        <form action="/admin/posts/update/{{ .Post.ID }}/" method="POST" enctype="multipart/form-data">
-            <div class="form-group">
-                <label for="title">Title:</label>
-                <input type="text" id="title" name="title" value="{{ .Post.Title }}" required>
-            </div>
-
-            <div class="form-group">
-                <label for="content">Content:</label>
-                <textarea id="content" name="content" rows="12">{{ .Post.Content }}</textarea>
-            </div>
-
-            <div class="form-group">
-                <label for="tags">Tags (comma-separated):</label>
-                <input type="text" id="tags" name="tags" value="{{ .Post.Tags }}">
-            </div>
-
-            <div class="form-group">
-                <label>Current Image:</label>
-                <div class="image-preview">
-                    {{ if .Post.ImageURL }}
-                        <img src="{{ .Post.ImageURL }}" alt="Post Image">
-                    {{ else }}
-                        <p class="no-image">No image uploaded.</p>
-                    {{ end }}
+        <!-- Current Image -->
+        <div style="margin-bottom: 1.5rem;">
+            <label style="display: block; font-family: var(--mono); font-size: 0.65rem; color: var(--teal); letter-spacing: 0.1em; margin-bottom: 0.5rem;">
+                CURRENT IMAGE
+            </label>
+            <div style="margin-bottom: 1rem;">
+                {{ if .Post.ImageURL }}
+                <div style="overflow: hidden; border: 1px solid var(--rule); max-width: 200px;">
+                    <img src="{{ .Post.ImageURL }}" alt="Post Image" style="width: 100%; height: auto; display: block;">
                 </div>
-                <label for="image">Upload New Image:</label>
-                <input type="file" id="image" name="image">
+                {{ else }}
+                <p style="color: var(--white3); font-size: 0.8rem;">No image uploaded.</p>
+                {{ end }}
             </div>
+            
+            <label for="image" style="display: block; font-family: var(--mono); font-size: 0.65rem; color: var(--teal); letter-spacing: 0.1em; margin-bottom: 0.5rem;">
+                UPLOAD NEW IMAGE
+            </label>
+            <input type="file" id="image" name="image" 
+                   style="width: 100%; background: var(--ink); border: 1px solid var(--rule); padding: 0.75rem 1rem; color: var(--white); font-family: var(--body); font-size: 0.85rem;">
+        </div>
 
-            <div class="form-actions">
-                <a href="/admin/posts" class="btn btn-secondary">Cancel</a>
-                <button type="submit" class="btn btn-primary">Update Post</button>
-            </div>
-        </form>
-    </main>
-</body>
-</html>
+        <!-- Actions -->
+        <div style="display: flex; justify-content: flex-end; gap: 1rem; border-top: 1px solid var(--rule); padding-top: 1.5rem;">
+            <a href="/admin/posts" class="btn-ghost" style="display: inline-block; padding: 0.6rem 1.5rem;">Cancel</a>
+            <button type="submit" class="btn-primary" style="cursor: pointer; padding: 0.6rem 1.5rem;">Update Post →</button>
+        </div>
+    </form>
+</div>
 {{ end }}

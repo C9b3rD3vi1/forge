@@ -1,16 +1,16 @@
 #!/bin/bash
 
 # Go to project directory
-cd /home/user/goapps/Go_blog
+cd /home/user/goapps/forge
 
 # Pull latest changes from GitHub
 git pull origin main
 
 # Build Go binary
-go build -o Go_blog
+go build -o forge
 
 # Stop old process (if running)
-pkill Go_blog || true
+pkill forge || true
 
 # Start the app in background
-nohup ./Go_blog > app.log 2>&1 &
+nohup ./forge >app.log 2>&1 &

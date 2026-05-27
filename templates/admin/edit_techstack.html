@@ -1,31 +1,52 @@
-{{ block "content" . }}
-<section class="bg-black text-green-400 min-h-screen flex items-center justify-center py-12 px-6">
-  <div class="bg-gray-900 border border-green-600/50 rounded-2xl shadow-lg p-8 w-full max-w-lg">
-    <h1 class="text-2xl font-bold mb-6">✏️ Edit Tech Stack</h1>
-    <form method="POST" action="/admin/techstacks/edit/{{ .TechStack.ID }}" enctype="multipart/form-data" class="space-y-4">
-      
-      <!-- Name -->
-      <input type="text" name="name" value="{{ .TechStack.Name }}" required
-        class="w-full p-3 bg-black border border-green-600 rounded-lg" />
+{{ define "title" }}Edit Tech Stack | Admin Panel{{ end }}
 
-      <!-- Icon File Upload -->
-      <div>
-        <label class="block mb-2 text-sm font-bold">Upload Icon</label>
-        <input type="file" name="icon" accept="image/*"
-          class="w-full p-3 bg-black border border-green-600 rounded-lg file:bg-green-600 file:text-black file:font-bold file:px-4 file:py-2 file:rounded-lg file:mr-4" />
+{{ define "content" }}
+<div style="max-width: 500px; margin: 0 auto;">
+    
+    <!-- Header -->
+    <div style="margin-bottom: 2rem;">
+        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.5rem;">
+            <a href="/admin/techstacks" style="font-family: var(--mono); font-size: 0.7rem; color: var(--teal); text-decoration: none;">← Back to Tech Stacks</a>
+        </div>
+        <div style="font-family: var(--cond); font-size: 1.5rem; font-weight: 800; color: var(--white); margin-bottom: 0.25rem;">
+            Edit Tech Stack
+        </div>
+        <p style="color: var(--white2); font-size: 0.8rem;">Update technology stack information</p>
+    </div>
+
+    <!-- Form -->
+    <form method="POST" action="/admin/techstacks/edit/{{ .TechStack.ID }}" enctype="multipart/form-data" style="background: var(--ink2); border: 1px solid var(--rule); padding: 2rem;">
         
-        {{ if .TechStack.IconURL }}
-        <p class="mt-3 text-sm">Current Icon:</p>
-        <img src="{{ .TechStack.IconURL }}" alt="Current Icon" class="h-10 mt-2 rounded" />
-        {{ end }}
-      </div>
+        <!-- Tech Stack Name -->
+        <div style="margin-bottom: 1.5rem;">
+            <label for="name" style="display: block; font-family: var(--mono); font-size: 0.65rem; color: var(--teal); letter-spacing: 0.1em; margin-bottom: 0.5rem;">
+                TECH STACK NAME
+            </label>
+            <input type="text" id="name" name="name" value="{{ .TechStack.Name }}" required 
+                   style="width: 100%; background: var(--ink); border: 1px solid var(--rule); padding: 0.75rem 1rem; color: var(--white); font-family: var(--body); font-size: 0.9rem;">
+        </div>
 
-      <!-- Submit -->
-      <button type="submit"
-        class="w-full bg-green-600 hover:bg-green-500 text-black font-bold py-3 px-4 rounded-lg transition">
-        Update
-      </button>
+        <!-- Icon Upload -->
+        <div style="margin-bottom: 1.5rem;">
+            <label for="icon" style="display: block; font-family: var(--mono); font-size: 0.65rem; color: var(--teal); letter-spacing: 0.1em; margin-bottom: 0.5rem;">
+                UPLOAD ICON
+            </label>
+            <input type="file" id="icon" name="icon" accept="image/*" 
+                   style="width: 100%; background: var(--ink); border: 1px solid var(--rule); padding: 0.6rem; color: var(--white); font-family: var(--body); font-size: 0.85rem;">
+            
+            {{ if .TechStack.IconURL }}
+            <div style="margin-top: 0.75rem;">
+                <p style="color: var(--white3); font-size: 0.65rem; margin-bottom: 0.25rem;">Current Icon:</p>
+                <img src="{{ .TechStack.IconURL }}" alt="Current Icon" style="width: 40px; height: 40px; object-fit: contain; border: 1px solid var(--rule); border-radius: 2px;">
+            </div>
+            {{ end }}
+        </div>
+
+        <!-- Submit Button -->
+        <div style="display: flex; justify-content: flex-end; gap: 1rem; border-top: 1px solid var(--rule); padding-top: 1.5rem;">
+            <a href="/admin/techstacks" class="btn-ghost" style="display: inline-block; padding: 0.6rem 1.5rem;">Cancel</a>
+            <button type="submit" class="btn-primary" style="cursor: pointer; padding: 0.6rem 1.5rem;">Update →</button>
+        </div>
     </form>
-  </div>
-</section>
+</div>
 {{ end }}

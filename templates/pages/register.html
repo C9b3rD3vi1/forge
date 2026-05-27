@@ -1,184 +1,153 @@
 {{ block "content" .}}
-<div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 px-4 py-8">
-  <section class="w-full max-w-md tech-card rounded-2xl p-8 border border-slate-700">
-    
-    <!-- Logo & Heading -->
-    <div class="text-center mb-8">
-      <div class="flex items-center justify-center gap-3 mb-4">
-        <div class="w-10 h-10 bg-gradient-to-r from-teal-500 to-blue-500 rounded-lg flex items-center justify-center">
-          <i data-lucide="shield" class="w-6 h-6 text-white"></i>
+<div style="min-height: 80vh; display: flex; align-items: center; justify-content: center; padding: 1.5rem;">
+    <div style="width: 100%; max-width: 440px;">
+        
+        <!-- Register Card -->
+        <div style="background: var(--ink2); border: 1px solid var(--rule); padding: 1.5rem; position: relative;">
+            <div class="corner tl"></div>
+            <div class="corner tr"></div>
+            
+            <!-- Header -->
+            <div style="text-align: center; margin-bottom: 1.25rem;">
+                <div style="font-family: var(--cond); font-size: 1.5rem; font-weight: 800; color: var(--white); margin-bottom: 0.25rem;">
+                    Create Account
+                </div>
+                <div style="font-family: var(--mono); font-size: 0.6rem; color: var(--white3);">
+                    Join the community
+                </div>
+            </div>
+            
+            <!-- Error Alert -->
+            {{ if .error }}
+            <div style="background: var(--red-dim); border: 1px solid var(--red); padding: 0.5rem; margin-bottom: 1rem; text-align: center;">
+                <span style="font-family: var(--mono); font-size: 0.65rem; color: var(--red);">{{ .error }}</span>
+            </div>
+            {{ end }}
+            
+            <!-- Registration Form -->
+            <form method="POST" action="/register">
+                
+                <!-- Full Name -->
+                <div style="margin-bottom: 0.75rem;">
+                    <label style="display: block; font-family: var(--mono); font-size: 0.55rem; color: var(--white3); letter-spacing: 0.1em; margin-bottom: 0.35rem;">
+                        FULL NAME
+                    </label>
+                    <input 
+                        type="text" 
+                        name="fullname" 
+                        placeholder="John Doe"
+                        style="width: 100%; background: var(--ink); border: 1px solid var(--rule); padding: 0.6rem 0.8rem; color: var(--white); font-family: var(--body); font-size: 0.8rem; transition: border-color 0.15s;"
+                        onfocus="this.style.borderColor='var(--teal)'" 
+                        onblur="this.style.borderColor='var(--rule)'"
+                        required
+                    />
+                </div>
+                
+                <!-- Username -->
+                <div style="margin-bottom: 0.75rem;">
+                    <label style="display: block; font-family: var(--mono); font-size: 0.55rem; color: var(--white3); letter-spacing: 0.1em; margin-bottom: 0.35rem;">
+                        USERNAME
+                    </label>
+                    <input 
+                        type="text" 
+                        name="username" 
+                        placeholder="johndoe"
+                        style="width: 100%; background: var(--ink); border: 1px solid var(--rule); padding: 0.6rem 0.8rem; color: var(--white); font-family: var(--body); font-size: 0.8rem; transition: border-color 0.15s;"
+                        onfocus="this.style.borderColor='var(--teal)'" 
+                        onblur="this.style.borderColor='var(--rule)'"
+                        required
+                    />
+                </div>
+                
+                <!-- Email -->
+                <div style="margin-bottom: 0.75rem;">
+                    <label style="display: block; font-family: var(--mono); font-size: 0.55rem; color: var(--white3); letter-spacing: 0.1em; margin-bottom: 0.35rem;">
+                        EMAIL
+                    </label>
+                    <input 
+                        type="email" 
+                        name="email" 
+                        placeholder="user@example.com"
+                        style="width: 100%; background: var(--ink); border: 1px solid var(--rule); padding: 0.6rem 0.8rem; color: var(--white); font-family: var(--body); font-size: 0.8rem; transition: border-color 0.15s;"
+                        onfocus="this.style.borderColor='var(--teal)'" 
+                        onblur="this.style.borderColor='var(--rule)'"
+                        required
+                    />
+                </div>
+                
+                <!-- Password -->
+                <div style="margin-bottom: 0.35rem;">
+                    <label style="display: block; font-family: var(--mono); font-size: 0.55rem; color: var(--white3); letter-spacing: 0.1em; margin-bottom: 0.35rem;">
+                        PASSWORD
+                    </label>
+                    <input 
+                        type="password" 
+                        name="password" 
+                        placeholder="••••••••"
+                        style="width: 100%; background: var(--ink); border: 1px solid var(--rule); padding: 0.6rem 0.8rem; color: var(--white); font-family: var(--body); font-size: 0.8rem; transition: border-color 0.15s;"
+                        onfocus="this.style.borderColor='var(--teal)'" 
+                        onblur="this.style.borderColor='var(--rule)'"
+                        required
+                    />
+                </div>
+                <div style="font-family: var(--mono); font-size: 0.5rem; color: var(--white3); margin-bottom: 0.75rem;">
+                    8+ characters with letters, numbers & symbols
+                </div>
+                
+                <!-- Confirm Password -->
+                <div style="margin-bottom: 1rem;">
+                    <label style="display: block; font-family: var(--mono); font-size: 0.55rem; color: var(--white3); letter-spacing: 0.1em; margin-bottom: 0.35rem;">
+                        CONFIRM PASSWORD
+                    </label>
+                    <input 
+                        type="password" 
+                        name="password_confirm" 
+                        placeholder="••••••••"
+                        style="width: 100%; background: var(--ink); border: 1px solid var(--rule); padding: 0.6rem 0.8rem; color: var(--white); font-family: var(--body); font-size: 0.8rem; transition: border-color 0.15s;"
+                        onfocus="this.style.borderColor='var(--teal)'" 
+                        onblur="this.style.borderColor='var(--rule)'"
+                        required
+                    />
+                </div>
+                
+                <!-- Submit Button -->
+                <button 
+                    type="submit" 
+                    class="btn-primary" 
+                    style="width: 100%; cursor: pointer; padding: 0.6rem; font-size: 0.7rem;"
+                >
+                    Create Account →
+                </button>
+            </form>
+            
+            <!-- Divider -->
+            <div style="display: flex; align-items: center; gap: 1rem; margin: 1rem 0;">
+                <div style="flex: 1; height: 1px; background: var(--rule);"></div>
+                <span style="font-family: var(--mono); font-size: 0.55rem; color: var(--white3);">OR</span>
+                <div style="flex: 1; height: 1px; background: var(--rule);"></div>
+            </div>
+            
+            <!-- Login Link -->
+            <div style="text-align: center;">
+                <span style="font-family: var(--mono); font-size: 0.55rem; color: var(--white3);">
+                    Already have an account?
+                </span>
+                <a href="/login" style="font-family: var(--mono); font-size: 0.55rem; color: var(--teal); text-decoration: none; margin-left: 0.25rem;">
+                    Sign in →
+                </a>
+            </div>
+            
+            <!-- Security Note -->
+            <div style="margin-top: 1rem; padding: 0.6rem; background: var(--ink); border: 1px solid var(--rule);">
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                    <span style="font-family: var(--mono); font-size: 0.8rem; color: var(--teal);">🔒</span>
+                    <p style="font-family: var(--mono); font-size: 0.55rem; color: var(--white3);">
+                        Your data is encrypted and secure
+                    </p>
+                </div>
+            </div>
         </div>
-        <span class="text-2xl font-bold text-white">CyberDev<span class="text-teal-400">Hub</span></span>
-      </div>
-      <h1 class="text-3xl font-extrabold text-white mb-2">
-        Join Our Community
-      </h1>
-      <p class="text-slate-400 text-sm">
-        Start your cybersecurity and DevOps journey today
-      </p>
+        
     </div>
-
-    <!-- Error Alert -->
-    {{ if .error }}
-    <div class="flex items-center gap-3 bg-red-500/20 border border-red-500/30 text-red-400 px-4 py-3 rounded-lg mb-6">
-      <i data-lucide="alert-triangle" class="w-5 h-5 flex-shrink-0"></i>
-      <span class="text-sm">{{ .error }}</span>
-    </div>
-    {{ end }}
-
-    <!-- Registration Form -->
-    <form method="POST" action="/register" class="space-y-6">
-      
-      <!-- Full Name -->
-      <div class="space-y-2">
-        <label for="fullname" class="block text-sm font-semibold text-slate-300">Full Name</label>
-        <div class="relative">
-          <i data-lucide="user" class="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-slate-500"></i>
-          <input
-            type="text"
-            name="fullname"
-            id="fullname"
-            placeholder="e.g., Jane Doe"
-            class="w-full pl-10 pr-4 py-3 bg-slate-800 border border-slate-600 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 text-white placeholder-slate-500 transition duration-200"
-            required
-          />
-        </div>
-      </div>
-
-      <!-- Username -->
-      <div class="space-y-2">
-        <label for="username" class="block text-sm font-semibold text-slate-300">Username</label>
-        <div class="relative">
-          <i data-lucide="at-sign" class="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-slate-500"></i>
-          <input
-            type="text"
-            name="username"
-            id="username"
-            placeholder="e.g., janedoe"
-            class="w-full pl-10 pr-4 py-3 bg-slate-800 border border-slate-600 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 text-white placeholder-slate-500 transition duration-200"
-            required
-          />
-        </div>
-      </div>
-
-      <!-- Email -->
-      <div class="space-y-2">
-        <label for="email" class="block text-sm font-semibold text-slate-300">Email</label>
-        <div class="relative">
-          <i data-lucide="mail" class="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-slate-500"></i>
-          <input
-            type="email"
-            name="email"
-            id="email"
-            placeholder="example@domain.com"
-            class="w-full pl-10 pr-4 py-3 bg-slate-800 border border-slate-600 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 text-white placeholder-slate-500 transition duration-200"
-            required
-          />
-        </div>
-      </div>
-
-      <!-- Password -->
-      <div class="space-y-2">
-        <label for="password" class="block text-sm font-semibold text-slate-300">Password</label>
-        <div class="relative">
-          <i data-lucide="lock" class="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-slate-500"></i>
-          <input
-            type="password"
-            name="password"
-            id="password"
-            placeholder="••••••••"
-            class="w-full pl-10 pr-4 py-3 bg-slate-800 border border-slate-600 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 text-white placeholder-slate-500 transition duration-200"
-            required
-          />
-        </div>
-        <p class="text-xs text-slate-500">Use 8+ characters with mix of letters, numbers & symbols</p>
-      </div>
-
-      <!-- Confirm Password -->
-      <div class="space-y-2">
-        <label for="password_confirm" class="block text-sm font-semibold text-slate-300">Confirm Password</label>
-        <div class="relative">
-          <i data-lucide="shield-check" class="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-slate-500"></i>
-          <input
-            type="password"
-            name="password_confirm"
-            id="password_confirm"
-            placeholder="••••••••"
-            class="w-full pl-10 pr-4 py-3 bg-slate-800 border border-slate-600 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 text-white placeholder-slate-500 transition duration-200"
-            required
-          />
-        </div>
-      </div>
-
-      <!-- Submit Button -->
-      <div class="pt-4">
-        <button type="submit" class="w-full flex items-center justify-center gap-3 bg-gradient-to-r from-teal-600 to-blue-600 hover:from-teal-700 hover:to-blue-700 text-white py-3.5 rounded-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-200 transform hover:-translate-y-0.5">
-          <i data-lucide="user-plus" class="w-5 h-5"></i>
-          Create Account
-        </button>
-      </div>
-    </form>
-
-    <!-- Divider -->
-    <div class="flex items-center my-6">
-      <div class="flex-1 border-t border-slate-700"></div>
-      <span class="px-4 text-sm text-slate-500">or</span>
-      <div class="flex-1 border-t border-slate-700"></div>
-    </div>
-
-    <!-- Login Redirect -->
-    <div class="text-center">
-      <p class="text-slate-400 text-sm">
-        Already part of our community?
-        <a href="/login" class="text-teal-400 font-semibold hover:text-teal-300 transition duration-200 ml-1">
-          Sign in here
-        </a>
-      </p>
-    </div>
-
-    <!-- Security Note -->
-    <div class="mt-6 p-4 bg-slate-800/50 rounded-lg border border-slate-700">
-      <div class="flex items-start gap-3">
-        <i data-lucide="shield" class="w-4 h-4 text-teal-400 mt-0.5 flex-shrink-0"></i>
-        <p class="text-xs text-slate-400">
-          Your data is secured with enterprise-grade encryption. We prioritize your privacy and security above all else.
-        </p>
-      </div>
-    </div>
-  </section>
 </div>
-
-<style>
-.tech-card {
-  background: rgba(30, 41, 59, 0.8);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-}
-</style>
-
-<script>
-// Initialize Lucide icons
-lucide.createIcons();
-
-// Add password strength indicator (optional enhancement)
-document.getElementById('password')?.addEventListener('input', function(e) {
-  const password = e.target.value;
-  const strengthIndicator = document.getElementById('password-strength');
-  
-  if (strengthIndicator) {
-    let strength = 0;
-    if (password.length >= 8) strength++;
-    if (/[A-Z]/.test(password)) strength++;
-    if (/[0-9]/.test(password)) strength++;
-    if (/[^A-Za-z0-9]/.test(password)) strength++;
-    
-    const strengthText = ['Very Weak', 'Weak', 'Medium', 'Strong', 'Very Strong'][strength];
-    const strengthColors = ['text-red-400', 'text-orange-400', 'text-yellow-400', 'text-teal-400', 'text-green-400'][strength];
-    
-    strengthIndicator.textContent = strengthText;
-    strengthIndicator.className = `text-xs font-medium ${strengthColors}`;
-  }
-});
-</script>
 {{ end }}

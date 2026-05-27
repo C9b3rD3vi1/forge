@@ -1,258 +1,184 @@
+{{ define "title" }}{{ .Project.Title }} | Nickson Wekongo{{ end }}
+
 {{ define "content" }}
-<section class="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white min-h-screen py-16 px-6 sm:px-10 font-inter relative overflow-hidden">
-  <!-- Background elements -->
-  <div class="absolute inset-0 z-0 opacity-30 bg-[radial-gradient(circle_at_1px_1px,rgba(14,165,233,0.15)_1px,transparent_0)] [background-size:40px_40px]"></div>
-  <div class="absolute inset-0 bg-gradient-to-br from-blue-900/10 via-transparent to-purple-900/10 z-0"></div>
+<!-- Hero Section -->
+<section class="sec" style="border-top: none;">
+    <div class="sec-head">
+        <div class="sec-num"><span class="teal">03</span> — Project</div>
+        <h2 class="sec-title">{{ .Project.Title }}</h2>
+    </div>
+</section>
 
-  <div class="max-w-6xl mx-auto relative z-10">
-    <!-- Back to Projects Link -->
-    <a href="/projects" class="inline-flex items-center text-sm font-medium text-slate-300 hover:text-blue-400 transition-all duration-300 group mb-8 bg-slate-800/50 hover:bg-slate-700/50 rounded-lg px-4 py-2 border border-slate-700 hover:border-blue-500/30">
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 group-hover:-translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-      </svg>
-      Back to Projects
-    </a>
+<!-- Project Container -->
+<div style="max-width: 1000px; margin: 0 auto; padding: 2rem 2rem 4rem;">
+    
+    <!-- Back Link -->
+    <div style="margin-bottom: 2rem;">
+        <a href="/projects" class="btn-ghost" style="display: inline-block; padding: 0.5rem 1rem;">
+            ← Back to Projects
+        </a>
+    </div>
 
-    <!-- Project Header -->
-    <div class="text-center mb-12">
-      <h1 class="text-4xl sm:text-5xl font-bold leading-tight bg-gradient-to-r from-blue-400 via-purple-400 to-blue-400 bg-clip-text text-transparent mb-4">
-        {{ .Project.Title }}
-      </h1>
-      <div class="flex flex-wrap justify-center items-center gap-3 text-slate-400 text-lg">
+    <!-- Project Image -->
+    {{ if .Project.ImageURL }}
+    <div style="margin-bottom: 2rem; overflow: hidden; border: 1px solid var(--rule);">
+        <img src="{{ .Project.ImageURL }}" alt="{{ .Project.Title }}" style="width: 100%; height: auto; display: block;">
+    </div>
+    {{ end }}
+
+    <!-- Project Badges -->
+    <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 2rem;">
         {{ if .Project.Category }}
-          <span class="bg-blue-500/20 text-blue-400 px-3 py-1 rounded-full text-sm font-semibold">{{ .Project.Category }}</span>
+        <span style="font-family: var(--mono); font-size: 0.6rem; color: var(--teal); background: var(--teal-glow); border: 1px solid var(--teal-line); padding: 0.25rem 0.75rem;">
+            {{ .Project.Category }}
+        </span>
         {{ end }}
         {{ if .Project.Status }}
-          <span class="bg-green-500/20 text-green-400 px-3 py-1 rounded-full text-sm font-semibold capitalize">{{ .Project.Status }}</span>
-        {{ end }}
-        {{ if .Project.Featured }}
-          <span class="bg-purple-500/20 text-purple-400 px-3 py-1 rounded-full text-sm font-semibold">Featured</span>
-        {{ end }}
-        {{ if .Project.Difficulty }}
-          <span class="bg-amber-500/20 text-amber-400 px-3 py-1 rounded-full text-sm font-semibold capitalize">{{ .Project.Difficulty }}</span>
+        <span style="font-family: var(--mono); font-size: 0.6rem; color: var(--green); background: rgba(45, 204, 122, 0.1); border: 1px solid rgba(45, 204, 122, 0.35); padding: 0.25rem 0.75rem;">
+            {{ .Project.Status }}
+        </span>
         {{ end }}
         {{ if .Project.ProjectType }}
-          <span class="bg-emerald-500/20 text-emerald-400 px-3 py-1 rounded-full text-sm font-semibold">{{ .Project.ProjectType }}</span>
+        <span style="font-family: var(--mono); font-size: 0.6rem; color: var(--white3); border: 1px solid var(--rule); padding: 0.25rem 0.75rem;">
+            {{ .Project.ProjectType }}
+        </span>
         {{ end }}
-      </div>
     </div>
 
-    <!-- Main Project Image -->
-    <div class="relative group mb-12">
-      <div class="relative rounded-2xl overflow-hidden shadow-2xl transform transition-all duration-500 hover:shadow-blue-500/20">
-        <div class="aspect-video bg-gradient-to-br from-blue-900/20 to-purple-900/20 flex items-center justify-center relative">
-          <div class="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-          {{ if .Project.ImageURL }}
-            <img src="{{ .Project.ImageURL }}" alt="{{ .Project.Title }}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
-          {{ else }}
-            <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-900 to-purple-900">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-            </div>
-          {{ end }}
-        </div>
-      </div>
+    <!-- Description -->
+    {{ if .Project.Description }}
+    <div style="margin-bottom: 2rem; padding-bottom: 2rem; border-bottom: 1px solid var(--rule);">
+        <p style="font-size: 1.1rem; color: var(--white2); line-height: 1.7;">
+            {{ .Project.Description }}
+        </p>
     </div>
+    {{ end }}
 
-    <!-- Content Area -->
-    <div class="space-y-8">
-      
-      <!-- Short Description -->
-      {{ if .Project.Description }}
-      <div class="bg-slate-800/50 backdrop-blur-sm border border-slate-700 rounded-2xl p-8 shadow-xl hover:border-slate-600 transition-all duration-300">
-        <p class="text-xl text-slate-300 leading-relaxed text-center">{{ .Project.Description }}</p>
-      </div>
-      {{ end }}
-
-      <!-- Problem & Solution Sections -->
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <!-- Problem & Solution Grid -->
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--rule); margin-bottom: 2rem;">
         {{ if .Project.ProblemStatement }}
-        <div class="bg-slate-800/50 backdrop-blur-sm border border-slate-700 rounded-2xl p-6 shadow-xl hover:border-red-500/30 transition-all duration-300">
-          <div class="flex items-center mb-4">
-            <div class="w-8 h-8 bg-red-500/20 rounded-lg flex items-center justify-center mr-3">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
-              </svg>
-            </div>
-            <h2 class="text-xl font-semibold text-white">The Challenge</h2>
-          </div>
-          <p class="text-slate-300 leading-relaxed">{{ .Project.ProblemStatement }}</p>
+        <div style="background: var(--ink2); padding: 2rem;">
+            <h3 style="font-family: var(--cond); font-size: 1.3rem; font-weight: 800; color: var(--white); margin-bottom: 1rem;">
+                The Challenge
+            </h3>
+            <p style="font-size: 0.9rem; color: var(--mid); line-height: 1.7;">
+                {{ .Project.ProblemStatement }}
+            </p>
         </div>
         {{ end }}
-
-        {{ if .Project.SolutionApproach }}
-        <div class="bg-slate-800/50 backdrop-blur-sm border border-slate-700 rounded-2xl p-6 shadow-xl hover:border-green-500/30 transition-all duration-300">
-          <div class="flex items-center mb-4">
-            <div class="w-8 h-8 bg-green-500/20 rounded-lg flex items-center justify-center mr-3">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-            </div>
-            <h2 class="text-xl font-semibold text-white">The Solution</h2>
-          </div>
-          <p class="text-slate-300 leading-relaxed">{{ .Project.SolutionApproach }}</p>
-        </div>
-        {{ end }}
-      </div>
-
-      <!-- Key Features - SIMPLIFIED VERSION -->
-      {{ if .Project.KeyFeatures }}
-      <div class="bg-gradient-to-br from-slate-800/60 to-slate-900/60 backdrop-blur-lg border border-slate-700/50 rounded-2xl p-8 shadow-2xl hover:shadow-purple-500/10 transition-all duration-500">
-        <div class="flex items-center mb-8">
-          <div class="w-10 h-10 bg-gradient-to-br from-purple-500/30 to-pink-500/30 rounded-xl flex items-center justify-center mr-4">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-purple-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
-            </svg>
-          </div>
-          <h2 class="text-2xl font-bold bg-gradient-to-r from-purple-300 to-pink-300 bg-clip-text text-transparent">Core Features</h2>
-        </div>
         
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {{ $features := split .Project.KeyFeatures "," }}
-          {{ range $index, $feature := $features }}
-          <div class="group relative overflow-hidden">
-            <div class="bg-slate-800/50 border border-slate-700 rounded-xl p-6 hover:border-purple-500/50 hover:bg-slate-800/80 transition-all duration-300 group-hover:scale-[1.02]">
-              <div class="flex items-start">
-                <div class="w-8 h-8 bg-gradient-to-br from-purple-500/20 to-blue-500/20 rounded-lg flex items-center justify-center mr-4 flex-shrink-0 mt-1">
-                  <span class="text-purple-300 font-bold text-sm">{{ add $index 1 }}</span>
-                </div>
-                <div>
-                  <h3 class="font-semibold text-white mb-2">{{ trim $feature }}</h3>
-                  <div class="h-1 w-12 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full mb-3"></div>
-                </div>
-              </div>
-            </div>
-            <!-- Glow effect -->
-            <div class="absolute inset-0 bg-gradient-to-r from-purple-500/10 to-blue-500/10 opacity-0 group-hover:opacity-100 blur-xl transition-opacity duration-500 -z-10"></div>
-          </div>
-          {{ end }}
-        </div>
-      </div>
-      {{ end }}
-
-      <!-- Long Description -->
-      {{ if .Project.LongDescription }}
-      <div class="bg-slate-800/50 backdrop-blur-sm border border-slate-700 rounded-2xl p-8 shadow-xl hover:border-slate-600 transition-all duration-300">
-        <div class="flex items-center mb-6">
-          <div class="w-8 h-8 bg-blue-500/20 rounded-lg flex items-center justify-center mr-3">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-          </div>
-          <h2 class="text-xl font-semibold text-white">Project Details</h2>
-        </div>
-        <div class="text-slate-300 leading-relaxed space-y-4">
-          {{ .Project.LongDescription }}
-        </div>
-      </div>
-      {{ end }}
-
-      <!-- Tech Stack Section -->
-      {{ if .Project.TechStacks }}
-      <div class="bg-slate-800/50 backdrop-blur-sm border border-slate-700 rounded-2xl p-8 shadow-xl hover:border-slate-600 transition-all duration-300">
-        <div class="flex items-center mb-6">
-          <div class="w-8 h-8 bg-green-500/20 rounded-lg flex items-center justify-center mr-3">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
-            </svg>
-          </div>
-          <h2 class="text-xl font-semibold text-white">Technology Stack</h2>
-        </div>
-        <div class="flex flex-wrap gap-3">
-          {{ range .Project.TechStacks }}
-          <div class="bg-slate-700/80 text-slate-200 px-4 py-2.5 rounded-xl text-sm font-medium border border-slate-600 hover:bg-blue-600 hover:text-white hover:border-blue-500 hover:scale-105 transition-all duration-300 cursor-pointer shadow-sm">
-            {{ .Name }}
-          </div>
-          {{ end }}
-        </div>
-      </div>
-      {{ end }}
-
-      <!-- Project Metrics -->
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
-        {{ if .Project.DevelopmentTime }}
-        <div class="bg-slate-800/30 backdrop-blur-sm border border-slate-700 rounded-xl p-6 text-center hover:border-blue-500/30 transition-all duration-300">
-          <div class="text-2xl font-bold text-blue-400">{{ .Project.DevelopmentTime }}</div>
-          <div class="text-sm text-slate-400 mt-1">Development</div>
+        {{ if .Project.SolutionApproach }}
+        <div style="background: var(--ink2); padding: 2rem;">
+            <h3 style="font-family: var(--cond); font-size: 1.3rem; font-weight: 800; color: var(--white); margin-bottom: 1rem;">
+                The Solution
+            </h3>
+            <p style="font-size: 0.9rem; color: var(--mid); line-height: 1.7;">
+                {{ .Project.SolutionApproach }}
+            </p>
         </div>
         {{ end }}
-
-        {{ if .Project.TeamSize }}
-        <div class="bg-slate-800/30 backdrop-blur-sm border border-slate-700 rounded-xl p-6 text-center hover:border-green-500/30 transition-all duration-300">
-          <div class="text-2xl font-bold text-green-400">{{ .Project.TeamSize }}</div>
-          <div class="text-sm text-slate-400 mt-1">Team Size</div>
-        </div>
-        {{ end }}
-
-        {{ if .Project.Uptime }}
-        <div class="bg-slate-800/30 backdrop-blur-sm border border-slate-700 rounded-xl p-6 text-center hover:border-purple-500/30 transition-all duration-300">
-          <div class="text-2xl font-bold text-purple-400">{{ .Project.Uptime }}</div>
-          <div class="text-sm text-slate-400 mt-1">Uptime</div>
-        </div>
-        {{ end }}
-
-        {{ if .Project.UsersCount }}
-        <div class="bg-slate-800/30 backdrop-blur-sm border border-slate-700 rounded-xl p-6 text-center hover:border-amber-500/30 transition-all duration-300">
-          <div class="text-2xl font-bold text-amber-400">{{ .Project.UsersCount }}</div>
-          <div class="text-sm text-slate-400 mt-1">Users</div>
-        </div>
-        {{ end }}
-      </div>
-
-      <!-- Action Buttons -->
-      <div class="flex flex-col sm:flex-row gap-4 justify-center pt-8">
-        {{ if .Project.Link }}
-        <a href="{{ .Project.Link }}" target="_blank" class="group inline-flex items-center justify-center
-           bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500
-           text-white font-semibold py-4 px-8 rounded-xl shadow-lg transform transition-all duration-300 
-           hover:shadow-blue-500/25 hover:-translate-y-1 active:translate-y-0 relative overflow-hidden">
-          <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3 group-hover:scale-110 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-          </svg>
-          Live Demo
-        </a>
-        {{ end }}
-
-        {{ if .Project.GithubLink }}
-        <a href="{{ .Project.GithubLink }}" target="_blank" class="group inline-flex items-center justify-center
-           bg-slate-700 hover:bg-slate-600 border border-slate-600
-           text-white font-semibold py-4 px-8 rounded-xl shadow-lg transform transition-all duration-300 
-           hover:-translate-y-1 active:translate-y-0">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3 group-hover:scale-110 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
-          </svg>
-          Source Code
-        </a>
-        {{ end }}
-
-        {{ if .Project.DemoLink }}
-        <a href="{{ .Project.DemoLink }}" target="_blank" class="group inline-flex items-center justify-center
-           bg-red-600 hover:bg-red-500
-           text-white font-semibold py-4 px-8 rounded-xl shadow-lg transform transition-all duration-300 
-           hover:-translate-y-1 active:translate-y-0">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3 group-hover:scale-110 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-          Video Demo
-        </a>
-        {{ end }}
-      </div>
-
-      <!-- Additional Links -->
-      <div class="flex justify-center space-x-8 text-sm text-slate-400 pt-4">
-        {{ if .Project.DocsLink }}
-        <a href="{{ .Project.DocsLink }}" target="_blank" class="hover:text-blue-400 transition-colors flex items-center">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-          </svg>
-          Documentation
-        </a>
-        {{ end }}
-      </div>
     </div>
-  </div>
-</section>
+
+    <!-- Key Features -->
+    {{ if .Project.KeyFeatures }}
+    <div style="background: var(--ink2); border: 1px solid var(--rule); padding: 2rem; margin-bottom: 2rem;">
+        <h3 style="font-family: var(--cond); font-size: 1.3rem; font-weight: 800; color: var(--white); margin-bottom: 1.5rem;">
+            Key Features
+        </h3>
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem;">
+            {{ $features := split .Project.KeyFeatures "," }}
+            {{ range $features }}
+            <div style="display: flex; align-items: center; gap: 0.75rem;">
+                <span style="color: var(--teal);">→</span>
+                <span style="font-size: 0.85rem; color: var(--white2);">{{ trim . }}</span>
+            </div>
+            {{ end }}
+        </div>
+    </div>
+    {{ end }}
+
+    <!-- Long Description -->
+    {{ if .Project.LongDescription }}
+    <div style="background: var(--ink2); border: 1px solid var(--rule); padding: 2rem; margin-bottom: 2rem;">
+        <h3 style="font-family: var(--cond); font-size: 1.3rem; font-weight: 800; color: var(--white); margin-bottom: 1rem;">
+            Project Details
+        </h3>
+        <div style="font-size: 0.9rem; color: var(--mid); line-height: 1.7;">
+            {{ .Project.LongDescription }}
+        </div>
+    </div>
+    {{ end }}
+
+    <!-- Tech Stack -->
+    {{ if .Project.TechStacks }}
+    <div style="background: var(--ink2); border: 1px solid var(--rule); padding: 2rem; margin-bottom: 2rem;">
+        <h3 style="font-family: var(--cond); font-size: 1.3rem; font-weight: 800; color: var(--white); margin-bottom: 1rem;">
+            Technology Stack
+        </h3>
+        <div style="display: flex; flex-wrap: wrap; gap: 0.75rem;">
+            {{ range .Project.TechStacks }}
+            <span style="font-family: var(--mono); font-size: 0.65rem; color: var(--teal); background: var(--teal-glow); border: 1px solid var(--teal-line); padding: 0.3rem 0.8rem;">
+                {{ .Name }}
+            </span>
+            {{ end }}
+        </div>
+    </div>
+    {{ end }}
+
+    <!-- Metrics Grid -->
+    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--rule); margin-bottom: 2rem;">
+        {{ if .Project.DevelopmentTime }}
+        <div style="background: var(--ink2); padding: 1.5rem; text-align: center;">
+            <div style="font-family: var(--cond); font-size: 1.8rem; font-weight: 800; color: var(--teal);">{{ .Project.DevelopmentTime }}</div>
+            <div style="font-family: var(--mono); font-size: 0.6rem; color: var(--white3);">Development</div>
+        </div>
+        {{ end }}
+        
+        {{ if .Project.TeamSize }}
+        <div style="background: var(--ink2); padding: 1.5rem; text-align: center;">
+            <div style="font-family: var(--cond); font-size: 1.8rem; font-weight: 800; color: var(--teal);">{{ .Project.TeamSize }}</div>
+            <div style="font-family: var(--mono); font-size: 0.6rem; color: var(--white3);">Team Size</div>
+        </div>
+        {{ end }}
+        
+        {{ if .Project.Uptime }}
+        <div style="background: var(--ink2); padding: 1.5rem; text-align: center;">
+            <div style="font-family: var(--cond); font-size: 1.8rem; font-weight: 800; color: var(--teal);">{{ .Project.Uptime }}</div>
+            <div style="font-family: var(--mono); font-size: 0.6rem; color: var(--white3);">Uptime</div>
+        </div>
+        {{ end }}
+        
+        {{ if .Project.UsersCount }}
+        <div style="background: var(--ink2); padding: 1.5rem; text-align: center;">
+            <div style="font-family: var(--cond); font-size: 1.8rem; font-weight: 800; color: var(--teal);">{{ .Project.UsersCount }}</div>
+            <div style="font-family: var(--mono); font-size: 0.6rem; color: var(--white3);">Users</div>
+        </div>
+        {{ end }}
+    </div>
+
+    <!-- Action Buttons -->
+    <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 2rem;">
+        {{ if .Project.Link }}
+        <a href="{{ .Project.Link }}" target="_blank" class="btn-primary" style="display: inline-flex; align-items: center; gap: 0.5rem;">
+            Live Demo <span>→</span>
+        </a>
+        {{ end }}
+        {{ if .Project.GithubLink }}
+        <a href="{{ .Project.GithubLink }}" target="_blank" class="btn-ghost" style="display: inline-flex; align-items: center; gap: 0.5rem;">
+            Source Code <span>→</span>
+        </a>
+        {{ end }}
+        {{ if .Project.DemoLink }}
+        <a href="{{ .Project.DemoLink }}" target="_blank" class="btn-ghost" style="display: inline-flex; align-items: center; gap: 0.5rem;">
+            Video Demo <span>→</span>
+        </a>
+        {{ end }}
+        {{ if .Project.DocsLink }}
+        <a href="{{ .Project.DocsLink }}" target="_blank" class="btn-ghost" style="display: inline-flex; align-items: center; gap: 0.5rem;">
+            Documentation <span>→</span>
+        </a>
+        {{ end }}
+    </div>
+
+</div>
 {{ end }}

@@ -1,111 +1,118 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8" />
-    <title>Admin Login | Hacker Hub</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="author" content="C9b3rD3vi1" />
-    <meta name="description" content="Login to the Hacker Hub admin dashboard" />
+{{ define "title" }}Admin Login | Nickson Wekongo{{ end }}
 
-    <!-- TailwindCSS + DaisyUI -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdn.jsdelivr.net/npm/daisyui@3.8.2/dist/full.css" rel="stylesheet" />
-</head>
-
-<body class="bg-black text-[#00ff88] font-mono min-h-screen flex items-center justify-center">
-    <div class="w-full max-w-md bg-base-200 border border-[#00ff88]/20 shadow-xl rounded px-6 py-8 space-y-6">
-        <!-- Title -->
-        <div class="text-center">
-            <h1 class="text-2xl font-bold">🔐 Hacker Hub Admin</h1>
-            <p class="text-sm text-base-content/70">Access Control Panel</p>
-        </div>
-
-        <!-- Flash Messages -->
-        {{ if .Success }}
-        <div id="flash-success" class="alert alert-success text-sm font-semibold text-center">
-            {{ .Success }}
-        </div>
-        {{ end }} 
-        {{ if .Error }}
-        <div id="flash-error" class="alert alert-error text-sm font-semibold text-center">
-            {{ .Error }}
-        </div>
-        {{ end }}
-
-        <!-- Login Form -->
-        <form method="POST" action="/admin/login" class="space-y-4">
-            <!-- Email -->
-            <div>
-                <label for="email" class="block text-sm mb-1 font-bold">Email</label>
-                <input
-                    id="email"
-                    name="email"
-                    type="email"
-                    class="input input-bordered w-full 
-                           bg-[#0d0d0d] text-[#00ff88] placeholder-gray-400
-                           focus:outline-none focus:ring-2 focus:ring-[#00ff88] focus:border-[#00ff88]"
-                    placeholder="admin@example.com"
-                    required
-                />
+{{ define "content" }}
+<div style="min-height: 80vh; display: flex; align-items: center; justify-content: center; padding: 2rem;">
+    <div style="width: 100%; max-width: 420px;">
+        
+        <!-- Login Card -->
+        <div style="background: var(--ink2); border: 1px solid var(--rule); padding: 2rem; position: relative;">
+            <div class="corner tl"></div>
+            <div class="corner tr"></div>
+            
+            <!-- Header -->
+            <div style="text-align: center; margin-bottom: 2rem;">
+                <div style="font-family: var(--cond); font-size: 1.8rem; font-weight: 800; color: var(--white); margin-bottom: 0.5rem;">
+                    Admin Login
+                </div>
+                <div style="font-family: var(--mono); font-size: 0.65rem; color: var(--teal);">
+                    Access Control Panel
+                </div>
             </div>
-
-            <!-- Password -->
-            <div>
-                <label for="password" class="block text-sm mb-1 font-bold">Password</label>
-                <input
-                    id="password"
-                    name="password"
-                    type="password"
-                    class="input input-bordered w-full 
-                           bg-[#0d0d0d] text-[#00ff88] placeholder-gray-400
-                           focus:outline-none focus:ring-2 focus:ring-[#00ff88] focus:border-[#00ff88]"
-                    placeholder="********"
-                    required
-                />
+            
+            <!-- Flash Messages -->
+            {{ if .Success }}
+            <div style="background: rgba(45, 204, 122, 0.1); border: 1px solid var(--green); padding: 0.75rem; margin-bottom: 1.5rem; text-align: center;">
+                <span style="font-family: var(--mono); font-size: 0.7rem; color: var(--green);">{{ .Success }}</span>
             </div>
-
-            <!-- Remember Me -->
-            <div class="flex items-center gap-2">
-                <input
-                    type="checkbox"
-                    id="remember"
-                    name="remember"
-                    class="checkbox checkbox-sm border-[#00ff88] [--chkbg:#00ff88] [--chkfg:black]"
-                />
-                <label for="remember" class="text-sm">Remember me</label>
+            {{ end }}
+            
+            {{ if .Error }}
+            <div style="background: var(--red-dim); border: 1px solid var(--red); padding: 0.75rem; margin-bottom: 1.5rem; text-align: center;">
+                <span style="font-family: var(--mono); font-size: 0.7rem; color: var(--red);">{{ .Error }}</span>
             </div>
-
-            <!-- Submit -->
-            <button
-                type="submit"
-                class="btn w-full border border-[#00ff88] bg-[#0d0d0d] text-[#00ff88]
-                       hover:bg-[#00ff88] hover:text-black hover:scale-[1.02] transition-transform"
-            >
-                Login
-            </button>
-        </form>
-
-        <!-- Footer -->
-        <p class="text-center text-xs text-base-content/60 pt-4 border-t border-[#00ff88]/20">
-            &copy; {{ now }} Hacker Hub — All shells reserved.
-        </p>
+            {{ end }}
+            
+            <!-- Login Form -->
+            <form method="POST" action="/admin/login">
+                
+                <!-- Email -->
+                <div style="margin-bottom: 1.25rem;">
+                    <label for="email" style="display: block; font-family: var(--mono); font-size: 0.6rem; color: var(--white3); letter-spacing: 0.1em; margin-bottom: 0.5rem;">
+                        EMAIL
+                    </label>
+                    <input 
+                        type="email" 
+                        id="email" 
+                        name="email" 
+                        placeholder="admin@example.com"
+                        style="width: 100%; background: var(--ink); border: 1px solid var(--rule); padding: 0.75rem 1rem; color: var(--white); font-family: var(--body); font-size: 0.85rem; transition: border-color 0.15s;"
+                        onfocus="this.style.borderColor='var(--teal)'" 
+                        onblur="this.style.borderColor='var(--rule)'"
+                        required
+                    />
+                </div>
+                
+                <!-- Password -->
+                <div style="margin-bottom: 1rem;">
+                    <label for="password" style="display: block; font-family: var(--mono); font-size: 0.6rem; color: var(--white3); letter-spacing: 0.1em; margin-bottom: 0.5rem;">
+                        PASSWORD
+                    </label>
+                    <input 
+                        type="password" 
+                        id="password" 
+                        name="password" 
+                        placeholder="********"
+                        style="width: 100%; background: var(--ink); border: 1px solid var(--rule); padding: 0.75rem 1rem; color: var(--white); font-family: var(--body); font-size: 0.85rem; transition: border-color 0.15s;"
+                        onfocus="this.style.borderColor='var(--teal)'" 
+                        onblur="this.style.borderColor='var(--rule)'"
+                        required
+                    />
+                </div>
+                
+                <!-- Remember Me -->
+                <div style="margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                    <input 
+                        type="checkbox" 
+                        id="remember" 
+                        name="remember" 
+                        style="width: 14px; height: 14px; accent-color: var(--teal);"
+                    />
+                    <label for="remember" style="font-family: var(--mono); font-size: 0.6rem; color: var(--white3);">
+                        Remember me
+                    </label>
+                </div>
+                
+                <!-- Submit Button -->
+                <button 
+                    type="submit" 
+                    class="btn-primary" 
+                    style="width: 100%; cursor: pointer; padding: 0.75rem;"
+                >
+                    Login →
+                </button>
+            </form>
+            
+            <!-- Footer -->
+            <div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--rule); text-align: center;">
+                <span style="font-family: var(--mono); font-size: 0.55rem; color: var(--white3);">
+                    © {{ now }} Nickson Wekongo
+                </span>
+            </div>
+        </div>
+        
     </div>
+</div>
 
-    <!-- Lucide Icons -->
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <script> lucide.createIcons(); </script>
-
-    <!-- Flash Auto Dismiss -->
-    <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            const alerts = document.querySelectorAll(".alert");
-            alerts.forEach((alert) => {
-                setTimeout(() => {
-                    alert.classList.add("opacity-0", "transition-opacity", "duration-500");
-                    setTimeout(() => alert.remove(), 500);
-                }, 4000);
-            });
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const alerts = document.querySelectorAll(".alert-success, .alert-error");
+        alerts.forEach((alert) => {
+            setTimeout(() => {
+                alert.style.opacity = "0";
+                alert.style.transition = "opacity 0.5s";
+                setTimeout(() => alert.remove(), 500);
+            }, 4000);
         });
-    </script>
-</body>
-</html>
+    });
+</script>
+{{ end }}

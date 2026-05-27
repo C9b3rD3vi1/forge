@@ -3,11 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Admin Panel | CyberDev Hub</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/daisyui@3.6.0/dist/full.css" rel="stylesheet">
-    
+    <title>Admin Panel | Nickson Wekongo</title>
     
     <!-- favicon -->
     <link rel="icon" type="image/png" href="/static/favicon/favicon-96x96.png" sizes="96x96" />
@@ -15,38 +11,52 @@
     <link rel="shortcut icon" href="/static/favicon/favicon.ico" />
     <link rel="apple-touch-icon" sizes="180x180" href="/static/favicon/apple-touch-icon.png" />
     <link rel="manifest" href="/static/site.webmanifest" />
-
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,600;1,300&family=Barlow+Condensed:wght@300;400;600;700;800;900&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --sidebar-width: 250px;
+            --ink: #080c10;
+            --ink2: #111820;
+            --ink3: #1c2630;
+            --mid: #5a6a7a;
+            --faint: #9aacba;
+            --rule: #1e2e3e;
+            --rule2: #162030;
+            --paper: #060c14;
+            --teal: #00c9b1;
+            --teal2: #00a693;
+            --teal-glow: rgba(0, 201, 177, 0.08);
+            --teal-line: rgba(0, 201, 177, 0.25);
+            --green: #2dcc7a;
+            --white: #e8f0f8;
+            --white2: rgba(232, 240, 248, 0.6);
+            --white3: rgba(232, 240, 248, 0.25);
+            --mono: 'IBM Plex Mono', monospace;
+            --cond: 'Barlow Condensed', sans-serif;
+            --body: 'Barlow', sans-serif;
+            --sidebar-width: 260px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
         body {
-            font-family: 'Inter', -apple-system, sans-serif;
-            background-color: #f8fafc;
-            color: #1e293b;
+            font-family: var(--body);
+            background: var(--paper);
+            color: var(--white);
             min-height: 100vh;
         }
 
         /* Layout */
         .admin-layout {
             display: flex;
-            flex-direction: column;
             min-height: 100vh;
-        }
-
-        .admin-content {
-            flex: 1;
-            padding: 2rem;
-            margin-left: var(--sidebar-width);
-        }
-
-        @media (max-width: 768px) {
-            .admin-content {
-                margin-left: 0;
-                padding: 1rem;
-            }
         }
 
         /* Sidebar */
@@ -56,13 +66,57 @@
             top: 0;
             bottom: 0;
             width: var(--sidebar-width);
-            background: #0f172a;
-            color: white;
+            background: var(--ink2);
+            border-right: 1px solid var(--rule);
             overflow-y: auto;
             z-index: 40;
-            border-right: 1px solid #334155;
         }
 
+        /* Main Content */
+        .admin-content {
+            flex: 1;
+            margin-left: var(--sidebar-width);
+            padding: 2rem;
+        }
+
+        /* Nav Items */
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 0.6rem 0.75rem;
+            font-family: var(--mono);
+            font-size: 0.7rem;
+            color: var(--white3);
+            text-decoration: none;
+            transition: all 0.15s ease;
+            margin-bottom: 0.25rem;
+        }
+
+        .nav-item:hover {
+            background: var(--teal-glow);
+            color: var(--teal);
+        }
+
+        .nav-item.active {
+            background: var(--teal-glow);
+            color: var(--teal);
+            border-left: 2px solid var(--teal);
+        }
+
+        /* Scrollbar */
+        .admin-sidebar::-webkit-scrollbar {
+            width: 4px;
+        }
+        
+        .admin-sidebar::-webkit-scrollbar-track {
+            background: var(--rule);
+        }
+        
+        .admin-sidebar::-webkit-scrollbar-thumb {
+            background: var(--teal);
+        }
+
+        /* Responsive */
         @media (max-width: 768px) {
             .admin-sidebar {
                 transform: translateX(-100%);
@@ -71,51 +125,25 @@
             .admin-sidebar.active {
                 transform: translateX(0);
             }
-        }
-
-        /* Nav Items */
-        .nav-item {
-            display: flex;
-            align-items: center;
-            padding: 0.75rem 1rem;
-            color: #cbd5e1;
-            text-decoration: none;
-            border-radius: 0.375rem;
-            margin: 0.25rem 0.75rem;
-            transition: all 0.2s ease;
-        }
-
-        .nav-item:hover {
-            background-color: rgba(255, 255, 255, 0.1);
-            color: white;
-        }
-
-        .nav-item.active {
-            background-color: rgba(37, 99, 235, 0.2);
-            color: #2563eb;
-            border-left: 3px solid #2563eb;
-        }
-
-        .nav-item i {
-            width: 20px;
-            height: 20px;
-            margin-right: 0.75rem;
-            flex-shrink: 0;
-        }
-
-        /* Footer */
-        .admin-footer {
-            background: #0f172a;
-            color: #cbd5e1;
-            padding: 1.5rem;
-            margin-left: var(--sidebar-width);
-            border-top: 1px solid #334155;
-        }
-
-        @media (max-width: 768px) {
-            .admin-footer {
+            .admin-content {
                 margin-left: 0;
+                padding: 1rem;
             }
+        }
+
+        /* Status dot */
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            background: var(--green);
+            border-radius: 50%;
+            display: inline-block;
+            animation: pulse 2s ease infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(45, 204, 122, 0.5); }
+            50% { opacity: 0.6; box-shadow: 0 0 0 6px rgba(45, 204, 122, 0); }
         }
     </style>
 </head>
@@ -123,63 +151,50 @@
 
     <!-- Sidebar -->
     <aside id="sidebar" class="admin-sidebar">
-        <div class="p-6">
-            <div class="flex items-center gap-3 mb-8">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center">
-                    <i data-lucide="shield-check" class="w-6 h-6 text-white"></i>
-                </div>
-                <div>
-                    <h1 class="text-xl font-bold sidebar-logo">CyberHub</h1>
-                    <p class="text-xs text-slate-400">Admin Console</p>
-                </div>
+        <div style="padding: 1.5rem; border-bottom: 1px solid var(--rule);">
+            <div style="font-family: var(--cond); font-size: 1.3rem; font-weight: 800; color: var(--white);">
+                N.<span style="color: var(--teal);">WEKONGO</span>
             </div>
-
-            <nav class="space-y-1">
-                <a href="/admin/dashboard" class="nav-item active">
-                    <i data-lucide="layout-dashboard"></i>
-                    <span>Dashboard</span>
-                </a>
-                <a href="/admin/posts" class="nav-item">
-                    <i data-lucide="file-text"></i>
-                    <span>Posts</span>
-                </a>
-                <a href="/admin/projects" class="nav-item">
-                    <i data-lucide="folder-git-2"></i>
-                    <span>Projects</span>
-                </a>
-                <a href="/admin/services" class="nav-item">
-                    <i data-lucide="settings"></i>
-                    <span>Services</span>
-                </a>
-                <a href="/admin/techstacks" class="nav-item">
-                    <i data-lucide="cpu"></i>
-                    <span>Tech Stacks</span>
-                </a>
-                <a href="/admin/tags" class="nav-item">
-                    <i data-lucide="tag"></i>
-                    <span>Tags</span>
-                </a>
-                <a href="/admin/users" class="nav-item">
-                    <i data-lucide="users"></i>
-                    <span>Users</span>
-                </a>
-                <a href="/admin/contacts" class="nav-item">
-                    <i data-lucide="message-square"></i>
-                    <span>Messages</span>
-                </a>
-                <a href="/admin/settings" class="nav-item">
-                    <i data-lucide="settings"></i>
-                    <span>Settings</span>
-                </a>
-            </nav>
+            <div style="font-family: var(--mono); font-size: 0.6rem; color: var(--white3); margin-top: 0.25rem;">
+                Admin Console
+            </div>
         </div>
 
-        <div class="p-6 mt-auto border-t border-slate-800 text-sm text-slate-400">
-            <p class="font-medium text-slate-300">System Status</p>
-            <p class="mt-1">All systems operational</p>
-            <div class="mt-3 flex items-center gap-2">
-                <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
-                <span class="text-xs">Last updated: Just now</span>
+        <nav style="padding: 1rem 0.75rem;">
+            <a href="/admin/dashboard" class="nav-item">
+                → Dashboard
+            </a>
+            <a href="/admin/posts" class="nav-item">
+                → Posts
+            </a>
+            <a href="/admin/projects" class="nav-item">
+                → Projects
+            </a>
+            <a href="/admin/services" class="nav-item">
+                → Services
+            </a>
+            <a href="/admin/techstacks" class="nav-item">
+                → Tech Stacks
+            </a>
+            <a href="/admin/tags" class="nav-item">
+                → Tags
+            </a>
+            <a href="/admin/users" class="nav-item">
+                → Users
+            </a>
+            <a href="/admin/contacts" class="nav-item">
+                → Messages
+            </a>
+            <a href="/admin/settings" class="nav-item">
+                → Settings
+            </a>
+        </nav>
+
+        <div style="margin-top: auto; padding: 1rem; border-top: 1px solid var(--rule); margin: 2rem 0.75rem 0.75rem;">
+            <div style="font-family: var(--mono); font-size: 0.6rem; color: var(--teal); letter-spacing: 0.1em;">SYSTEM STATUS</div>
+            <div style="display: flex; align-items: center; gap: 0.5rem; margin-top: 0.5rem;">
+                <span class="status-dot"></span>
+                <span style="font-family: var(--mono); font-size: 0.6rem; color: var(--white3);">All systems operational</span>
             </div>
         </div>
     </aside>
@@ -190,26 +205,18 @@
     </main>
 
     <script>
-        // Initialize icons
-        lucide.createIcons();
-
-        // Sidebar toggle for mobile
-        const sidebar = document.getElementById('sidebar');
-        document.addEventListener('click', (event) => {
-            const toggleBtn = document.getElementById('mobile-menu-toggle');
-            if (window.innerWidth <= 768 && toggleBtn && !sidebar.contains(event.target) && event.target !== toggleBtn) {
-                sidebar.classList.remove('active');
-            }
-        });
-
         // Set active nav item based on URL
         document.querySelectorAll('.nav-item').forEach(item => {
-            if (item.href === window.location.href) {
+            if (item.getAttribute('href') === window.location.pathname) {
                 item.classList.add('active');
-            } else {
-                item.classList.remove('active');
             }
         });
+
+        // Mobile sidebar toggle (optional - add a hamburger button in child templates if needed)
+        const sidebar = document.getElementById('sidebar');
+        window.toggleSidebar = function() {
+            sidebar.classList.toggle('active');
+        };
     </script>
 </body>
 </html>

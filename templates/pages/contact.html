@@ -1,248 +1,213 @@
-{{ block "content" .}}
-<div class="max-w-4xl mx-auto">
-  <!-- Header Section -->
-  <div class="text-center mb-12">
-    <h1 class="text-4xl md:text-5xl font-bold text-white mb-4">
-      Get In 
-      <span class="bg-gradient-to-r from-teal-400 via-blue-500 to-purple-500 bg-clip-text text-transparent">
-        Touch
-      </span>
-    </h1>
-    <p class="text-xl text-slate-300 max-w-2xl mx-auto">
-      Have a project in mind? Need cybersecurity consulting? Let's discuss how we can work together to build something amazing.
-    </p>
-  </div>
-
-  <div class="grid lg:grid-cols-3 gap-8">
-    <!-- Contact Information -->
-    <div class="lg:col-span-1">
-      <div class="tech-card rounded-xl p-6 h-full">
-        <h3 class="text-2xl font-bold text-white mb-6 flex items-center gap-2">
-          <i data-lucide="message-circle" class="w-6 h-6 text-teal-400"></i>
-          Contact Info
-        </h3>
-        
-        <div class="space-y-6">
-          <!-- Email -->
-          <div class="flex items-start gap-4">
-            <div class="w-12 h-12 bg-teal-500/20 rounded-lg flex items-center justify-center flex-shrink-0">
-              <i data-lucide="mail" class="w-5 h-5 text-teal-400"></i>
-            </div>
-            <div>
-              <h4 class="font-semibold text-white mb-1">Email</h4>
-              <a href="mailto:nicksonwekongo@gmail.com" class="text-slate-300 hover:text-teal-400 transition-colors">
-                nicksonwekongo@gmail.com
-              </a>
-              <p class="text-sm text-slate-400 mt-1">Typically replies within 24 hours</p>
-            </div>
-          </div>
-
-          <!-- Location -->
-          <div class="flex items-start gap-4">
-            <div class="w-12 h-12 bg-blue-500/20 rounded-lg flex items-center justify-center flex-shrink-0">
-              <i data-lucide="map-pin" class="w-5 h-5 text-blue-400"></i>
-            </div>
-            <div>
-              <h4 class="font-semibold text-white mb-1">Location</h4>
-              <p class="text-slate-300">Nairobi, Kenya</p>
-              <p class="text-sm text-slate-400 mt-1">Available for remote work worldwide</p>
-            </div>
-          </div>
-
-          <!-- Availability -->
-          <div class="flex items-start gap-4">
-            <div class="w-12 h-12 bg-green-500/20 rounded-lg flex items-center justify-center flex-shrink-0">
-              <i data-lucide="clock" class="w-5 h-5 text-green-400"></i>
-            </div>
-            <div>
-              <h4 class="font-semibold text-white mb-1">Availability</h4>
-              <p class="text-slate-300">Open for new projects</p>
-              <p class="text-sm text-slate-400 mt-1">Cybersecurity & DevOps consulting</p>
-            </div>
-          </div>
-
-          <!-- Social Links -->
-          <div class="pt-4 border-t border-slate-700">
-            <h4 class="font-semibold text-white mb-3">Follow & Connect</h4>
-            <div class="flex gap-3">
-              <a href="https://github.com/C9b3rD3v11" target="_blank" class="w-10 h-10 bg-slate-700 hover:bg-slate-600 rounded-lg flex items-center justify-center transition-colors">
-                <i data-lucide="github" class="w-5 h-5 text-slate-300"></i>
-              </a>
-              <a href="https://linkedin.com/in/nicksonwekongo" target="_blank" class="w-10 h-10 bg-slate-700 hover:bg-slate-600 rounded-lg flex items-center justify-center transition-colors">
-                <i data-lucide="linkedin" class="w-5 h-5 text-slate-300"></i>
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
+{{ block "content" . }}
+<!-- Hero Section -->
+<section class="sec" style="border-top: none;">
+    <div class="sec-head">
+        <div class="sec-num"><span class="teal">05</span> — Connect</div>
+        <h2 class="sec-title">Get In <span>Touch</span></h2>
     </div>
+    <div style="padding: 2rem 3rem 3rem;">
+        <p style="font-size: 1rem; color: var(--white2); line-height: 1.6; max-width: 600px;">
+            Have a project in mind? Need infrastructure consulting? 
+            Let's discuss how we can work together.
+        </p>
+    </div>
+</section>
 
-    <!-- Contact Form -->
-    <div class="lg:col-span-2">
-      <div class="tech-card rounded-xl p-8">
+<!-- Contact Grid -->
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--rule);">
+    
+    <!-- Left: Contact Info -->
+    <div style="background: var(--ink2); padding: 3rem; position: relative;">
+        <div class="corner tl"></div>
+        <div class="corner bl"></div>
+        
+        <div style="margin-bottom: 2.5rem;">
+            <div style="font-family: var(--mono); font-size: 0.7rem; color: var(--teal); margin-bottom: 1rem;">/ contact</div>
+            <h3 style="font-family: var(--cond); font-size: 2rem; font-weight: 800; color: var(--white); margin-bottom: 0.5rem;">
+                Let's build
+            </h3>
+            <h3 style="font-family: var(--cond); font-size: 2rem; font-weight: 800; color: var(--teal);">
+                something great.
+            </h3>
+        </div>
+        
+        <!-- Contact Items -->
+        <div style="display: flex; flex-direction: column; gap: 1.5rem; margin-bottom: 2rem;">
+            <!-- Email -->
+            <div>
+                <div style="font-family: var(--mono); font-size: 0.6rem; color: var(--white3); letter-spacing: 0.1em; margin-bottom: 0.25rem;">EMAIL</div>
+                <a href="mailto:nicksonwekongo@gmail.com" style="color: var(--white); text-decoration: none; font-size: 0.9rem; transition: color 0.15s;" onmouseover="this.style.color='var(--teal)'" onmouseout="this.style.color='var(--white)'">
+                    nicksonwekongo@gmail.com
+                </a>
+            </div>
+            
+            <!-- Location -->
+            <div>
+                <div style="font-family: var(--mono); font-size: 0.6rem; color: var(--white3); letter-spacing: 0.1em; margin-bottom: 0.25rem;">LOCATION</div>
+                <div style="color: var(--white); font-size: 0.9rem;">Nairobi, Kenya</div>
+                <div style="color: var(--white3); font-size: 0.75rem; margin-top: 0.25rem;">Available for remote work worldwide</div>
+            </div>
+            
+            <!-- Availability -->
+            <div>
+                <div style="font-family: var(--mono); font-size: 0.6rem; color: var(--white3); letter-spacing: 0.1em; margin-bottom: 0.25rem;">AVAILABILITY</div>
+                <div style="display: inline-flex; align-items: center; gap: 0.4rem; background: rgba(45, 204, 122, 0.1); border: 1px solid rgba(45, 204, 122, 0.35); color: var(--green); font-family: var(--mono); font-size: 0.6rem; padding: 0.22rem 0.65rem;">
+                    <span class="sbdot"></span>
+                    Open for work
+                </div>
+            </div>
+        </div>
+        
+        <!-- Social Links -->
+        <div style="border-top: 1px solid var(--rule); padding-top: 1.5rem;">
+            <div style="font-family: var(--mono); font-size: 0.6rem; color: var(--white3); letter-spacing: 0.1em; margin-bottom: 1rem;">CONNECT</div>
+            <div style="display: flex; gap: 1rem;">
+                <a href="https://github.com/C9b3rD3vi1" target="_blank" style="color: var(--white3); text-decoration: none; font-family: var(--mono); font-size: 0.75rem; transition: color 0.15s;" onmouseover="this.style.color='var(--teal)'" onmouseout="this.style.color='var(--white3)'">
+                    GitHub
+                </a>
+                <a href="https://linkedin.com/in/nicksonwekongo" target="_blank" style="color: var(--white3); text-decoration: none; font-family: var(--mono); font-size: 0.75rem; transition: color 0.15s;" onmouseover="this.style.color='var(--teal)'" onmouseout="this.style.color='var(--white3)'">
+                    LinkedIn
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Right: Contact Form -->
+    <div style="background: var(--ink2); padding: 3rem;">
         {{ if .Success }}
-        <div class="alert alert-success mb-6 bg-green-500/20 border-green-500/50 text-green-400">
-          <i data-lucide="check-circle" class="w-5 h-5"></i>
-          <span class="font-medium">Thank you for your message!</span>
-          <span class="text-green-300">I'll get back to you within 24 hours.</span>
+        <div style="background: var(--teal-glow); border: 1px solid var(--teal-line); padding: 1rem; margin-bottom: 1.5rem; text-align: center;">
+            <div style="color: var(--teal); font-family: var(--mono); font-size: 0.8rem;">✓ Message sent successfully</div>
+            <div style="color: var(--white3); font-size: 0.75rem; margin-top: 0.25rem;">I'll get back to you within 24 hours.</div>
         </div>
         {{ end }}
-
-        <h3 class="text-2xl font-bold text-white mb-2">Send a Message</h3>
-        <p class="text-slate-400 mb-6">Fill out the form below and I'll respond as soon as possible.</p>
-
-        <form method="POST" action="/contact" class="space-y-6">
-          <!-- Name & Email Row -->
-          <div class="grid md:grid-cols-2 gap-6">
-            <div class="form-control">
-              <label class="label">
-                <span class="label-text text-slate-300 font-medium">Your Name</span>
-              </label>
-              <input 
-                type="text" 
-                name="name" 
-                placeholder="John Doe" 
-                class="input input-bordered bg-slate-800 border-slate-700 text-white placeholder-slate-500 focus:border-teal-500" 
-                required 
-              />
+        
+        <form method="POST" action="/contact">
+            <!-- Name -->
+            <div style="margin-bottom: 1.25rem;">
+                <label style="display: block; font-family: var(--mono); font-size: 0.6rem; color: var(--white3); letter-spacing: 0.1em; margin-bottom: 0.5rem;">
+                    NAME <span style="color: var(--teal);">*</span>
+                </label>
+                <input 
+                    type="text" 
+                    name="name" 
+                    required
+                    style="width: 100%; background: var(--ink); border: 1px solid var(--rule); padding: 0.75rem 1rem; color: var(--white); font-family: var(--body); font-size: 0.85rem; transition: border-color 0.15s;"
+                    onfocus="this.style.borderColor='var(--teal)'" 
+                    onblur="this.style.borderColor='var(--rule)'"
+                />
             </div>
-
-            <div class="form-control">
-              <label class="label">
-                <span class="label-text text-slate-300 font-medium">Email Address</span>
-              </label>
-              <input 
-                type="email" 
-                name="email" 
-                placeholder="you@example.com" 
-                class="input input-bordered bg-slate-800 border-slate-700 text-white placeholder-slate-500 focus:border-teal-500" 
-                required 
-              />
+            
+            <!-- Email -->
+            <div style="margin-bottom: 1.25rem;">
+                <label style="display: block; font-family: var(--mono); font-size: 0.6rem; color: var(--white3); letter-spacing: 0.1em; margin-bottom: 0.5rem;">
+                    EMAIL <span style="color: var(--teal);">*</span>
+                </label>
+                <input 
+                    type="email" 
+                    name="email" 
+                    required
+                    style="width: 100%; background: var(--ink); border: 1px solid var(--rule); padding: 0.75rem 1rem; color: var(--white); font-family: var(--body); font-size: 0.85rem; transition: border-color 0.15s;"
+                    onfocus="this.style.borderColor='var(--teal)'" 
+                    onblur="this.style.borderColor='var(--rule)'"
+                />
             </div>
-          </div>
-
-          <!-- Subject -->
-          <div class="form-control">
-            <label class="label">
-              <span class="label-text text-slate-300 font-medium">Subject</span>
-            </label>
-            <select 
-              name="subject" 
-              class="select select-bordered bg-slate-800 border-slate-700 text-white focus:border-teal-500"
+            
+            <!-- Subject -->
+            <div style="margin-bottom: 1.25rem;">
+                <label style="display: block; font-family: var(--mono); font-size: 0.6rem; color: var(--white3); letter-spacing: 0.1em; margin-bottom: 0.5rem;">
+                    SUBJECT
+                </label>
+                <select 
+                    name="subject"
+                    style="width: 100%; background: var(--ink); border: 1px solid var(--rule); padding: 0.75rem 1rem; color: var(--white); font-family: var(--body); font-size: 0.85rem; cursor: pointer; transition: border-color 0.15s;"
+                    onfocus="this.style.borderColor='var(--teal)'" 
+                    onblur="this.style.borderColor='var(--rule)'"
+                >
+                    <option value="" disabled selected>Select an option</option>
+                    <option value="Infrastructure Consulting">Infrastructure Consulting</option>
+                    <option value="Backend Development">Backend Development</option>
+                    <option value="DevOps Services">DevOps Services</option>
+                    <option value="Security Audit">Security Audit</option>
+                    <option value="Project Collaboration">Project Collaboration</option>
+                    <option value="Job Opportunity">Job Opportunity</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+            
+            <!-- Message -->
+            <div style="margin-bottom: 1.5rem;">
+                <label style="display: block; font-family: var(--mono); font-size: 0.6rem; color: var(--white3); letter-spacing: 0.1em; margin-bottom: 0.5rem;">
+                    MESSAGE <span style="color: var(--teal);">*</span>
+                </label>
+                <textarea 
+                    name="message" 
+                    required
+                    rows="5"
+                    placeholder="Tell me about your project..."
+                    style="width: 100%; background: var(--ink); border: 1px solid var(--rule); padding: 0.75rem 1rem; color: var(--white); font-family: var(--body); font-size: 0.85rem; resize: vertical; transition: border-color 0.15s;"
+                    onfocus="this.style.borderColor='var(--teal)'" 
+                    onblur="this.style.borderColor='var(--rule)'"
+                ></textarea>
+            </div>
+            
+            <!-- reCAPTCHA (keep your existing implementation) -->
+            <div style="margin-bottom: 1.5rem;">
+                <div class="g-recaptcha" data-sitekey="your-site-key"></div>
+            </div>
+            
+            <!-- Submit Button -->
+            <button 
+                type="submit" 
+                class="btn-primary" 
+                style="width: 100%; cursor: pointer;"
             >
-              <option value="" disabled selected>What's this about?</option>
-              <option value="Web Development">Web Development</option>
-              <option value="Pen Testing">Pen Testing</option>
-              <option value="Software Development">Software Development</option>
-              <option value="Cybersecurity Consulting">Cybersecurity Consulting</option>
-              <option value="DevOps Services">DevOps Services</option>
-              <option value="Project Collaboration">Project Collaboration</option>
-              <option value="Job Opportunity">Job Opportunity</option>
-              <option value="Technical Question">Technical Question</option>
-              <option value="Other">Other</option>
-            </select>
-          </div>
-
-          <!-- Message -->
-          <div class="form-control">
-            <label class="label">
-              <span class="label-text text-slate-300 font-medium">Your Message</span>
-            </label>
-            <textarea 
-              name="message" 
-              class="textarea textarea-bordered bg-slate-800 border-slate-700 text-white placeholder-slate-500 focus:border-teal-500 min-h-[140px]" 
-              placeholder="Tell me about your project, ask a question, or just say hello..."
-              required
-            ></textarea>
-          </div>
-
-          <!-- reCAPTCHA (keep your existing implementation) -->
-          <div class="form-control">
-            <div class="g-recaptcha" data-sitekey="your-site-key"></div>
-          </div>
-
-          <!-- Submit Button -->
-          <button 
-            type="submit" 
-            class="btn btn-primary w-full bg-teal-600 border-teal-600 hover:bg-teal-700 gap-3 py-4 text-lg font-semibold"
-          >
-            <i data-lucide="send" class="w-5 h-5"></i> 
-            Send Message
-          </button>
+                Send Message →
+            </button>
         </form>
-
-        <!-- Response Time Notice -->
-        <div class="mt-6 p-4 bg-slate-800/50 rounded-lg border border-slate-700">
-          <div class="flex items-start gap-3">
-            <i data-lucide="clock" class="w-5 h-5 text-blue-400 mt-0.5 flex-shrink-0"></i>
-            <div>
-              <p class="text-sm text-slate-300">
-                <span class="font-medium text-white">Quick Response Guarantee:</span> 
-                I typically respond to all messages within 24 hours. For urgent matters, 
-                please mention "URGENT" in your subject line.
-              </p>
-            </div>
-          </div>
+        
+        <div style="margin-top: 1.5rem; padding: 1rem; background: var(--ink); border: 1px solid var(--rule);">
+            <p style="font-family: var(--mono); font-size: 0.65rem; color: var(--white3); text-align: center;">
+                ⚡ Response within 24 hours
+            </p>
         </div>
-      </div>
     </div>
-  </div>
-
-  <!-- Services Quick Links -->
-  <div class="mt-16 text-center">
-    <h3 class="text-2xl font-bold text-white mb-8">How Can I Help You?</h3>
-    <div class="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-      <div class="tech-card rounded-xl p-6 text-center">
-        <div class="w-12 h-12 bg-red-500/20 rounded-lg flex items-center justify-center mx-auto mb-4">
-          <i data-lucide="shield" class="w-6 h-6 text-red-400"></i>
-        </div>
-        <h4 class="font-bold text-white mb-2">Cybersecurity</h4>
-        <p class="text-slate-400 text-sm">Security assessments, penetration testing, and secure architecture design</p>
-      </div>
-      
-      <div class="tech-card rounded-xl p-6 text-center">
-        <div class="w-12 h-12 bg-blue-500/20 rounded-lg flex items-center justify-center mx-auto mb-4">
-          <i data-lucide="cloud" class="w-6 h-6 text-blue-400"></i>
-        </div>
-        <h4 class="font-bold text-white mb-2">DevOps & Cloud</h4>
-        <p class="text-slate-400 text-sm">Infrastructure automation, CI/CD pipelines, and cloud security</p>
-      </div>
-      
-      <div class="tech-card rounded-xl p-6 text-center">
-        <div class="w-12 h-12 bg-green-500/20 rounded-lg flex items-center justify-center mx-auto mb-4">
-          <i data-lucide="code" class="w-6 h-6 text-green-400"></i>
-        </div>
-        <h4 class="font-bold text-white mb-2">Custom Development</h4>
-        <p class="text-slate-400 text-sm">Full-stack applications, security tools, and automation scripts</p>
-      </div>
-    </div>
-  </div>
 </div>
 
+<!-- Services Section -->
+<section class="sec" style="border-bottom: none;">
+    <div style="padding: 3rem; text-align: center;">
+        <div style="font-family: var(--mono); font-size: 0.6rem; color: var(--teal); letter-spacing: 0.1em; margin-bottom: 1rem;">WHAT I DO</div>
+        <h3 style="font-family: var(--cond); font-size: 2rem; font-weight: 800; color: var(--white); margin-bottom: 2rem;">
+            Services &amp; <span style="color: var(--teal);">Expertise</span>
+        </h3>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1px; background: var(--rule); max-width: 900px; margin: 0 auto;">
+            <div style="background: var(--ink2); padding: 2rem; text-align: center;">
+                <div style="font-family: var(--mono); font-size: 1.5rem; color: var(--teal); margin-bottom: 0.75rem;">⌨</div>
+                <h4 style="font-family: var(--cond); font-size: 1.2rem; font-weight: 800; color: var(--white); margin-bottom: 0.5rem;">Backend</h4>
+                <p style="font-size: 0.8rem; color: var(--mid);">Go, REST APIs, microservices, high-performance systems</p>
+            </div>
+            <div style="background: var(--ink2); padding: 2rem; text-align: center;">
+                <div style="font-family: var(--mono); font-size: 1.5rem; color: var(--teal); margin-bottom: 0.75rem;">⎈</div>
+                <h4 style="font-family: var(--cond); font-size: 1.2rem; font-weight: 800; color: var(--white); margin-bottom: 0.5rem;">DevOps</h4>
+                <p style="font-size: 0.8rem; color: var(--mid);">Docker, CI/CD, Linux servers, infrastructure automation</p>
+            </div>
+            <div style="background: var(--ink2); padding: 2rem; text-align: center;">
+                <div style="font-family: var(--mono); font-size: 1.5rem; color: var(--teal); margin-bottom: 0.75rem;">🔒</div>
+                <h4 style="font-family: var(--cond); font-size: 1.2rem; font-weight: 800; color: var(--white); margin-bottom: 0.5rem;">Security</h4>
+                <p style="font-size: 0.8rem; color: var(--mid);">Hardening, audits, SSL/TLS, vulnerability assessment</p>
+            </div>
+        </div>
+    </div>
+</section>
+
 <style>
-.tech-card {
-  background: rgba(30, 41, 59, 0.6);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  transition: all 0.3s ease;
-}
-
-.tech-card:hover {
-  transform: translateY(-2px);
-  border-color: rgba(14, 165, 233, 0.3);
-  box-shadow: 0 10px 30px rgba(14, 165, 233, 0.1);
-}
-
-.form-control input:focus,
-.form-control textarea:focus,
-.form-control select:focus {
-  border-color: #0d9488;
-  box-shadow: 0 0 0 1px rgba(13, 148, 136, 0.2);
-}
+    input, textarea, select {
+        outline: none;
+    }
+    
+    input:focus, textarea:focus, select:focus {
+        outline: none;
+    }
 </style>
-
-<script>
-// Initialize Lucide icons
-lucide.createIcons();
-</script>
 {{ end }}

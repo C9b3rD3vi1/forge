@@ -3,7 +3,7 @@ package utils
 import (
     "github.com/gofiber/fiber/v2"
     
-    "github.com/C9b3rD3vi1/Go_blog/config"
+    "github.com/C9b3rD3vi1/forge/config"
 )
 
 func SetFlash(c *fiber.Ctx, key, value string) error {

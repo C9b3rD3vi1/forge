@@ -1,10 +1,10 @@
 package handlers
 
 import (
-	"github.com/C9b3rD3vi1/Go_blog/config"
-	"github.com/C9b3rD3vi1/Go_blog/database"
-	"github.com/C9b3rD3vi1/Go_blog/models"
-	"github.com/C9b3rD3vi1/Go_blog/utils"
+	"github.com/C9b3rD3vi1/forge/config"
+	"github.com/C9b3rD3vi1/forge/database"
+	"github.com/C9b3rD3vi1/forge/models"
+	"github.com/C9b3rD3vi1/forge/utils"
 	"github.com/gofiber/fiber/v2"
 )
 

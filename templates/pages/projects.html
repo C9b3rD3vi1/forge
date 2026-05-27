@@ -1,104 +1,132 @@
 {{ block "content" . }}
-<div class="grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
-  {{ range .Projects }}
-  <a href="/projects/{{ .Slug }}"
-    class="project-card group relative bg-gradient-to-br from-gray-900 via-black to-gray-950 border border-green-600/30 rounded-2xl overflow-hidden shadow-xl hover:shadow-green-500/30 transform hover:-translate-y-3 hover:scale-[1.03] transition-all duration-500">
-
-    <div
-      class="absolute inset-0 opacity-10 group-hover:opacity-20 transition duration-500 bg-gradient-to-tr from-green-400/30 via-transparent to-green-600/30 blur-2xl">
+<!-- Hero Section -->
+<section class="sec" style="border-top: none;">
+    <div class="sec-head">
+        <div class="sec-num"><span class="teal">03</span> — Portfolio</div>
+        <h2 class="sec-title">Live <span>Systems</span></h2>
     </div>
-
-    <div class="aspect-video bg-black overflow-hidden relative">
-      <img src="{{ .ImageURL }}" alt="{{ .Title }}"
-        class="w-full h-full object-cover group-hover:opacity-80 transition-opacity duration-700 scale-105 group-hover:scale-110" />
-
-      <span class="absolute top-3 right-3 text-xs px-3 py-1 bg-green-600/80 text-black font-bold rounded-full shadow-md">
-        NEW
-      </span>
+    <div style="padding: 3rem 3rem 2rem;">
+        <p style="font-size: 1rem; color: var(--white2); line-height: 1.6; max-width: 700px;">
+            Production-grade applications built with Go, PostgreSQL, Docker, and deployed on Linux infrastructure. 
+            Each system is containerized, secured, and running in live environments.
+        </p>
     </div>
+</section>
 
-    <div class="p-6 relative z-10">
-      <h2 class="text-2xl font-extrabold mb-3 text-green-400 group-hover:text-green-300 transition-colors">
-        {{ .Title }}
-      </h2>
-      <p class="text-sm text-gray-400 leading-relaxed line-clamp-3">
-        {{ .Description }}
-      </p>
-
-      <div class="mt-4 flex flex-wrap gap-2 items-center">
-        <span class="text-xs font-semibold text-gray-500 uppercase">Tech Stack:</span>
-        {{ range .TechStacks }}
-        <span
-          class="tech-stack-badge text-xs px-2 py-1 rounded-full bg-gray-800 text-gray-400 border border-gray-700">
-          {{ . }}
-        </span>
+<!-- Projects Grid -->
+<section class="sec" style="border-bottom: none;">
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); gap: 2rem; background: transparent; padding: 2rem 3rem;">
+        {{ range $i, $project := .Projects }}
+        <a href="/projects/{{ $project.Slug }}" class="project-card" style="text-decoration: none; display: block;">
+            <div style="background: var(--ink2); height: 100%; transition: all 0.3s ease; position: relative; overflow: hidden; border: 1px solid var(--rule);">
+                <!-- Hover accent line -->
+                <div style="position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--teal); transform: scaleX(0); transform-origin: left; transition: transform 0.3s ease; z-index: 1;"></div>
+                
+                <!-- Project Image -->
+                {{ if $project.ImageURL }}
+                <div style="overflow: hidden; height: 220px;">
+                    <img src="{{ $project.ImageURL }}" alt="{{ $project.Title }}" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease;">
+                </div>
+                {{ end }}
+                
+                <!-- Content -->
+                <div style="padding: 1.75rem;">
+                    <!-- Project number / badge -->
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.25rem;">
+                        <div style="font-family: var(--mono); font-size: 0.75rem; color: var(--teal); letter-spacing: 0.1em;">
+                            {{ add $i 1 }} /
+                        </div>
+                        <div style="font-family: var(--mono); font-size: 0.65rem; color: var(--white3); background: var(--teal-glow); padding: 0.25rem 0.75rem; border-radius: 2px;">
+                            LIVE
+                        </div>
+                    </div>
+                    
+                    <!-- Project title -->
+                    <h3 style="font-family: var(--cond); font-size: 1.6rem; font-weight: 800; color: var(--white); margin-bottom: 1rem; letter-spacing: -0.02em;">
+                        {{ $project.Title }}
+                    </h3>
+                    
+                    <!-- Description -->
+                    <p style="font-size: 0.9rem; color: var(--mid); line-height: 1.7; margin-bottom: 1.25rem;">
+                        {{ $project.Description }}
+                    </p>
+                    
+                    <!-- Tech stack tags -->
+                    <div style="display: flex; flex-wrap: wrap; gap: 0.6rem; margin-bottom: 1.5rem;">
+                        {{ range $project.TechStacks }}
+                        <span style="font-family: var(--mono); font-size: 0.6rem; color: var(--teal); background: var(--teal-glow); border: 1px solid var(--teal-line); padding: 0.25rem 0.75rem; border-radius: 2px;">
+                            {{ . }}
+                        </span>
+                        {{ end }}
+                    </div>
+                    
+                    <!-- Divider -->
+                    <div style="height: 1px; background: var(--rule); margin: 1rem 0 1.25rem 0;"></div>
+                    
+                    <!-- View link -->
+                    <div style="display: flex; align-items: center; gap: 0.5rem; font-family: var(--mono); font-size: 0.7rem; color: var(--teal); transition: all 0.2s ease;">
+                        <span>View Project</span>
+                        <span style="transition: transform 0.2s ease;">→</span>
+                    </div>
+                </div>
+            </div>
+        </a>
+        {{ else }}
+        <div style="background: var(--ink2); padding: 4rem; text-align: center; grid-column: 1 / -1; border: 1px solid var(--rule);">
+            <p style="color: var(--white3); font-family: var(--mono); font-size: 0.9rem;">No projects available yet.</p>
+        </div>
         {{ end }}
-      </div>
-
-      <div class="mt-4">
-        <span
-          class="inline-flex items-center gap-2 text-green-400 font-semibold text-sm group-hover:translate-x-1 transition-transform">
-          View Project →
-        </span>
-      </div>
     </div>
-  </a>
-  {{ else }}
-  <p class="text-gray-400 col-span-full text-center animate-fade-in-up">No projects available yet.</p>
-  {{ end }}
-</div>
+</section>
+
+<!-- CTA Section -->
+<section class="sec" style="border-bottom: none;">
+    <div style="text-align: center; padding: 5rem 2rem;">
+        <h3 style="font-family: var(--cond); font-size: 2rem; font-weight: 800; color: var(--white); margin-bottom: 1rem;">
+            Want to see more?
+        </h3>
+        <p style="color: var(--white2); margin-bottom: 2rem; font-size: 1rem;">
+            All code is production-ready, documented, and maintained.
+        </p>
+        <a href="/contact" class="btn-primary">Discuss your project →</a>
+    </div>
+</section>
 
 <style>
-  @keyframes fade-in-up {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
+    .project-card > div {
+        transition: all 0.3s ease;
     }
-
-    to {
-      opacity: 1;
-      transform: translateY(0);
+    
+    .project-card:hover > div {
+        background: var(--ink3) !important;
+        border-color: var(--teal-line);
     }
-  }
-
-  .project-card {
-    opacity: 0;
-    animation: fade-in-up 0.8s ease forwards;
-  }
-
-  /* Staggering effect with nth-child */
-  .project-card:nth-child(1) {
-    animation-delay: 0.1s;
-  }
-
-  .project-card:nth-child(2) {
-    animation-delay: 0.2s;
-  }
-
-  .project-card:nth-child(3) {
-    animation-delay: 0.3s;
-  }
-
-  .project-card:nth-child(4) {
-    animation-delay: 0.4s;
-  }
-
-  .project-card:nth-child(5) {
-    animation-delay: 0.5s;
-  }
-
-  .project-card:nth-child(6) {
-    animation-delay: 0.6s;
-  }
-
-  .tech-stack-badge {
-    transition: all 0.3s ease;
-  }
-
-  .tech-stack-badge:hover {
-    background-color: #10B981; /* Tailwind green-500 */
-    color: #1F2937; /* Tailwind gray-800 */
-    border-color: #10B981;
-  }
+    
+    .project-card:hover > div > div:first-child {
+        transform: scaleX(1);
+    }
+    
+    .project-card:hover img {
+        transform: scale(1.05);
+    }
+    
+    .project-card:hover a span:last-child {
+        transform: translateX(4px);
+    }
+    
+    @media (max-width: 768px) {
+        .projects-grid {
+            padding: 1rem !important;
+            gap: 1rem !important;
+        }
+        
+        .project-card > div > div:last-child {
+            padding: 1.25rem;
+        }
+        
+        .project-card h3 {
+            font-size: 1.3rem;
+        }
+    }
 </style>
 {{ end }}

@@ -1,18 +1,63 @@
-{{ block "content" .}}
-<div class="max-w-md mx-auto mt-12 p-6 bg-base-200 rounded shadow">
-    <h2 class="text-xl font-bold mb-4">Two-Factor Authentication</h2>
-    <p class="mb-4 text-sm text-base-content/70">
-        Enter the 6-digit code from your authenticator app.
-    </p>
-    <form method="POST" action="/admin/verify-otp">
-        <input
-            type="text"
-            name="otp"
-            class="input input-bordered w-full mb-4"
-            placeholder="123456"
-            required
-        />
-        <button type="submit" class="btn btn-primary w-full">Verify</button>
-    </form>
+{{ define "title" }}Two-Factor Authentication | Admin Panel{{ end }}
+
+{{ define "content" }}
+<div style="min-height: 70vh; display: flex; align-items: center; justify-content: center; padding: 2rem;">
+    <div style="width: 100%; max-width: 420px;">
+        
+        <!-- 2FA Card -->
+        <div style="background: var(--ink2); border: 1px solid var(--rule); padding: 2rem; position: relative;">
+            <div class="corner tl"></div>
+            <div class="corner tr"></div>
+            
+            <!-- Header -->
+            <div style="text-align: center; margin-bottom: 1.5rem;">
+                <div style="font-family: var(--cond); font-size: 1.5rem; font-weight: 800; color: var(--teal); margin-bottom: 0.5rem;">
+                    Two-Factor Authentication
+                </div>
+                <div style="font-family: var(--mono); font-size: 0.65rem; color: var(--white3);">
+                    Enter the 6-digit code from your authenticator app
+                </div>
+            </div>
+            
+            <!-- Form -->
+            <form method="POST" action="/admin/verify-otp">
+                
+                <!-- OTP Input -->
+                <div style="margin-bottom: 1.5rem;">
+                    <label for="otp" style="display: block; font-family: var(--mono); font-size: 0.6rem; color: var(--white3); letter-spacing: 0.1em; margin-bottom: 0.5rem;">
+                        AUTHENTICATION CODE
+                    </label>
+                    <input 
+                        type="text" 
+                        id="otp" 
+                        name="otp" 
+                        placeholder="123456"
+                        maxlength="6"
+                        style="width: 100%; background: var(--ink); border: 1px solid var(--rule); padding: 0.75rem 1rem; color: var(--white); font-family: var(--body); font-size: 0.85rem; text-align: center; letter-spacing: 0.2rem; transition: border-color 0.15s;"
+                        onfocus="this.style.borderColor='var(--teal)'" 
+                        onblur="this.style.borderColor='var(--rule)'"
+                        required
+                    />
+                </div>
+                
+                <!-- Submit Button -->
+                <button 
+                    type="submit" 
+                    class="btn-primary" 
+                    style="width: 100%; cursor: pointer; padding: 0.75rem;"
+                >
+                    Verify →
+                </button>
+            </form>
+            
+            <!-- Help Text -->
+            <div style="margin-top: 1rem; text-align: center;">
+                <p style="font-family: var(--mono); font-size: 0.55rem; color: var(--white3);">
+                    Lost access? Contact your system administrator.
+                </p>
+            </div>
+        </div>
+        
+    </div>
 </div>
 {{ end }}

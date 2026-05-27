@@ -1,146 +1,120 @@
 {{ block "content" .}}
-<div class="min-h-[80vh] flex items-center justify-center px-4">
-    <div class="w-full max-w-md">
-        <!-- Header Section -->
-        <div class="text-center mb-8">
-            <div class="flex items-center justify-center mb-4">
-                <div class="w-12 h-12 bg-gradient-to-r from-teal-500 to-blue-500 rounded-lg flex items-center justify-center">
-                    <i data-lucide="shield" class="w-6 h-6 text-white"></i>
+<div style="min-height: 80vh; display: flex; align-items: center; justify-content: center; padding: 2rem;">
+    <div style="width: 100%; max-width: 440px;">
+        
+        <!-- Login Card -->
+        <div style="background: var(--ink2); border: 1px solid var(--rule); padding: 2rem; position: relative;">
+            <div class="corner tl"></div>
+            <div class="corner tr"></div>
+            
+            <!-- Header -->
+            <div style="text-align: center; margin-bottom: 2rem;">
+                <div style="font-family: var(--cond); font-size: 1.8rem; font-weight: 800; color: var(--white); margin-bottom: 0.5rem;">
+                    Welcome Back
+                </div>
+                <div style="font-family: var(--mono); font-size: 0.7rem; color: var(--white3);">
+                    Sign in to your account
                 </div>
             </div>
-            <h1 class="text-3xl font-bold text-white mb-2">
-                Welcome Back
-            </h1>
-            <p class="text-slate-400">
-                Sign in to your CyberDev Hub account
-            </p>
-        </div>
-
-        <!-- Login Card -->
-        <div class="tech-card rounded-2xl p-8 shadow-xl">
-            <form method="POST" action="/login" class="space-y-6">
+            
+            <!-- Login Form -->
+            <form method="POST" action="/login">
+                
                 <!-- Email Field -->
-                <div class="form-control">
-                    <label class="label">
-                        <span class="label-text text-slate-300 font-medium">Email Address</span>
+                <div style="margin-bottom: 1.25rem;">
+                    <label style="display: block; font-family: var(--mono); font-size: 0.6rem; color: var(--white3); letter-spacing: 0.1em; margin-bottom: 0.5rem;">
+                        EMAIL
                     </label>
-                    <div class="relative">
-                        <i data-lucide="mail" class="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-slate-500"></i>
-                        <input
-                            type="email"
-                            name="email"
-                            placeholder="hacker@example.com"
-                            class="input input-bordered w-full pl-10 bg-slate-800 border-slate-600 text-white placeholder-slate-500 focus:border-teal-500 focus:ring-1 focus:ring-teal-500 transition duration-200"
-                            required
-                        />
-                    </div>
+                    <input 
+                        type="email" 
+                        name="email" 
+                        placeholder="user@example.com"
+                        style="width: 100%; background: var(--ink); border: 1px solid var(--rule); padding: 0.75rem 1rem; color: var(--white); font-family: var(--body); font-size: 0.85rem; transition: border-color 0.15s;"
+                        onfocus="this.style.borderColor='var(--teal)'" 
+                        onblur="this.style.borderColor='var(--rule)'"
+                        required
+                    />
                 </div>
-
+                
                 <!-- Password Field -->
-                <div class="form-control">
-                    <div class="flex items-center justify-between label">
-                        <span class="label-text text-slate-300 font-medium">Password</span>
-                        <a href="/forgot-password" class="text-sm text-teal-400 hover:text-teal-300 transition duration-200">
-                            Forgot password?
+                <div style="margin-bottom: 1rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                        <label style="font-family: var(--mono); font-size: 0.6rem; color: var(--white3); letter-spacing: 0.1em;">
+                            PASSWORD
+                        </label>
+                        <a href="/forgot-password" style="font-family: var(--mono); font-size: 0.55rem; color: var(--teal); text-decoration: none;">
+                            Forgot?
                         </a>
                     </div>
-                    <div class="relative">
-                        <i data-lucide="lock" class="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-slate-500"></i>
-                        <input
-                            type="password"
-                            name="password"
-                            placeholder="••••••••"
-                            class="input input-bordered w-full pl-10 bg-slate-800 border-slate-600 text-white placeholder-slate-500 focus:border-teal-500 focus:ring-1 focus:ring-teal-500 transition duration-200"
-                            required
-                        />
-                    </div>
+                    <input 
+                        type="password" 
+                        name="password" 
+                        placeholder="••••••••"
+                        style="width: 100%; background: var(--ink); border: 1px solid var(--rule); padding: 0.75rem 1rem; color: var(--white); font-family: var(--body); font-size: 0.85rem; transition: border-color 0.15s;"
+                        onfocus="this.style.borderColor='var(--teal)'" 
+                        onblur="this.style.borderColor='var(--rule)'"
+                        required
+                    />
                 </div>
-
-                <!-- Remember Me Checkbox -->
-                <div class="form-control">
-                    <label class="cursor-pointer flex items-center space-x-3">
-                        <input type="checkbox" name="remember" class="checkbox checkbox-primary bg-slate-800 border-slate-600" />
-                        <span class="label-text text-slate-300">Remember this device</span>
+                
+                <!-- Remember Me -->
+                <div style="margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                    <input 
+                        type="checkbox" 
+                        name="remember" 
+                        id="remember"
+                        style="width: 14px; height: 14px; accent-color: var(--teal);"
+                    />
+                    <label for="remember" style="font-family: var(--mono); font-size: 0.6rem; color: var(--white3);">
+                        Remember this device
                     </label>
                 </div>
-
+                
                 <!-- Submit Button -->
                 <button 
                     type="submit" 
-                    class="btn btn-primary w-full gap-3 bg-gradient-to-r from-teal-600 to-blue-600 border-none hover:from-teal-700 hover:to-blue-700 text-white font-semibold py-3 transition duration-200 transform hover:scale-[1.02]"
+                    class="btn-primary" 
+                    style="width: 100%; cursor: pointer;"
                 >
-                    <i data-lucide="log-in" class="w-5 h-5"></i> 
-                    Sign In
+                    Sign In →
                 </button>
             </form>
-
+            
             <!-- Divider -->
-            <div class="divider text-slate-600 text-xs my-6">OR CONTINUE WITH</div>
-
-            <!-- Social Login Options -->
-            <div class="grid grid-cols-2 gap-3 mb-6">
-                <button type="button" class="btn btn-outline border-slate-600 text-slate-300 hover:bg-slate-700 hover:border-slate-500 gap-2">
-                    <i data-lucide="github" class="w-4 h-4"></i>
+            <div style="display: flex; align-items: center; gap: 1rem; margin: 1.5rem 0;">
+                <div style="flex: 1; height: 1px; background: var(--rule);"></div>
+                <span style="font-family: var(--mono); font-size: 0.6rem; color: var(--white3);">OR</span>
+                <div style="flex: 1; height: 1px; background: var(--rule);"></div>
+            </div>
+            
+            <!-- Social Login -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1.5rem;">
+                <button type="button" class="btn-ghost" style="cursor: pointer; text-align: center;">
                     GitHub
                 </button>
-                <button type="button" class="btn btn-outline border-slate-600 text-slate-300 hover:bg-slate-700 hover:border-slate-500 gap-2">
-                    <i data-lucide="key" class="w-4 h-4"></i>
+                <button type="button" class="btn-ghost" style="cursor: pointer; text-align: center;">
                     SSO
                 </button>
             </div>
-
-            <!-- Registration Link -->
-            <div class="text-center pt-4 border-t border-slate-700">
-                <p class="text-slate-400 text-sm">
+            
+            <!-- Register Link -->
+            <div style="text-align: center; border-top: 1px solid var(--rule); padding-top: 1.25rem;">
+                <span style="font-family: var(--mono); font-size: 0.6rem; color: var(--white3);">
                     Don't have an account?
-                    <a href="/register" class="text-teal-400 hover:text-teal-300 font-medium transition duration-200 ml-1">
-                        Create account
-                    </a>
-                </p>
+                </span>
+                <a href="/register" style="font-family: var(--mono); font-size: 0.6rem; color: var(--teal); text-decoration: none; margin-left: 0.25rem;">
+                    Create account →
+                </a>
             </div>
         </div>
-
+        
         <!-- Security Notice -->
-        <div class="mt-6 text-center">
-            <div class="flex items-center justify-center text-slate-500 text-xs gap-2">
-                <i data-lucide="shield-check" class="w-3 h-3"></i>
-                <span>Your data is encrypted and secure</span>
-            </div>
+        <div style="text-align: center; margin-top: 1rem;">
+            <span style="font-family: var(--mono); font-size: 0.55rem; color: var(--white3);">
+                🔒 Your data is encrypted and secure
+            </span>
         </div>
+        
     </div>
 </div>
-
-<script>
-    // Initialize Lucide icons
-    lucide.createIcons();
-    
-    // Add subtle animation to the login card
-    document.addEventListener('DOMContentLoaded', function() {
-        const loginCard = document.querySelector('.tech-card');
-        loginCard.style.opacity = '0';
-        loginCard.style.transform = 'translateY(10px)';
-        
-        setTimeout(() => {
-            loginCard.style.transition = 'all 0.5s ease-out';
-            loginCard.style.opacity = '1';
-            loginCard.style.transform = 'translateY(0)';
-        }, 100);
-    });
-</script>
-
-<style>
-    .tech-card {
-        background: rgba(30, 41, 59, 0.8);
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-    }
-    
-    .input:focus {
-        box-shadow: 0 0 0 2px rgba(20, 184, 166, 0.2);
-    }
-    
-    .checkbox:checked {
-        box-shadow: 0 0 0 2px rgba(20, 184, 166, 0.5);
-    }
-</style>
 {{ end }}

@@ -1,27 +1,62 @@
-{{ block "content" .}}
-<div class="min-h-screen flex flex-col items-center justify-center bg-gray-900 text-yellow-400 font-mono px-4">
-  
-  <!-- 400 Error Code -->
-  <h1 class="text-6xl md:text-8xl font-extrabold animate-pulse text-yellow-500">400</h1>
+{{ define "title" }}400 - Bad Request | Nickson Wekongo{{ end }}
 
-  <!-- Error message -->
-  <p class="text-lg md:text-xl mt-4 text-yellow-300 animate-fade-in">
-    Bad Request.<br> The server could not understand your request.
-  </p>
-
-  <!-- Back Home Button -->
-  <a href="/" class="mt-6 inline-flex items-center gap-2 border border-yellow-400 text-yellow-200 px-4 py-2 rounded hover:bg-yellow-700 hover:text-white transition-all duration-300">
-    <i data-lucide="arrow-left" class="w-4 h-4"></i>
-    Back to Home
-  </a>
-
-  <!-- Optional ASCII fallback -->
-  <pre class="mt-10 text-yellow-400 text-sm leading-tight hidden md:block select-none animate-pulse">
-												╔══════════════════════════════╗
-												║         400 ERROR            ║
-												║     Bad Request!             ║
-												║  Check your input format.    ║
-												╚══════════════════════════════╝
-  </pre>
+{{ define "content" }}
+<div style="min-height: 70vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 2rem;">
+    
+    <!-- 400 Code -->
+    <div style="font-family: var(--mono); font-size: 8rem; font-weight: 800; color: var(--amber); line-height: 1; margin-bottom: 1rem;">
+        400
+    </div>
+    
+    <!-- Terminal cursor line -->
+    <div style="font-family: var(--mono); font-size: 0.8rem; color: var(--teal); margin-bottom: 1rem;">
+        <span class="tp">nickson@simuxtech</span><span class="tdim">:~$</span> <span class="tc">curl -X POST /api/endpoint</span>
+    </div>
+    
+    <!-- Error Message -->
+    <div style="text-align: center; max-width: 500px;">
+        <div style="font-family: var(--mono); font-size: 0.7rem; color: var(--amber); background: rgba(240, 160, 48, 0.1); border: 1px solid var(--amber); padding: 0.5rem 1rem; margin-bottom: 1rem;">
+            <span class="to">Error:</span> Bad Request
+        </div>
+        
+        <p style="font-family: var(--body); font-size: 0.9rem; color: var(--white2); margin-bottom: 1.5rem; line-height: 1.6;">
+            The server could not understand your request. Please check your input and try again.
+        </p>
+        
+        <div style="display: flex; justify-content: center; gap: 0.5rem;">
+            <span style="font-family: var(--mono); font-size: 0.6rem; color: var(--white3);">$</span>
+            <span style="font-family: var(--mono); font-size: 0.65rem; color: var(--teal);">./fix_request.sh</span>
+            <span class="tcursor" style="display: inline-block; width: 7px; height: 12px; background: var(--teal); vertical-align: middle; animation: blink 1.1s step-end infinite;"></span>
+        </div>
+    </div>
+    
+    <!-- Back Home Button -->
+    <div style="margin-top: 2rem;">
+        <a href="/" class="btn-primary" style="display: inline-block;">
+            ← Return Home
+        </a>
+    </div>
+    
+    <!-- ASCII Art -->
+    <pre style="font-family: var(--mono); font-size: 0.55rem; color: var(--white3); margin-top: 3rem; text-align: center; line-height: 1.3;">
+    ╔══════════════════════════════════╗
+    ║         400 - BAD REQUEST        ║
+    ║    The server cannot process     ║
+    ║    your request. Check syntax.   ║
+    ╚══════════════════════════════════╝
+    </pre>
+    
 </div>
+
+<style>
+    @keyframes blink {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0; }
+    }
+    
+    .tp { color: #4ec9b0; }
+    .tc { color: #9cdcfe; }
+    .to { color: #ce9178; }
+    .tdim { color: #333e4a; }
+</style>
 {{ end }}

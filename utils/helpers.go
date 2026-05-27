@@ -4,7 +4,7 @@ import (
 	"strings"
 	"github.com/google/uuid"
     "encoding/json"
-    "github.com/C9b3rD3vi1/Go_blog/models"
+    "github.com/C9b3rD3vi1/forge/models"
     
 )
 

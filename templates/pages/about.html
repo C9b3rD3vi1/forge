@@ -1,431 +1,326 @@
-{{ block "content" .}}
+{{ block "content" . }}
+<!-- Hero Section -->
+<section class="sec" style="border-top: none;">
+    <div class="sec-head">
+        <div class="sec-num"><span class="teal">04</span> — Profile</div>
+        <h2 class="sec-title">About <span>Me</span></h2>
+    </div>
+    <div style="padding: 2rem 3rem 3rem;">
+        <p style="font-size: 1rem; color: var(--white2); line-height: 1.6; max-width: 700px;">
+            Backend & infrastructure engineer with 3+ years of production experience. 
+            I build systems that actually run — in production, with real users, and real uptime requirements.
+        </p>
+    </div>
+</section>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About | Nickson Wekongo - Cybersecurity & DevOps Engineer</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <style>
-        :root {
-            --tech-navy: #0f172a;
-            --tech-slate: #1e293b;
-            --tech-blue: #2563eb;
-            --tech-teal: #0ea5e9;
-            --tech-purple: #8b5cf6;
-            --tech-green: #10b981;
-        }
+<!-- Profile Section -->
+<div style="display: grid; grid-template-columns: 1fr 2fr; gap: 1px; background: var(--rule);">
+    
+    <!-- Left: Avatar / Basic Info -->
+    <div style="background: var(--ink2); padding: 3rem; position: relative;">
+        <div class="corner tl"></div>
+        <div class="corner bl"></div>
         
-        body {
-            font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, var(--tech-navy) 0%, var(--tech-slate) 100%);
-            color: #f8fafc;
-        }
-        
-        .code-font {
-            font-family: 'JetBrains Mono', monospace;
-        }
-        
-        .tech-card {
-            background: rgba(30, 41, 59, 0.6);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.3s ease;
-        }
-        
-        .tech-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--tech-teal);
-            box-shadow: 0 20px 40px rgba(14, 165, 233, 0.15);
-        }
-        
-        .cert-badge {
-            background: linear-gradient(45deg, var(--tech-purple), var(--tech-blue));
-            color: white;
-            padding: 0.5rem 1rem;
-            border-radius: 2rem;
-            font-size: 0.875rem;
-            font-weight: 600;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        
-        .skill-meter {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 1rem;
-            overflow: hidden;
-            height: 0.5rem;
-        }
-        
-        .skill-level {
-            height: 100%;
-            border-radius: 1rem;
-            transition: width 2s ease-in-out;
-        }
-        
-        .stagger-item {
-            animation: fadeInSlideUp 0.6s ease-out forwards;
-            opacity: 0;
-        }
-        
-        @keyframes fadeInSlideUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        .stagger-1 { animation-delay: 0.1s; }
-        .stagger-2 { animation-delay: 0.2s; }
-        .stagger-3 { animation-delay: 0.3s; }
-        .stagger-4 { animation-delay: 0.4s; }
-        .stagger-5 { animation-delay: 0.5s; }
-        .stagger-6 { animation-delay: 0.6s; }
-        .stagger-7 { animation-delay: 0.7s; }
-        .stagger-8 { animation-delay: 0.8s; }
-        .stagger-9 { animation-delay: 0.9s; }
-    </style>
-</head>
-<body class="min-h-screen">
-
-<section class="max-w-6xl mx-auto px-6 py-16 space-y-20">
-
-    <!-- Hero Section -->
-    <div class="text-center space-y-8 stagger-item stagger-1">
-        <div class="flex items-center justify-center mb-6">
-            <img src="https://placehold.co/120x120/1e293b/0ea5e9?text=NW" alt="Nickson Wekongo" class="w-24 h-24 rounded-full border-4 border-teal-500 mr-6">
-            <div class="text-left">
-                <h1 class="text-3xl font-bold text-white">Nickson Wekongo</h1>
-                <p class="text-slate-400">Fortinet Certified Cybersecurity Professional & DevOps Engineer</p>
-            </div>
+        <!-- Avatar Placeholder -->
+        <div style="width: 120px; height: 120px; background: var(--ink3); border: 2px solid var(--teal); border-radius: 50%; margin-bottom: 1.5rem; display: flex; align-items: center; justify-content: center;">
+            <span style="font-family: var(--cond); font-size: 2.5rem; font-weight: 800; color: var(--teal);">NW</span>
         </div>
         
-        <h1 class="text-4xl md:text-5xl font-extrabold text-white">
-            Building 
-            <span class="bg-gradient-to-r from-teal-400 via-blue-500 to-purple-500 bg-clip-text text-transparent">
-                Secure Systems
-            </span>
-            for the Digital World
-        </h1>
-        <p class="text-lg md:text-xl text-slate-300 max-w-3xl mx-auto">
-            Cybersecurity specialist and DevOps engineer with 3+ years of experience building secure, 
-            scalable infrastructure and developing innovative security solutions.
+        <h3 style="font-family: var(--cond); font-size: 1.8rem; font-weight: 800; color: var(--white); margin-bottom: 0.25rem;">
+            Nickson Wekongo
+        </h3>
+        <p style="color: var(--teal); font-family: var(--mono); font-size: 0.7rem; margin-bottom: 1rem;">
+            Senior Backend & Infrastructure Engineer
         </p>
         
-        <!-- Certifications Badges -->
-        <div class="flex flex-wrap justify-center gap-3">
-            <span class="cert-badge">
-                <i data-lucide="shield-check" class="w-4 h-4"></i>
-                Fortinet Certified Associate
-            </span>
-            <span class="cert-badge">
-                <i data-lucide="cloud" class="w-4 h-4"></i>
-                AWS Security Fundamentals
-            </span>
-            <span class="cert-badge">
-                <i data-lucide="database" class="w-4 h-4"></i>
-                Oracle Cloud Certified
-            </span>
+        <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.5rem;">
+            <span class="status-badge"><span class="sbdot"></span>Available for work</span>
+        </div>
+        
+        <div style="border-top: 1px solid var(--rule); padding-top: 1.5rem;">
+            <div style="margin-bottom: 1rem;">
+                <div style="font-family: var(--mono); font-size: 0.6rem; color: var(--white3); letter-spacing: 0.1em;">LOCATION</div>
+                <div style="color: var(--white); font-size: 0.85rem;">Nairobi, Kenya</div>
+                <div style="color: var(--white3); font-size: 0.7rem;">Remote OK</div>
+            </div>
+            <div>
+                <div style="font-family: var(--mono); font-size: 0.6rem; color: var(--white3); letter-spacing: 0.1em;">EXPERIENCE</div>
+                <div style="color: var(--white); font-size: 0.85rem;">3+ Years Production</div>
+            </div>
         </div>
     </div>
-
-    <!-- My Story -->
-    <div class="grid md:grid-cols-2 gap-12 items-center stagger-item stagger-2">
-        <div class="p-4 rounded-3xl overflow-hidden">
-            <img
-                src="https://placehold.co/600x400/1e293b/0ea5e9?text=Cybersecurity+Journey"
-                alt="My Cybersecurity Journey"
-                class="w-full h-auto rounded-2xl tech-card"
-            />
-        </div>
-        <div class="space-y-6">
-            <h2 class="text-4xl font-bold text-white">My Journey</h2>
-            <p class="text-slate-300 leading-relaxed">
-                My passion for technology started with curiosity about how systems work and evolved into 
-                a dedicated focus on cybersecurity. What began as exploring networks and systems has grown 
-                into a professional career protecting them.
+    
+    <!-- Right: Bio -->
+    <div style="background: var(--ink2); padding: 3rem;">
+        <div style="margin-bottom: 2rem;">
+            <div style="font-family: var(--mono); font-size: 0.7rem; color: var(--teal); margin-bottom: 0.5rem;">/ whoami</div>
+            <p style="color: var(--white2); line-height: 1.7; margin-bottom: 1rem;">
+                I design, build, and run production-grade backend systems and cloud infrastructure. 
+                Go-first. Linux-native. Docker-everything. Built SaaS, fintech, and automation platforms 
+                that handle real money, real users, and real uptime requirements.
             </p>
-            <p class="text-slate-300 leading-relaxed">
-                I've spent the last 3+ years honing my skills across cybersecurity, cloud infrastructure, 
-                and full-stack development, earning multiple industry certifications and building practical 
-                security tools that solve real-world problems.
+            <p style="color: var(--white2); line-height: 1.7;">
+                My journey started with a curiosity about how systems work at scale. Today, I manage 
+                8+ live production systems, maintain CI/CD pipelines that deploy in under 5 minutes, 
+                and ensure 99.9% uptime across all platforms.
             </p>
-            <div class="flex gap-4">
-                <a href="/projects" class="btn bg-teal-600 hover:bg-teal-700 text-white font-semibold py-3 px-6 rounded-lg transition duration-300">
-                    View My Projects
-                </a>
-                <a href="/contact" class="btn border-2 border-slate-600 text-slate-300 hover:border-teal-400 hover:text-teal-400 font-semibold py-3 px-6 rounded-lg transition duration-300">
-                    Get In Touch
-                </a>
+        </div>
+        
+        <!-- Certifications -->
+        <div>
+            <div style="font-family: var(--mono); font-size: 0.7rem; color: var(--teal); margin-bottom: 1rem;">/ certifications</div>
+            <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+                <span class="cert-badge">Fortinet Certified Associate</span>
+                <span class="cert-badge">AWS Security Fundamentals</span>
+                <span class="cert-badge">Oracle Cloud Certified</span>
+                <span class="cert-badge">FortiGate 7.6 Operator</span>
+                <span class="cert-badge">FortiAnalyzer 7.4 Analyst</span>
             </div>
         </div>
     </div>
+</div>
 
-    <!-- Technical Expertise -->
-    <div class="stagger-item stagger-3">
-        <h2 class="text-4xl font-bold text-center mb-12 text-white">Technical Expertise</h2>
-        <div class="grid md:grid-cols-3 gap-8">
-            <!-- Cybersecurity -->
-            <div class="tech-card rounded-xl p-6">
-                <div class="w-12 h-12 bg-red-500/20 rounded-lg flex items-center justify-center mb-4">
-                    <i data-lucide="shield" class="w-6 h-6 text-red-400"></i>
-                </div>
-                <h3 class="text-xl font-bold mb-4 text-white">Cybersecurity</h3>
-                <div class="space-y-3 mb-4">
-                    <div>
-                        <div class="flex justify-between text-sm mb-1 text-slate-300">
-                            <span>Network Security</span>
-                            <span>90%</span>
-                        </div>
-                        <div class="skill-meter">
-                            <div class="skill-level bg-red-500" style="width: 90%"></div>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="flex justify-between text-sm mb-1 text-slate-300">
-                            <span>Penetration Testing</span>
-                            <span>85%</span>
-                        </div>
-                        <div class="skill-meter">
-                            <div class="skill-level bg-red-500" style="width: 85%"></div>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="flex justify-between text-sm mb-1 text-slate-300">
-                            <span>Vulnerability Assessment</span>
-                            <span>88%</span>
-                        </div>
-                        <div class="skill-meter">
-                            <div class="skill-level bg-red-500" style="width: 88%"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Cloud & DevOps -->
-            <div class="tech-card rounded-xl p-6">
-                <div class="w-12 h-12 bg-blue-500/20 rounded-lg flex items-center justify-center mb-4">
-                    <i data-lucide="cloud" class="w-6 h-6 text-blue-400"></i>
-                </div>
-                <h3 class="text-xl font-bold mb-4 text-white">Cloud & DevOps</h3>
-                <div class="space-y-3 mb-4">
-                    <div>
-                        <div class="flex justify-between text-sm mb-1 text-slate-300">
-                            <span>AWS/GCP</span>
-                            <span>85%</span>
-                        </div>
-                        <div class="skill-meter">
-                            <div class="skill-level bg-blue-500" style="width: 85%"></div>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="flex justify-between text-sm mb-1 text-slate-300">
-                            <span>Docker & Kubernetes</span>
-                            <span>82%</span>
-                        </div>
-                        <div class="skill-meter">
-                            <div class="skill-level bg-blue-500" style="width: 82%"></div>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="flex justify-between text-sm mb-1 text-slate-300">
-                            <span>CI/CD Pipelines</span>
-                            <span>88%</span>
-                        </div>
-                        <div class="skill-meter">
-                            <div class="skill-level bg-blue-500" style="width: 88%"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Development -->
-            <div class="tech-card rounded-xl p-6">
-                <div class="w-12 h-12 bg-green-500/20 rounded-lg flex items-center justify-center mb-4">
-                    <i data-lucide="code" class="w-6 h-6 text-green-400"></i>
-                </div>
-                <h3 class="text-xl font-bold mb-4 text-white">Development</h3>
-                <div class="space-y-3 mb-4">
-                    <div>
-                        <div class="flex justify-between text-sm mb-1 text-slate-300">
-                            <span>Python & Go</span>
-                            <span>90%</span>
-                        </div>
-                        <div class="skill-meter">
-                            <div class="skill-level bg-green-500" style="width: 90%"></div>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="flex justify-between text-sm mb-1 text-slate-300">
-                            <span>System Architecture</span>
-                            <span>85%</span>
-                        </div>
-                        <div class="skill-meter">
-                            <div class="skill-level bg-green-500" style="width: 85%"></div>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="flex justify-between text-sm mb-1 text-slate-300">
-                            <span>API Development</span>
-                            <span>87%</span>
-                        </div>
-                        <div class="skill-meter">
-                            <div class="skill-level bg-green-500" style="width: 87%"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+<!-- Technical Expertise Section -->
+<section class="sec">
+    <div class="sec-head">
+        <div class="sec-num"><span class="teal">—</span> Skills</div>
+        <h2 class="sec-title">Technical <span>Expertise</span></h2>
     </div>
-
-    <!-- Professional Philosophy -->
-    <div class="grid md:grid-cols-2 gap-12 items-center stagger-item stagger-4">
-        <div class="space-y-6 order-2 md:order-1">
-            <h2 class="text-4xl font-bold text-white">My Philosophy</h2>
-            <p class="text-slate-300 leading-relaxed">
-                I believe that security shouldn't be an afterthought but an integral part of every development 
-                process. The most secure systems are built with security in mind from the ground up.
-            </p>
-            <p class="text-slate-300 leading-relaxed">
-                My approach combines rigorous security practices with modern DevOps methodologies to create 
-                systems that are not only secure but also scalable, maintainable, and efficient.
-            </p>
-            <div class="bg-slate-800/50 p-6 rounded-xl border-l-4 border-teal-500">
-                <p class="text-slate-300 italic">
-                    "Security is a process, not a product. It requires continuous learning, adaptation, 
-                    and a proactive mindset to stay ahead of emerging threats."
-                </p>
+    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--rule);">
+        
+        <!-- Backend -->
+        <div style="background: var(--ink2); padding: 2rem;">
+            <div style="font-family: var(--mono); font-size: 1.5rem; color: var(--teal); margin-bottom: 1rem;">⌨</div>
+            <h3 style="font-family: var(--cond); font-size: 1.3rem; font-weight: 800; color: var(--white); margin-bottom: 1rem;">
+                Backend Development
+            </h3>
+            <div style="margin-bottom: 1rem;">
+                <div style="display: flex; justify-content: space-between; font-size: 0.7rem; margin-bottom: 0.25rem;">
+                    <span style="color: var(--white2);">Go (Golang)</span>
+                    <span style="color: var(--teal);">93%</span>
+                </div>
+                <div class="skill-meter"><div class="skill-level" style="width: 93%;"></div></div>
+            </div>
+            <div style="margin-bottom: 1rem;">
+                <div style="display: flex; justify-content: space-between; font-size: 0.7rem; margin-bottom: 0.25rem;">
+                    <span style="color: var(--white2);">Python</span>
+                    <span style="color: var(--teal);">85%</span>
+                </div>
+                <div class="skill-meter"><div class="skill-level" style="width: 85%;"></div></div>
+            </div>
+            <div>
+                <div style="display: flex; justify-content: space-between; font-size: 0.7rem; margin-bottom: 0.25rem;">
+                    <span style="color: var(--white2);">REST APIs / WebSockets</span>
+                    <span style="color: var(--teal);">90%</span>
+                </div>
+                <div class="skill-meter"><div class="skill-level" style="width: 90%;"></div></div>
             </div>
         </div>
-        <div class="order-1 md:order-2 p-4 rounded-3xl overflow-hidden">
-            <img
-                src="https://placehold.co/600x400/1e293b/0ea5e9?text=Security+First+Approach"
-                alt="Security First Approach"
-                class="w-full h-auto rounded-2xl tech-card"
-            />
-        </div>
-    </div>
-
-    <!-- Key Projects Showcase -->
-    <div class="stagger-item stagger-5">
-        <h2 class="text-4xl font-bold text-center mb-12 text-white">Notable Projects</h2>
-        <div class="grid md:grid-cols-2 gap-8">
-            <div class="tech-card rounded-xl p-6">
-                <div class="flex items-center mb-4">
-                    <div class="w-12 h-12 rounded-lg bg-purple-500/20 flex items-center justify-center mr-4">
-                        <i data-lucide="shield-alert" class="w-6 h-6 text-purple-400"></i>
-                    </div>
-                    <h3 class="text-xl font-bold text-white">NetGuardIQ</h3>
+        
+        <!-- Infrastructure -->
+        <div style="background: var(--ink2); padding: 2rem;">
+            <div style="font-family: var(--mono); font-size: 1.5rem; color: var(--teal); margin-bottom: 1rem;">⎈</div>
+            <h3 style="font-family: var(--cond); font-size: 1.3rem; font-weight: 800; color: var(--white); margin-bottom: 1rem;">
+                Infrastructure & DevOps
+            </h3>
+            <div style="margin-bottom: 1rem;">
+                <div style="display: flex; justify-content: space-between; font-size: 0.7rem; margin-bottom: 0.25rem;">
+                    <span style="color: var(--white2);">Linux / Bash</span>
+                    <span style="color: var(--teal);">91%</span>
                 </div>
-                <p class="text-slate-300 mb-4">
-                    Enterprise phishing simulation platform built with Go (Fiber) to train employees 
-                    on security awareness and reduce social engineering risks.
-                </p>
-                <div class="flex flex-wrap gap-2 mb-4">
-                    <span class="px-3 py-1 bg-purple-500/20 text-purple-400 rounded-full text-sm">Go</span>
-                    <span class="px-3 py-1 bg-blue-500/20 text-blue-400 rounded-full text-sm">SQLite</span>
-                    <span class="px-3 py-1 bg-red-500/20 text-red-400 rounded-full text-sm">RBAC</span>
-                </div>
-                <a href="https://github.com/C9b3rD3v11/NetGuardIQ" class="text-teal-400 hover:text-teal-300 font-medium inline-flex items-center">
-                    View on GitHub <i data-lucide="arrow-right" class="w-4 h-4 ml-1"></i>
-                </a>
+                <div class="skill-meter"><div class="skill-level" style="width: 91%;"></div></div>
             </div>
-            
-            <div class="tech-card rounded-xl p-6">
-                <div class="flex items-center mb-4">
-                    <div class="w-12 h-12 rounded-lg bg-amber-500/20 flex items-center justify-center mr-4">
-                        <i data-lucide="search" class="w-6 h-6 text-amber-400"></i>
-                    </div>
-                    <h3 class="text-xl font-bold text-white">BashRecon</h3>
+            <div style="margin-bottom: 1rem;">
+                <div style="display: flex; justify-content: space-between; font-size: 0.7rem; margin-bottom: 0.25rem;">
+                    <span style="color: var(--white2);">Docker</span>
+                    <span style="color: var(--teal);">90%</span>
                 </div>
-                <p class="text-slate-300 mb-4">
-                    Advanced penetration testing reconnaissance tool automating DNS enumeration, 
-                    port scanning, and service fingerprinting with professional reporting.
-                </p>
-                <div class="flex flex-wrap gap-2 mb-4">
-                    <span class="px-3 py-1 bg-amber-500/20 text-amber-400 rounded-full text-sm">Bash</span>
-                    <span class="px-3 py-1 bg-red-500/20 text-red-400 rounded-full text-sm">Security</span>
-                    <span class="px-3 py-1 bg-blue-500/20 text-blue-400 rounded-full text-sm">Automation</span>
+                <div class="skill-meter"><div class="skill-level" style="width: 90%;"></div></div>
+            </div>
+            <div>
+                <div style="display: flex; justify-content: space-between; font-size: 0.7rem; margin-bottom: 0.25rem;">
+                    <span style="color: var(--white2);">CI/CD Pipelines</span>
+                    <span style="color: var(--teal);">83%</span>
                 </div>
-                <a href="https://github.com/C9b3rD3v11/BashRecon" class="text-teal-400 hover:text-teal-300 font-medium inline-flex items-center">
-                    View on GitHub <i data-lucide="arrow-right" class="w-4 h-4 ml-1"></i>
-                </a>
+                <div class="skill-meter"><div class="skill-level" style="width: 83%;"></div></div>
             </div>
         </div>
-    </div>
-
-    <!-- Stats Section -->
-    <div class="bg-gradient-to-r from-teal-600 to-blue-600 p-10 rounded-3xl text-white shadow-xl stagger-item stagger-6">
-        <h2 class="text-4xl font-bold text-center mb-8">
-            Professional Impact
-        </h2>
-        <div class="grid sm:grid-cols-2 md:grid-cols-4 gap-8 text-center">
-            <div class="space-y-2">
-                <h3 class="text-5xl font-extrabold text-white">25+</h3>
-                <p class="text-md font-medium text-teal-100">Projects Built</p>
+        
+        <!-- Security -->
+        <div style="background: var(--ink2); padding: 2rem;">
+            <div style="font-family: var(--mono); font-size: 1.5rem; color: var(--teal); margin-bottom: 1rem;">🔒</div>
+            <h3 style="font-family: var(--cond); font-size: 1.3rem; font-weight: 800; color: var(--white); margin-bottom: 1rem;">
+                Cybersecurity
+            </h3>
+            <div style="margin-bottom: 1rem;">
+                <div style="display: flex; justify-content: space-between; font-size: 0.7rem; margin-bottom: 0.25rem;">
+                    <span style="color: var(--white2);">Security Hardening</span>
+                    <span style="color: var(--teal);">81%</span>
+                </div>
+                <div class="skill-meter"><div class="skill-level" style="width: 81%;"></div></div>
             </div>
-            <div class="space-y-2">
-                <h3 class="text-5xl font-extrabold text-white">15+</h3>
-                <p class="text-md font-medium text-teal-100">Certifications</p>
+            <div style="margin-bottom: 1rem;">
+                <div style="display: flex; justify-content: space-between; font-size: 0.7rem; margin-bottom: 0.25rem;">
+                    <span style="color: var(--white2);">FortiGate / FortiAnalyzer</span>
+                    <span style="color: var(--teal);">85%</span>
+                </div>
+                <div class="skill-meter"><div class="skill-level" style="width: 85%;"></div></div>
             </div>
-            <div class="space-y-2">
-                <h3 class="text-5xl font-extrabold text-white">99.5%</h3>
-                <p class="text-md font-medium text-teal-100">Uptime Record</p>
+            <div>
+                <div style="display: flex; justify-content: space-between; font-size: 0.7rem; margin-bottom: 0.25rem;">
+                    <span style="color: var(--white2);">SSL/TLS & Compliance</span>
+                    <span style="color: var(--teal);">88%</span>
+                </div>
+                <div class="skill-meter"><div class="skill-level" style="width: 88%;"></div></div>
             </div>
-            <div class="space-y-2">
-                <h3 class="text-5xl font-extrabold text-white">3+</h3>
-                <p class="text-md font-medium text-teal-100">Years Experience</p>
-            </div>
-        </div>
-    </div>
-
-    <!-- Call to Action -->
-    <div class="text-center space-y-6 stagger-item stagger-7">
-        <h2 class="text-4xl font-bold text-white">Let's Build Something Secure Together</h2>
-        <p class="text-lg text-slate-300 max-w-2xl mx-auto">
-            Whether you need cybersecurity consulting, DevOps automation, or custom development, 
-            I'm here to help secure your systems and build robust solutions.
-        </p>
-        <div class="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-4">
-            <a href="/contact" class="btn bg-teal-600 hover:bg-teal-700 text-white font-semibold py-3 px-8 rounded-lg transition duration-300">
-                Start a Conversation
-            </a>
-            <a href="/projects" class="btn border-2 border-slate-600 text-slate-300 hover:border-teal-400 hover:text-teal-400 font-semibold py-3 px-8 rounded-lg transition duration-300">
-                View My Work
-            </a>
         </div>
     </div>
 </section>
 
-<script>
-    lucide.createIcons();
+<!-- Philosophy Section -->
+<section class="sec">
+    <div class="sec-head">
+        <div class="sec-num"><span class="teal">—</span> Philosophy</div>
+        <h2 class="sec-title">How I <span>Work</span></h2>
+    </div>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--rule);">
+        <div style="background: var(--ink2); padding: 3rem;">
+            <div style="font-family: var(--mono); font-size: 0.7rem; color: var(--teal); margin-bottom: 1rem;">/ approach</div>
+            <p style="color: var(--white2); line-height: 1.7; margin-bottom: 1rem;">
+                I believe infrastructure should be boring. The best systems are the ones you don't think about — 
+                they just work. My goal is to build systems that are predictable, observable, and recoverable.
+            </p>
+            <p style="color: var(--white2); line-height: 1.7;">
+                Security isn't a feature — it's a property of the entire system. From the kernel up to the 
+                application layer, every component is hardened by default.
+            </p>
+        </div>
+        <div style="background: var(--ink2); padding: 3rem;">
+            <div style="font-family: var(--mono); font-size: 0.7rem; color: var(--teal); margin-bottom: 1rem;">/ quote</div>
+            <div style="border-left: 2px solid var(--teal); padding-left: 1.5rem;">
+                <p style="color: var(--white); font-size: 1.1rem; line-height: 1.6; font-style: italic;">
+                    "Simplicity is the ultimate sophistication. Complex systems break in complex ways. 
+                    I build systems that are simple, reliable, and secure."
+                </p>
+                <p style="color: var(--teal); font-family: var(--mono); font-size: 0.7rem; margin-top: 1rem;">
+                    — Nickson Wekongo
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Stats Section -->
+<section class="sec" style="border-bottom: none;">
+    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--rule);">
+        <div style="background: var(--ink2); padding: 2.5rem 1rem; text-align: center;">
+            <div style="font-family: var(--cond); font-size: 3rem; font-weight: 900; color: var(--teal);">8+</div>
+            <div style="font-family: var(--mono); font-size: 0.6rem; color: var(--white3); letter-spacing: 0.08em;">Live Systems</div>
+        </div>
+        <div style="background: var(--ink2); padding: 2.5rem 1rem; text-align: center;">
+            <div style="font-family: var(--cond); font-size: 3rem; font-weight: 900; color: var(--teal);">5×</div>
+            <div style="font-family: var(--mono); font-size: 0.6rem; color: var(--white3); letter-spacing: 0.08em;">Faster Deploys</div>
+        </div>
+        <div style="background: var(--ink2); padding: 2.5rem 1rem; text-align: center;">
+            <div style="font-family: var(--cond); font-size: 3rem; font-weight: 900; color: var(--teal);">99.9%</div>
+            <div style="font-family: var(--mono); font-size: 0.6rem; color: var(--white3); letter-spacing: 0.08em;">Uptime</div>
+        </div>
+        <div style="background: var(--ink2); padding: 2.5rem 1rem; text-align: center;">
+            <div style="font-family: var(--cond); font-size: 3rem; font-weight: 900; color: var(--teal);">7</div>
+            <div style="font-family: var(--mono); font-size: 0.6rem; color: var(--white3); letter-spacing: 0.08em;">Certifications</div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="sec" style="border-bottom: none;">
+    <div style="text-align: center; padding: 4rem 2rem;">
+        <h3 style="font-family: var(--cond); font-size: 2rem; font-weight: 800; color: var(--white); margin-bottom: 1rem;">
+            Ready to build something great?
+        </h3>
+        <p style="color: var(--white2); margin-bottom: 2rem;">
+            Let's discuss your next project or infrastructure needs.
+        </p>
+        <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+            <a href="/contact" class="btn-primary">Start Conversation →</a>
+            <a href="/projects" class="btn-ghost">View Projects →</a>
+        </div>
+    </div>
+</section>
+
+<style>
+    .skill-meter {
+        background: var(--rule);
+        border-radius: 2px;
+        height: 3px;
+        overflow: hidden;
+    }
     
-    // Animate skill meters on page load
+    .skill-level {
+        height: 100%;
+        background: linear-gradient(90deg, var(--teal2), var(--teal));
+        border-radius: 2px;
+        width: 0%;
+        transition: width 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    
+    .cert-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: var(--teal-glow);
+        border: 1px solid var(--teal-line);
+        color: var(--teal);
+        font-family: var(--mono);
+        font-size: 0.65rem;
+        padding: 0.3rem 0.8rem;
+        border-radius: 2px;
+    }
+    
+    /* Responsive */
+    @media (max-width: 1000px) {
+        .profile-grid {
+            grid-template-columns: 1fr !important;
+        }
+        .skills-grid {
+            grid-template-columns: 1fr !important;
+        }
+        .philosophy-grid {
+            grid-template-columns: 1fr !important;
+        }
+        .stats-grid {
+            grid-template-columns: repeat(2, 1fr) !important;
+        }
+    }
+</style>
+
+<script>
+    // Animate skill meters when they come into view
     document.addEventListener('DOMContentLoaded', function() {
         const skillLevels = document.querySelectorAll('.skill-level');
+        
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const level = entry.target;
+                    const width = level.getAttribute('data-width') || level.style.width;
+                    if (width && width !== '0%') {
+                        level.style.width = '0%';
+                        setTimeout(() => {
+                            level.style.width = width;
+                        }, 100);
+                    }
+                    observer.unobserve(level);
+                }
+            });
+        }, { threshold: 0.5 });
+        
         skillLevels.forEach(level => {
             const width = level.style.width;
+            level.setAttribute('data-width', width);
             level.style.width = '0%';
-            setTimeout(() => {
-                level.style.width = width;
-            }, 500);
+            observer.observe(level);
         });
     });
 </script>
-
-</body>
-</html>
-
-
-
 {{ end }}

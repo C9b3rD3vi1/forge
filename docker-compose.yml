@@ -1,0 +1,16 @@
+services:
+  forge:
+    build: .
+    container_name: cyberdev-hub
+    ports:
+      - "3031:3031"
+    volumes:
+      - forge_data:/app/server.db
+      - forge_uploads:/app/uploads
+    restart: unless-stopped
+    environment:
+      - TZ=Africa/Nairobi
+
+volumes:
+  forge_data:
+  forge_uploads:

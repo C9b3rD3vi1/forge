@@ -1,375 +1,124 @@
 {{ define "content" }}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8" />
-    <title>Our Services | A Modern SaaS Experience</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-    
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<!-- Hero Section -->
+<section class="sec" style="border-top: none;">
+    <div class="sec-head">
+        <div class="sec-num"><span class="teal">03</span> — Offerings</div>
+        <h2 class="sec-title">What I <span>Offer</span></h2>
+    </div>
+    <div style="padding: 3rem 3rem 3rem;">
+        <p style="font-size: 1rem; color: var(--white2); line-height: 1.6; max-width: 700px;">
+            Professional services for backend engineering, infrastructure, and security.
+        </p>
+    </div>
+</section>
 
-    <style>
-        /* Base styles for a modern dark theme */
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #0f172a;
-            color: #e2e8f0; /* Brighter text for better contrast */
-            background-image: 
-                radial-gradient(circle at 15% 50%, rgba(168, 85, 247, 0.15), transparent 25%),
-                radial-gradient(circle at 85% 30%, rgba(59, 130, 246, 0.15), transparent 25%),
-                radial-gradient(circle at 50% 80%, rgba(236, 72, 153, 0.1), transparent 20%);
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
-
-        /* Gradient text for the main heading */
-        .gradient-text {
-            background: linear-gradient(135deg, #a855f7 0%, #60a5fa 50%, #ec4899 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-fill-color: transparent;
-            position: relative;
-            text-shadow: 0 2px 10px rgba(168, 85, 247, 0.3); /* Added text shadow for better visibility */
-        }
-
-        /* Enhanced Service Card Styling */
-        .service-card {
-            background: linear-gradient(145deg, rgba(30, 41, 59, 0.8), rgba(15, 23, 42, 0.9)); /* Increased opacity for better contrast */
-            border: 1px solid rgba(255, 255, 255, 0.15); /* Brighter border */
-            border-radius: 1.5rem;
-            backdrop-filter: blur(10px);
-            transform: translateY(0);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            overflow: hidden;
-            box-shadow: 
-                0 10px 25px -5px rgba(0, 0, 0, 0.2),
-                0 0 0 1px rgba(255, 255, 255, 0.1); /* Brighter shadow */
-        }
-
-        .service-card:hover {
-            border-color: rgba(139, 92, 246, 0.6); /* Brighter on hover */
-            box-shadow: 
-                0 20px 40px -10px rgba(0, 0, 0, 0.3),
-                0 0 0 1px rgba(139, 92, 246, 0.3),
-                0 0 40px rgba(139, 92, 246, 0.3);
-            transform: translateY(-8px);
-        }
-
-        .service-card img {
-            transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            transform-origin: center;
-            filter: brightness(0.9); /* Slightly darken images for better text contrast */
-        }
+<!-- Services Grid -->
+{{ if .Services }}
+<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 2rem; background: transparent; padding: 2rem 3rem;">
+    {{ range .Services }}
+    <div class="service-card" style="background: var(--ink2); transition: all 0.3s ease; position: relative; overflow: hidden; border: 1px solid var(--rule);">
+        <!-- Hover accent line -->
+        <div style="position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--teal); transform: scaleX(0); transform-origin: left; transition: transform 0.3s ease;"></div>
         
-        .service-card:hover img {
-            transform: scale(1.08);
-            filter: brightness(1); /* Brighten on hover */
-        }
+        <!-- Service Image -->
+        {{ if .ImageURL }}
+        <div style="overflow: hidden; height: 220px;">
+            <img src="{{ .ImageURL }}" alt="{{ .Title }}" style="width: 100%; height: 100%; object-fit: cover; transition: all 0.4s ease;">
+        </div>
+        {{ end }}
         
-        /* Class to truncate the description text */
-        .truncate-description {
-            display: -webkit-box;
-            -webkit-box-orient: vertical;
-            -webkit-line-clamp: 3;
-            overflow: hidden;
-            color: #cbd5e1; /* Slightly brighter for better readability */
-        }
-
-        /* Animation for elements fading in and sliding up */
-        @keyframes fadeInSlideUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        /* Class to apply the animation */
-        .animate-on-load {
-            animation: fadeInSlideUp 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-            opacity: 0;
-        }
-
-        /* Tech stack badges styling */
-        .tech-badge {
-            background: linear-gradient(90deg, rgba(139, 92, 246, 0.25), rgba(6, 182, 212, 0.25)); /* Increased opacity */
-            border: 1px solid rgba(139, 92, 246, 0.4); /* Brighter border */
-            color: #e9d5ff; /* Brighter text color */
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .tech-badge::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: all 0.6s ease;
-        }
-        
-        .tech-badge:hover {
-            background: linear-gradient(90deg, rgba(139, 92, 246, 0.4), rgba(6, 182, 212, 0.4));
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-            color: #f3e8ff; /* Even brighter on hover */
-        }
-        
-        .tech-badge:hover::before {
-            left: 100%;
-        }
-
-        /* Enhanced button styling */
-        .learn-more-btn {
-            display: inline-flex;
-            align-items: center;
-            background: linear-gradient(90deg, #8b5cf6, #06b6d4);
-            color: white;
-            padding: 0.6rem 1.5rem;
-            border-radius: 0.75rem;
-            font-weight: 600; /* Bolder font */
-            box-shadow: 0 4px 6px -1px rgba(139, 92, 246, 0.5); /* More visible shadow */
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .learn-more-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent); /* Brighter shine effect */
-            transition: all 0.6s ease;
-        }
-        
-        .learn-more-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 15px -3px rgba(139, 92, 246, 0.6);
-        }
-        
-        .learn-more-btn:hover::before {
-            left: 100%;
-        }
-
-        /* Floating animation */
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-            100% { transform: translateY(0px); }
-        }
-        
-        .floating {
-            animation: float 8s ease-in-out infinite;
-        }
-        
-        /* Pulse animation for CTA elements */
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(139, 92, 246, 0.6); } /* Brighter pulse */
-            70% { box-shadow: 0 0 0 12px rgba(139, 92, 246, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(139, 92, 246, 0); }
-        }
-        
-        .pulse {
-            animation: pulse 2s infinite;
-        }
-        
-        /* Background particles */
-        .particles {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            overflow: hidden;
-        }
-        
-        .particle {
-            position: absolute;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #a78bfa, #06b6d4);
-            opacity: 0.2; /* Reduced opacity for less distraction */
-        }
-
-        /* Improved text contrast */
-        .text-slate-100 {
-            color: #f1f5f9; /* Brighter for better contrast */
-        }
-
-        .text-slate-400 {
-            color: #94a3b8; /* Brighter for better contrast */
-        }
-
-        .text-purple-400 {
-            color: #a78bfa; /* Brighter purple */
-        }
-
-        .hover\:text-purple-300:hover {
-            color: #ddd6fe; /* Brighter on hover */
-        }
-
-        /* Border button contrast improvement */
-        .border-purple-500 {
-            border-color: #8b5cf6;
-        }
-    </style>
-</head>
-<body class="min-h-screen relative">
-    <div class="particles" id="particles"></div>
-    
-    <header class="py-16 sm:py-24 relative z-10">
-        <div class="container mx-auto px-6 lg:px-8 text-center">
-            <h1 class="text-5xl md:text-7xl font-black gradient-text leading-tight animate-on-load floating" style="animation-delay: 0.1s;">
-                Our Services
-            </h1>
-            <p class="mt-4 text-lg md:text-xl text-slate-400 max-w-3xl mx-auto animate-on-load" style="animation-delay: 0.3s;">
-                Explore our suite of powerful solutions, meticulously crafted to elevate your business and drive success.
+        <div style="padding: 1.75rem;">
+            <!-- Service Title -->
+            <h3 style="font-family: var(--cond); font-size: 1.6rem; font-weight: 800; color: var(--white); margin-bottom: 1rem;">
+                {{ .Title }}
+            </h3>
+            
+            <!-- Description -->
+            <p style="font-size: 0.9rem; color: var(--mid); line-height: 1.7; margin-bottom: 1.5rem;">
+                {{ .Description }}
             </p>
             
-            <div class="mt-10 animate-on-load" style="animation-delay: 0.5s;">
-                <button class="learn-more-btn pulse text-lg py-3 px-8">
-                    <span>Start Free Trial</span>
-                    <i data-lucide="sparkles" class="ml-2 w-5 h-5"></i>
-                </button>
-            </div>
-        </div>
-    </header>
-
-    <main class="container mx-auto px-6 lg:px-8 pb-16 sm:pb-24 relative z-10">
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {{ range $i, $service := .Services }}
-            <div class="service-card flex flex-col animate-on-load" style="animation-delay: {{ $i }}00ms;">
-                {{ if .ImageURL }}
-                <div class="w-full h-48 overflow-hidden">
-                    <img src="{{ .ImageURL }}" alt="{{ .Title }}" class="w-full h-full object-cover">
-                </div>
+            <!-- Tech Stack Tags -->
+            {{ if .TechStacks }}
+            <div style="display: flex; flex-wrap: wrap; gap: 0.6rem; margin-bottom: 1.5rem;">
+                {{ range .TechStacks }}
+                <span style="font-family: var(--mono); font-size: 0.6rem; color: var(--teal); background: var(--teal-glow); border: 1px solid var(--teal-line); padding: 0.25rem 0.75rem; border-radius: 2px;">
+                    {{ . }}
+                </span>
                 {{ end }}
-                
-                <div class="p-8 flex flex-col flex-grow">
-                    <div class="flex-grow">
-                        <h2 class="text-2xl font-bold text-slate-100 mb-2">{{ .Title }}</h2>
-                        <p class="text-slate-400 mb-6 leading-relaxed truncate-description">{{ .Description }}</p>
-                    </div>
-                    
-                    <div class="mt-auto">
-                        {{ if .TechStacks }}
-                        <div class="flex flex-wrap items-center gap-2 mb-4">
-                            {{ range .TechStacks }}
-                                <span class="tech-badge inline-block text-xs font-medium px-3 py-1.5 rounded-full">{{ . }}</span>
-                            {{ end }}
-                        </div>
-                        {{ end }}
-                        
-                        <a href="/service/{{ .ID }}" class="learn-more-btn group inline-flex items-center justify-center font-semibold">
-                            Learn More
-                            <i data-lucide="arrow-right" class="ml-2 w-5 h-5 transition-transform duration-300 group-hover:translate-x-1"></i>
-                        </a>
-                    </div>
-                </div>
             </div>
             {{ end }}
+            
+            <!-- Divider -->
+            <div style="height: 1px; background: var(--rule); margin: 1rem 0 1.25rem 0;"></div>
+            
+            <!-- Learn More Link -->
+            <a href="/service/{{ .Slug }}" style="font-family: var(--mono); font-size: 0.7rem; color: var(--teal); display: inline-flex; align-items: center; gap: 0.5rem; text-decoration: none;">
+                <span>Learn More</span>
+                <span style="transition: transform 0.2s ease;">→</span>
+            </a>
         </div>
-        
-        <!-- CTA Section -->
-        <div class="mt-24 text-center animate-on-load" style="animation-delay: 800ms;">
-            <h2 class="text-3xl md:text-4xl font-bold text-slate-100 mb-4">Ready to transform your business?</h2>
-            <p class="text-slate-400 max-w-2xl mx-auto mb-8">Join thousands of satisfied customers who have elevated their operations with our services.</p>
-            <div class="flex flex-col sm:flex-row justify-center gap-4">
-                <button class="learn-more-btn text-lg py-3 px-8">
-                    <span>Get Started</span>
-                    <i data-lucide="rocket" class="ml-2 w-5 h-5"></i>
-                </button>
-                <button class="inline-flex items-center justify-center text-purple-400 hover:text-purple-300 font-medium py-3 px-8 border border-purple-500 rounded-lg transition-colors duration-200 hover:border-purple-400">
-                    <span>Schedule a Demo</span>
-                    <i data-lucide="calendar" class="ml-2 w-5 h-5"></i>
-                </button>
-            </div>
-        </div>
-    </main>
+    </div>
+    {{ end }}
+</div>
+{{ else }}
+<div style="background: var(--ink2); padding: 4rem; text-align: center; border: 1px solid var(--rule); margin: 2rem 3rem;">
+    <p style="color: var(--white3); font-family: var(--mono); font-size: 0.9rem;">No services available.</p>
+</div>
+{{ end }}
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            lucide.createIcons();
-            
-            // Create background particles
-            createParticles();
-            
-            // Add hover effect to all buttons
-            document.querySelectorAll('button').forEach(btn => {
-                btn.addEventListener('mouseenter', () => {
-                    btn.style.transform = 'translateY(-2px)';
-                });
-                btn.addEventListener('mouseleave', () => {
-                    btn.style.transform = 'translateY(0)';
-                });
-            });
-        });
-        
-        function createParticles() {
-            const container = document.getElementById('particles');
-            const particleCount = 20;
-            
-            for (let i = 0; i < particleCount; i++) {
-                const particle = document.createElement('div');
-                particle.classList.add('particle');
-                
-                // Random size between 4 and 12 pixels
-                const size = Math.random() * 8 + 4;
-                particle.style.width = `${size}px`;
-                particle.style.height = `${size}px`;
-                
-                // Random position
-                particle.style.left = `${Math.random() * 100}%`;
-                particle.style.top = `${Math.random() * 100}%`;
-                
-                container.appendChild(particle);
-                
-                // Animate the particle with JS
-                animateParticle(particle);
-            }
+<!-- CTA Section -->
+<section class="sec" style="border-bottom: none;">
+    <div style="text-align: center; padding: 5rem 2rem;">
+        <h3 style="font-family: var(--cond); font-size: 2rem; font-weight: 800; color: var(--white); margin-bottom: 1rem;">
+            Ready to get started?
+        </h3>
+        <p style="color: var(--white2); margin-bottom: 2rem; font-size: 1rem;">
+            Let's discuss your project requirements.
+        </p>
+        <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+            <a href="/contact" class="btn-primary" style="padding: 0.85rem 2rem;">Contact Me →</a>
+        </div>
+    </div>
+</section>
+
+<style>
+    .service-card {
+        transition: all 0.3s ease;
+    }
+    
+    .service-card:hover {
+        background: var(--ink3) !important;
+        border-color: var(--teal-line);
+        transform: translateY(-4px);
+    }
+    
+    .service-card:hover > div:first-child {
+        transform: scaleX(1);
+    }
+    
+    .service-card:hover img {
+        transform: scale(1.05);
+        opacity: 0.95;
+    }
+    
+    .service-card:hover a span:last-child {
+        transform: translateX(4px);
+    }
+    
+    @media (max-width: 768px) {
+        .services-grid {
+            padding: 1rem !important;
+            gap: 1rem !important;
         }
         
-        function animateParticle(particle) {
-            const duration = Math.random() * 10 + 10;
-            const yMovement = Math.random() * 100 - 50;
-            const xMovement = Math.random() * 100 - 50;
-            
-            // Simple animation using setInterval
-            let start = null;
-            
-            function step(timestamp) {
-                if (!start) start = timestamp;
-                const progress = (timestamp - start) / (duration * 1000);
-                
-                if (progress < 1) {
-                    const x = Math.sin(progress * Math.PI * 2) * xMovement;
-                    const y = Math.sin(progress * Math.PI * 2) * yMovement;
-                    particle.style.transform = `translate(${x}px, ${y}px)`;
-                    requestAnimationFrame(step);
-                } else {
-                    start = timestamp;
-                    requestAnimationFrame(step);
-                }
-            }
-            
-            requestAnimationFrame(step);
+        .service-card > div:last-child {
+            padding: 1.25rem;
         }
-    </script>
-</body>
-</html>
+        
+        .service-card h3 {
+            font-size: 1.3rem;
+        }
+    }
+</style>
 {{ end }}

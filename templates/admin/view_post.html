@@ -1,188 +1,64 @@
-{{ block "content" . }}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ .Title }}</title>
-    <link rel="stylesheet" href="/styles.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        /* Embed this CSS or link it from a separate styles.css file */
-        :root {
-            --bg-color: #f4f7f9;
-            --container-bg: #ffffff;
-            --text-color: #333;
-            --header-color: #1c2b36;
-            --meta-color: #6c757d;
-            --primary-color: #2e6ff2;
-            --link-color: #4a4e69;
-            --border-color: #e0e0e0;
-            --shadow-color: rgba(0, 0, 0, 0.05);
-            --font-family: 'Inter', sans-serif;
-        }
+{{ define "title" }}{{ .Post.Title }} | Admin Panel{{ end }}
 
-        body {
-            font-family: var(--font-family);
-            background-color: var(--bg-color);
-            margin: 0;
-            padding: 2rem;
-            color: var(--text-color);
-            display: flex;
-            justify-content: center;
-        }
+{{ define "content" }}
+<div style="max-width: 900px; margin: 0 auto;">
+    
+    <!-- Header -->
+    <div style="margin-bottom: 2rem;">
+        <div style="font-family: var(--cond); font-size: 1.5rem; font-weight: 800; color: var(--white); margin-bottom: 0.25rem;">
+            View Post
+        </div>
+        <p style="color: var(--white2); font-size: 0.8rem;">Review your blog content</p>
+    </div>
 
-        .post-viewer {
-            max-width: 900px;
-            width: 100%;
-            background-color: var(--container-bg);
-            border-radius: 8px;
-            box-shadow: 0 4px 12px var(--shadow-color);
-            padding: 2.5rem;
-        }
-
-        .post-header {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-
-        .post-title {
-            font-size: 2.5rem;
-            font-weight: 700;
-            line-height: 1.2;
-            color: var(--header-color);
-            margin: 0;
-        }
-
-        .post-meta {
-            margin-top: 1rem;
-            color: var(--meta-color);
-            font-size: 0.9rem;
-            display: flex;
-            justify-content: center;
-            gap: 1.5rem;
-        }
-
-        .post-meta strong {
-            font-weight: 600;
-            color: var(--header-color);
-        }
-
-        .post-meta .tags {
-            text-transform: capitalize;
-        }
-
-        .post-image-container {
-            margin: 2rem 0;
-            text-align: center;
-        }
+    <!-- Post Content Card -->
+    <div style="background: var(--ink2); border: 1px solid var(--rule); overflow: hidden;">
         
-        .post-image {
-            max-width: 100%;
-            height: auto;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        .post-content {
-            font-size: 1.1rem;
-            line-height: 1.8;
-            color: var(--text-color);
-            margin-bottom: 2rem;
-            white-space: pre-wrap; /* Preserve line breaks from content */
-        }
-
-        .post-actions {
-            display: flex;
-            justify-content: center;
-            gap: 1.5rem;
-            padding-top: 1.5rem;
-            border-top: 1px solid var(--border-color);
-        }
-
-        .post-actions a {
-            text-decoration: none;
-            font-weight: 600;
-            padding: 0.75rem 1.5rem;
-            border-radius: 6px;
-            transition: background-color 0.3s, color 0.3s;
-        }
-
-        .edit-btn {
-            background-color: var(--primary-color);
-            color: white;
-        }
-
-        .edit-btn:hover {
-            background-color: #2558c7;
-        }
-
-        .back-btn {
-            background-color: transparent;
-            color: var(--link-color);
-            border: 1px solid var(--border-color);
-        }
-
-        .back-btn:hover {
-            background-color: var(--border-color);
-            color: var(--header-color);
-        }
-
-        /* Responsive adjustments */
-        @media (max-width: 768px) {
-            body {
-                padding: 1rem;
-            }
-            .post-viewer {
-                padding: 1.5rem;
-            }
-            .post-title {
-                font-size: 2rem;
-            }
-            .post-actions {
-                flex-direction: column;
-                align-items: stretch;
-            }
-        }
-    </style>
-</head>
-<body>
-    <main class="post-viewer">
-        <header class="post-header">
-            <h1 class="post-title">{{ .Post.Title }}</h1>
-            <div class="post-meta">
-                <span><strong>Slug:</strong> {{ .Post.Slug }}</span>
-                <span><strong>Tags:</strong> {{ .Post.Tags }}</span>
+        <!-- Post Header -->
+        <div style="padding: 2rem; border-bottom: 1px solid var(--rule);">
+            <div style="font-family: var(--cond); font-size: 1.8rem; font-weight: 800; color: var(--white); margin-bottom: 1rem;">
+                {{ .Post.Title }}
             </div>
-        </header>
+            <div style="display: flex; flex-wrap: wrap; gap: 1rem; font-family: var(--mono); font-size: 0.65rem; color: var(--white3);">
+                <span><strong style="color: var(--teal);">Slug:</strong> {{ .Post.Slug }}</span>
+                <span><strong style="color: var(--teal);">Tags:</strong> {{ .Post.Tags }}</span>
+            </div>
+        </div>
 
+        <!-- Post Image -->
         {{ if .Post.ImageURL }}
-            <div class="post-image-container">
-                <img src="{{ .Post.ImageURL }}" alt="Post Image" class="post-image">
+        <div style="padding: 2rem; border-bottom: 1px solid var(--rule); text-align: center;">
+            <div style="overflow: hidden; border: 1px solid var(--rule); max-width: 100%; display: inline-block;">
+                <img src="{{ .Post.ImageURL }}" alt="Post Image" style="max-width: 100%; height: auto; display: block;">
             </div>
+        </div>
         {{ end }}
 
-        <div class="post-content">
-            <p>{{ .Post.Content }}</p>
-        </div>
-        
-        <div class="post-meta">
-            {{ if .Post.Tags }}
-                <div class="tags">
-                    {{ range .Post.Tags }}
-                        <span class="tag">{{ . }}</span>
-                    {{ end }}
-                </div>
-            {{ end }}
+        <!-- Post Content -->
+        <div style="padding: 2rem; border-bottom: 1px solid var(--rule);">
+            <div style="font-family: var(--body); font-size: 0.9rem; color: var(--white2); line-height: 1.7;">
+                {{ .Post.Content }}
+            </div>
         </div>
 
-        <div class="post-actions">
-            <a href="/admin/posts/{{ .Post.ID }}/edit" class="edit-btn">Edit Post</a>
-            <a href="/admin/posts" class="back-btn">Back to list</a>
+        <!-- Tags Display -->
+        {{ if .Post.Tags }}
+        <div style="padding: 1.5rem 2rem; border-bottom: 1px solid var(--rule);">
+            <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+                {{ range .Post.Tags }}
+                <span style="font-family: var(--mono); font-size: 0.6rem; color: var(--teal); background: var(--teal-glow); border: 1px solid var(--teal-line); padding: 0.2rem 0.6rem;">
+                    {{ . }}
+                </span>
+                {{ end }}
+            </div>
         </div>
-    </main>
-</body>
-</html>
+        {{ end }}
+
+        <!-- Actions -->
+        <div style="padding: 1.5rem 2rem; display: flex; justify-content: center; gap: 1rem;">
+            <a href="/admin/posts/{{ .Post.ID }}/edit" class="btn-primary" style="display: inline-block; padding: 0.6rem 1.5rem;">Edit Post →</a>
+            <a href="/admin/posts" class="btn-ghost" style="display: inline-block; padding: 0.6rem 1.5rem;">Back to List</a>
+        </div>
+    </div>
+</div>
 {{ end }}

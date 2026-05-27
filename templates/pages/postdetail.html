@@ -1,726 +1,202 @@
-{{ block "content" . }}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ .Post.Title }}</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
-</head>
+{{ define "title" }}{{ .Post.Title }} | Nickson Wekongo{{ end }}
 
-<style>
-:root {
-    --primary: #6366f1;
-    --secondary: #8b5cf6;
-    --accent: #ec4899;
-    --success: #10b981;
-    --warning: #f59e0b;
-    --gray-100: #f8fafc;
-    --gray-200: #e2e8f0;
-    --gray-300: #cbd5e1;
-    --gray-600: #475569;
-    --gray-700: #334155;
-    --gray-800: #1e293b;
-    --gray-900: #0f172a;
-    --card-bg: #ffffff;
-    --font-body: 'Inter', sans-serif;
-    --font-heading: 'Plus Jakarta Sans', sans-serif;
-    --shadow: 0 4px 6px rgba(0,0,0,0.05);
-    --shadow-lg: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
-    --radius: 16px;
-    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-* { margin:0; padding:0; box-sizing:border-box; }
-
-body {
-    font-family: var(--font-body);
-    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-    color: var(--gray-700);
-    line-height: 1.7;
-    min-height: 100vh;
-}
-
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 1.5rem;
-}
-
-.blog-header {
-    background: rgba(255,255,255,0.98);
-    backdrop-filter: blur(20px);
-    box-shadow: var(--shadow);
-    position: sticky; 
-    top:0; 
-    z-index:100;
-    padding:1rem 0;
-    border-bottom: 1px solid var(--gray-200);
-}
-
-.header-content {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 1.5rem;
-}
-
-.logo { 
-    font-family: var(--font-heading); 
-    font-weight: 700; 
-    font-size: 1.5rem; 
-    color: var(--gray-900); 
-    text-decoration: none; 
-    display: flex; 
-    align-items: center; 
-    gap: 0.5rem; 
-    transition: var(--transition);
-}
-.logo:hover { color: var(--primary); }
-.logo span { 
-    background: linear-gradient(135deg, var(--primary), var(--secondary));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-}
-
-.back-link {
-    display: inline-flex; 
-    align-items: center; 
-    gap: 0.5rem;
-    color: var(--gray-600);
-    text-decoration: none; 
-    font-weight: 500;
-    padding: 0.75rem 1.5rem; 
-    border-radius: var(--radius);
-    background: white; 
-    box-shadow: var(--shadow); 
-    transition: var(--transition);
-    border: 1px solid var(--gray-200);
-}
-.back-link:hover { 
-    color: var(--primary); 
-    transform: translateY(-2px); 
-    box-shadow: 0 12px 20px rgba(99, 102, 241, 0.15);
-    border-color: var(--primary);
-}
-
-.post-page {
-    padding: 2rem 0 4rem;
-    animation: fadeIn 0.6s ease;
-}
-
-.blog-post {
-    background: var(--card-bg); 
-    padding: 3rem;
-    border-radius: var(--radius); 
-    box-shadow: var(--shadow-lg);
-    position: relative; 
-    overflow: hidden;
-    border: 1px solid var(--gray-200);
-    margin-bottom: 3rem;
-}
-
-.blog-post::before {
-    content: ''; 
-    position: absolute; 
-    top: 0; 
-    left: 0; 
-    width: 6px; 
-    height: 100%;
-    background: linear-gradient(to bottom, var(--primary), var(--secondary), var(--accent));
-    transform: scaleY(0); 
-    transform-origin: top; 
-    transition: transform 0.8s ease;
-}
-.blog-post.loaded::before { transform: scaleY(1); }
-
-.post-header { 
-    margin-bottom: 2.5rem; 
-    position: relative; 
-    z-index: 1;
-    text-align: center;
-}
-
-.post-title {
-    font-family: var(--font-heading); 
-    font-size: 3rem; 
-    font-weight: 800;
-    line-height: 1.2; 
-    margin-bottom: 1.5rem;
-    background: linear-gradient(135deg, var(--gray-900) 0%, var(--primary) 50%, var(--secondary) 100%);
-    -webkit-background-clip: text; 
-    -webkit-text-fill-color: transparent; 
-    background-clip: text;
-    letter-spacing: -0.02em;
-}
-
-.post-meta {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1.5rem;
-    align-items: center;
-    justify-content: center;
-    margin-top: 2rem;
-}
-
-.meta-item {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    color: var(--gray-600);
-    font-size: 0.95rem;
-    font-weight: 500;
-}
-
-.meta-item i {
-    color: var(--primary);
-    width: 16px;
-}
-
-.tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.75rem;
-    justify-content: center;
-    margin-top: 1.5rem;
-}
-
-.tag {
-    background: linear-gradient(135deg, var(--primary), var(--secondary));
-    color: white; 
-    padding: 0.5rem 1.25rem; 
-    border-radius: 100px;
-    font-size: 0.85rem; 
-    font-weight: 600; 
-    text-transform: capitalize;
-    transition: var(--transition); 
-    box-shadow: var(--shadow);
-    border: none;
-    cursor: pointer;
-}
-.tag:hover { 
-    transform: translateY(-2px) scale(1.05); 
-    box-shadow: 0 8px 20px rgba(99, 102, 241, 0.3);
-}
-
-.post-body-layout {
-    display: grid;
-    grid-template-columns: 1fr 400px;
-    gap: 3rem;
-    margin-top: 2rem;
-    align-items: start;
-}
-
-.post-image-container {
-    border-radius: var(--radius);
-    overflow: hidden; 
-    box-shadow: var(--shadow-lg); 
-    position: relative;
-    transition: var(--transition);
-    grid-column: 2;
-    grid-row: 1;
-}
-.post-image-container:hover { 
-    transform: translateY(-5px) rotate(1deg);
-    box-shadow: 0 25px 50px rgba(0,0,0,0.15);
-}
-.post-image { 
-    width: 100%; 
-    display: block; 
-    height: auto; 
-    object-fit: cover; 
-    transition: transform 0.8s ease;
-}
-.post-image-container:hover .post-image { 
-    transform: scale(1.08);
-}
-
-.post-content {
-    grid-column: 1;
-    grid-row: 1;
-    font-size: 1.125rem;
-    line-height: 1.8;
-    color: var(--gray-700);
-}
-
-.post-content h2 {
-    font-family: var(--font-heading);
-    font-size: 1.75rem;
-    font-weight: 700;
-    margin: 2.5rem 0 1rem;
-    color: var(--gray-900);
-    line-height: 1.3;
-}
-
-.post-content h3 {
-    font-family: var(--font-heading);
-    font-size: 1.5rem;
-    font-weight: 600;
-    margin: 2rem 0 1rem;
-    color: var(--gray-800);
-}
-
-.post-content p {
-    margin-bottom: 1.5rem;
-}
-
-.post-content code {
-    background: var(--gray-100);
-    padding: 0.2rem 0.5rem;
-    border-radius: 6px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.9em;
-    color: var(--primary);
-    border: 1px solid var(--gray-200);
-}
-
-.post-content pre {
-    background: var(--gray-900);
-    color: var(--gray-100);
-    padding: 1.5rem;
-    border-radius: 12px;
-    overflow-x: auto;
-    margin: 1.5rem 0;
-    border: 1px solid var(--gray-700);
-}
-
-.post-content blockquote {
-    border-left: 4px solid var(--primary);
-    padding-left: 1.5rem;
-    margin: 2rem 0;
-    color: var(--gray-600);
-    font-style: italic;
-    background: var(--gray-100);
-    padding: 1.5rem;
-    border-radius: 0 var(--radius) var(--radius) 0;
-}
-
-.post-actions {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 3rem;
-    padding-top: 2rem;
-    border-top: 1px solid var(--gray-200);
-}
-
-.social-share { 
-    display: flex; 
-    gap: 0.75rem; 
-}
-.share-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 48px;
-    height: 48px;
-    border-radius: 12px;
-    background: var(--gray-100);
-    color: var(--gray-600);
-    text-decoration: none;
-    transition: var(--transition);
-    border: 1px solid var(--gray-200);
-}
-.share-btn:hover { 
-    background: var(--primary);
-    color: white;
-    transform: translateY(-3px) scale(1.1);
-    box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
-}
-
-.save-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    color: var(--gray-600);
-    text-decoration: none;
-    font-weight: 500;
-    padding: 0.75rem 1.5rem;
-    border-radius: var(--radius);
-    background: white;
-    box-shadow: var(--shadow);
-    transition: var(--transition);
-    border: 1px solid var(--gray-200);
-}
-.save-btn:hover {
-    color: var(--warning);
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(245, 158, 11, 0.15);
-    border-color: var(--warning);
-}
-
-.related-posts {
-    margin-top: 4rem;
-}
-
-.section-title {
-    font-family: var(--font-heading);
-    font-size: 2rem;
-    font-weight: 700;
-    margin-bottom: 2.5rem;
-    color: var(--gray-900);
-    text-align: center;
-    position: relative;
-}
-.section-title::after {
-    content: '';
-    position: absolute;
-    bottom: -12px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 60px;
-    height: 4px;
-    background: linear-gradient(to right, var(--primary), var(--secondary));
-    border-radius: 2px;
-}
-
-.posts-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-    gap: 2rem;
-}
-
-.post-card {
-    background: white;
-    border-radius: var(--radius);
-    overflow: hidden;
-    box-shadow: var(--shadow);
-    transition: var(--transition);
-    border: 1px solid var(--gray-200);
-    position: relative;
-}
-.post-card:hover { 
-    transform: translateY(-8px); 
-    box-shadow: var(--shadow-lg);
-}
-.post-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: linear-gradient(to right, var(--primary), var(--secondary));
-    transform: scaleX(0);
-    transition: transform 0.3s ease;
-}
-.post-card:hover::before {
-    transform: scaleX(1);
-}
-
-.post-card-img { 
-    width: 100%; 
-    height: 200px; 
-    object-fit: cover;
-    transition: transform 0.5s ease;
-}
-.post-card:hover .post-card-img {
-    transform: scale(1.05);
-}
-
-.post-card-content { 
-    padding: 2rem; 
-}
-.post-card-title {
-    font-family: var(--font-heading);
-    font-size: 1.25rem;
-    font-weight: 700;
-    margin-bottom: 1rem;
-    color: var(--gray-900);
-    line-height: 1.4;
-}
-.post-card-excerpt {
-    color: var(--gray-600);
-    font-size: 0.95rem;
-    margin-bottom: 1.5rem;
-    line-height: 1.6;
-}
-.post-card-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    color: var(--primary);
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 0.9rem;
-    transition: var(--transition);
-}
-.post-card-link:hover { 
-    color: var(--secondary);
-    gap: 0.75rem;
-}
-
-@keyframes fadeIn { 
-    from { opacity: 0; transform: translateY(30px); } 
-    to { opacity: 1; transform: translateY(0); } 
-}
-@keyframes pulse { 
-    0%, 100% { transform: scale(1); } 
-    50% { transform: scale(1.05); } 
-}
-
-/* Dark mode support */
-@media (prefers-color-scheme: dark) {
-    body {
-        background: linear-gradient(135deg, var(--gray-900) 0%, var(--gray-800) 100%);
-        color: var(--gray-200);
-    }
-    .blog-header {
-        background: rgba(15, 23, 42, 0.95);
-        border-bottom-color: var(--gray-700);
-    }
-    .logo { color: var(--gray-100); }
-    .back-link {
-        background: var(--gray-800);
-        color: var(--gray-300);
-        border-color: var(--gray-700);
-    }
-    .blog-post {
-        background: var(--gray-800);
-        border-color: var(--gray-700);
-    }
-    .post-title {
-        background: linear-gradient(135deg, var(--gray-100) 0%, var(--primary) 50%, var(--secondary) 100%);
-        -webkit-background-clip: text;
-    }
-    .meta-item { color: var(--gray-400); }
-    .post-content { color: var(--gray-300); }
-    .post-content h2, .post-content h3 { color: var(--gray-100); }
-    .post-content code { 
-        background: var(--gray-700);
-        color: var(--gray-100);
-        border-color: var(--gray-600);
-    }
-    .post-content blockquote {
-        background: var(--gray-700);
-        color: var(--gray-300);
-    }
-    .post-actions { border-top-color: var(--gray-700); }
-    .share-btn {
-        background: var(--gray-700);
-        color: var(--gray-300);
-        border-color: var(--gray-600);
-    }
-    .save-btn {
-        background: var(--gray-800);
-        color: var(--gray-300);
-        border-color: var(--gray-700);
-    }
-    .section-title { color: var(--gray-100); }
-    .post-card {
-        background: var(--gray-800);
-        border-color: var(--gray-700);
-    }
-    .post-card-title { color: var(--gray-100); }
-    .post-card-excerpt { color: var(--gray-400); }
-}
-
-/* Responsive design */
-@media (max-width: 1024px) {
-    .post-title { font-size: 2.5rem; }
-    .post-body-layout {
-        grid-template-columns: 1fr;
-        gap: 2rem;
-    }
-    .post-image-container {
-        grid-column: 1;
-        grid-row: 2;
-        max-width: 500px;
-        margin: 0 auto;
-    }
-}
-
-@media (max-width: 768px) {
-    .container { padding: 0 1rem; }
-    .blog-post { padding: 2rem; }
-    .post-title { font-size: 2rem; }
-    .post-actions {
-        flex-direction: column;
-        gap: 1.5rem;
-        align-items: center;
-    }
-    .posts-grid {
-        grid-template-columns: 1fr;
-    }
-    .post-meta {
-        flex-direction: column;
-        align-items: center;
-        gap: 1rem;
-    }
-}
-
-@media (max-width: 640px) {
-    .blog-post { padding: 1.5rem; }
-    .post-title { font-size: 1.75rem; }
-    .post-body-layout { gap: 1.5rem; }
-    .header-content {
-        flex-direction: column;
-        gap: 1rem;
-        text-align: center;
-    }
-}
-</style>
-
-<body>
-<header class="blog-header">
-    <div class="header-content">
-        <a href="/" class="logo">
-            <i class="fas fa-shield-alt"></i> Cyber<span>Blog</span>
-        </a>
-        <nav>
-            <a href="/posts" class="back-link">
-                <i class="fas fa-arrow-left"></i> Back to Articles
-            </a>
-        </nav>
+{{ define "content" }}
+<!-- Hero Section -->
+<section class="sec" style="border-top: none;">
+    <div class="sec-head">
+        <div class="sec-num"><span class="teal">02</span> — Article</div>
+        <h2 class="sec-title">{{ .Post.Title }}</h2>
     </div>
-</header>
+</section>
 
-<div class="container">
-<main class="post-page">
-    <article class="blog-post" id="blog-post">
-        <header class="post-header">
-            <h1 class="post-title">{{ .Post.Title }}</h1>
-            
-            <div class="post-meta">
-                <div class="meta-item">
-                    <i class="far fa-calendar"></i>
-                    <time datetime="{{ .Post.CreatedAt }}">{{ .Post.CreatedAt.Format "January 2, 2006" }}</time>
-                </div>
-                <div class="meta-item">
-                    <i class="far fa-clock"></i>
-                    <span>{{ .ReadingTime }} min read</span>
-                </div>
-            </div>
-
-            {{ if .Post.Tags }}
-            <div class="tags">
-                {{ range .Post.Tags }}
-                <span class="tag">{{ .Name }}</span>
-                {{ end }}
-            </div>
-            {{ end }}
-        </header>
-
-        <div class="post-body-layout">
-            {{ if .Post.ImageURL }}
-            <div class="post-image-container">
-                <img src="{{ .Post.ImageURL }}" alt="{{ .Post.Title }}" class="post-image" loading="lazy">
-            </div>
-            {{ end }}
-            
-            <div class="post-content">
-                {{ .ContentHTML }}
-            </div>
-        </div>
-
-        <div class="post-actions">
-            <div class="social-share">
-                <a href="#" class="share-btn" aria-label="Share on Twitter">
-                    <i class="fab fa-twitter"></i>
-                </a>
-                <a href="#" class="share-btn" aria-label="Share on LinkedIn">
-                    <i class="fab fa-linkedin-in"></i>
-                </a>
-                <a href="#" class="share-btn" aria-label="Share on Facebook">
-                    <i class="fab fa-facebook-f"></i>
-                </a>
-                <a href="#" class="share-btn" aria-label="Copy link">
-                    <i class="fas fa-link"></i>
-                </a>
-            </div>
-            <a href="#" class="save-btn">
-                <i class="far fa-bookmark"></i> Save Article
-            </a>
-        </div>
-    </article>
-
-    {{ if .RelatedPosts }}
-    <section class="related-posts">
-        <h2 class="section-title">Continue Reading</h2>
-        <div class="posts-grid">
-            {{ range .RelatedPosts }}
-            <div class="post-card animate__animated animate__fadeInUp">
-                {{ if .ImageURL }}
-                <img src="{{ .ImageURL }}" alt="{{ .Title }}" class="post-card-img" loading="lazy">
-                {{ end }}
-                <div class="post-card-content">
-                    <h3 class="post-card-title">{{ .Title }}</h3>
-                    {{ if .Tags }}
-                    <div class="tags" style="margin-bottom: 1rem; justify-content: flex-start;">
-                        {{ range .Tags }}<span class="tag">{{ .Name }}</span>{{ end }}
-                    </div>
-                    {{ end }}
-                    {{ $content := .Content }}
-                    <p class="post-card-excerpt">
-                        {{ if gt (len $content) 120 }}{{ slice $content 0 120 }}...{{ else }}{{ $content }}{{ end }}
-                    </p>
-                    <a href="/posts/{{ .Slug }}" class="post-card-link">
-                        Read more <i class="fas fa-arrow-right"></i>
-                    </a>
-                </div>
-            </div>
+<!-- Article Container -->
+<div style="max-width: 900px; margin: 0 auto; padding: 2rem 2rem 4rem;">
+    
+    <!-- Article Meta -->
+    <div style="margin-bottom: 2rem; padding-bottom: 2rem; border-bottom: 1px solid var(--rule);">
+        <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+            <span style="font-family: var(--mono); font-size: 0.6rem; color: var(--white3);">
+                {{ if .Post.CreatedAt }}{{ .Post.CreatedAt.Format "January 2, 2006" }}{{ end }}
+            </span>
+            {{ if .ReadingTime }}
+            <span style="font-family: var(--mono); font-size: 0.6rem; color: var(--white3);">
+                {{ .ReadingTime }} min read
+            </span>
             {{ end }}
         </div>
-    </section>
+        
+        {{ if .Post.Tags }}
+        <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+            {{ range .Post.Tags }}
+            <span style="font-family: var(--mono); font-size: 0.55rem; color: var(--teal); background: var(--teal-glow); border: 1px solid var(--teal-line); padding: 0.2rem 0.6rem;">
+                {{ .Name }}
+            </span>
+            {{ end }}
+        </div>
+        {{ end }}
+    </div>
+
+    <!-- Featured Image -->
+    {{ if .Post.ImageURL }}
+    <div style="margin-bottom: 2rem; overflow: hidden; border: 1px solid var(--rule);">
+        <img src="{{ .Post.ImageURL }}" alt="{{ .Post.Title }}" style="width: 100%; height: auto; display: block;">
+    </div>
     {{ end }}
-</main>
+
+    <!-- Article Content -->
+    <div class="post-content" style="font-size: 1rem; color: var(--white2); line-height: 1.8;">
+        {{ .ContentHTML }}
+    </div>
+
+    <!-- Back Link -->
+    <div style="margin-top: 3rem; text-align: center;">
+        <a href="/posts" class="btn-ghost" style="display: inline-block;">
+            ← Back to Articles
+        </a>
+    </div>
+
 </div>
 
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Add loaded class for animations
-    const blogPost = document.getElementById('blog-post');
-    if (blogPost) {
-        setTimeout(() => {
-            blogPost.classList.add('loaded');
-        }, 100);
+<!-- Related Posts -->
+{{ if .RelatedPosts }}
+<section class="sec" style="border-bottom: none;">
+    <div class="sec-head">
+        <div class="sec-num"><span class="teal">—</span> Related</div>
+        <h2 class="sec-title">Continue <span>Reading</span></h2>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1px; background: var(--rule);">
+        {{ range .RelatedPosts }}
+        <a href="/posts/{{ .Slug }}" style="text-decoration: none; display: block;">
+            <div style="background: var(--ink2); padding: 1.5rem; transition: all 0.3s ease; position: relative; overflow: hidden;">
+                <div style="position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--teal); transform: scaleX(0); transform-origin: left; transition: transform 0.3s ease;"></div>
+                
+                <h3 style="font-family: var(--cond); font-size: 1.2rem; font-weight: 800; color: var(--white); margin-bottom: 0.5rem;">
+                    {{ .Title }}
+                </h3>
+                
+                {{ if .Tags }}
+                <div style="display: flex; flex-wrap: wrap; gap: 0.3rem; margin-bottom: 0.75rem;">
+                    {{ range .Tags }}
+                    <span style="font-family: var(--mono); font-size: 0.5rem; color: var(--teal); background: var(--teal-glow); border: 1px solid var(--teal-line); padding: 0.15rem 0.4rem;">
+                        {{ .Name }}
+                    </span>
+                    {{ end }}
+                </div>
+                {{ end }}
+                
+                <div style="font-family: var(--mono); font-size: 0.65rem; color: var(--teal); display: inline-flex; align-items: center; gap: 0.3rem;">
+                    <span>Read</span>
+                    <span>→</span>
+                </div>
+            </div>
+        </a>
+        {{ end }}
+    </div>
+</section>
+{{ end }}
+
+<style>
+    .post-content {
+        font-family: var(--body);
     }
-
-    // Add copy link functionality
-    const copyLinkBtn = document.querySelector('.share-btn:last-child');
-    if (copyLinkBtn) {
-        copyLinkBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            navigator.clipboard.writeText(window.location.href).then(() => {
-                const originalIcon = this.innerHTML;
-                this.innerHTML = '<i class="fas fa-check"></i>';
-                setTimeout(() => {
-                    this.innerHTML = originalIcon;
-                }, 2000);
-            });
-        });
+    
+    .post-content h1,
+    .post-content h2,
+    .post-content h3,
+    .post-content h4,
+    .post-content h5,
+    .post-content h6 {
+        font-family: var(--cond);
+        font-weight: 800;
+        color: var(--white);
+        margin-top: 2rem;
+        margin-bottom: 1rem;
     }
-
-    // Add reading progress (optional enhancement)
-    const progressBar = document.createElement('div');
-    progressBar.style.cssText = `
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 0%;
-        height: 3px;
-        background: linear-gradient(to right, var(--primary), var(--secondary));
-        z-index: 1000;
-        transition: width 0.3s ease;
-    `;
-    document.body.appendChild(progressBar);
-
-    window.addEventListener('scroll', () => {
-        const winHeight = window.innerHeight;
-        const docHeight = document.documentElement.scrollHeight;
-        const scrollTop = window.pageYOffset;
-        const progress = (scrollTop / (docHeight - winHeight)) * 100;
-        progressBar.style.width = progress + '%';
-    });
-});
-</script>
-</body>
-</html>
+    
+    .post-content h2 {
+        font-size: 1.8rem;
+    }
+    
+    .post-content h3 {
+        font-size: 1.4rem;
+    }
+    
+    .post-content p {
+        margin-bottom: 1.25rem;
+    }
+    
+    .post-content a {
+        color: var(--teal);
+        text-decoration: none;
+        border-bottom: 1px solid var(--teal-line);
+        transition: color 0.15s;
+    }
+    
+    .post-content a:hover {
+        color: var(--teal2);
+    }
+    
+    .post-content code {
+        font-family: var(--mono);
+        font-size: 0.85rem;
+        background: var(--ink);
+        padding: 0.2rem 0.4rem;
+        border: 1px solid var(--rule);
+        border-radius: 2px;
+    }
+    
+    .post-content pre {
+        background: var(--ink);
+        border: 1px solid var(--rule);
+        padding: 1rem;
+        overflow-x: auto;
+        margin: 1.5rem 0;
+    }
+    
+    .post-content pre code {
+        background: none;
+        border: none;
+        padding: 0;
+        font-size: 0.8rem;
+    }
+    
+    .post-content blockquote {
+        border-left: 3px solid var(--teal);
+        padding-left: 1.5rem;
+        margin: 1.5rem 0;
+        color: var(--white3);
+        font-style: italic;
+    }
+    
+    .post-content ul,
+    .post-content ol {
+        margin: 1rem 0;
+        padding-left: 2rem;
+    }
+    
+    .post-content li {
+        margin-bottom: 0.5rem;
+    }
+    
+    .post-content hr {
+        border: none;
+        border-top: 1px solid var(--rule);
+        margin: 2rem 0;
+    }
+    
+    .post-content img {
+        max-width: 100%;
+        height: auto;
+        margin: 1.5rem 0;
+        border: 1px solid var(--rule);
+    }
+    
+    .related-card:hover {
+        background: var(--ink3) !important;
+    }
+    
+    .related-card:hover > div:first-child {
+        transform: scaleX(1);
+    }
+</style>
 {{ end }}

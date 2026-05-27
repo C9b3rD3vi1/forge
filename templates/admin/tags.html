@@ -1,51 +1,50 @@
-{{ block "content" .}}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Manage Tags</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdn.jsdelivr.net/npm/daisyui@3.6.0/dist/full.css" rel="stylesheet">
-</head>
-<body class="bg-gray-100 min-h-screen flex flex-col items-center py-12">
+{{ define "title" }}Manage Tags | Admin Panel{{ end }}
 
-    <div class="w-full max-w-4xl bg-white p-10 rounded-2xl shadow-2xl">
-        <h1 class="text-4xl font-extrabold text-gray-800 mb-8 text-center">Manage Tags</h1>
+{{ define "content" }}
+<div style="max-width: 600px; margin: 0 auto;">
+    
+    <!-- Header -->
+    <div style="margin-bottom: 2rem;">
+        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.5rem;">
+            <a href="/admin/posts" style="font-family: var(--mono); font-size: 0.7rem; color: var(--teal); text-decoration: none;">← Back to Posts</a>
+        </div>
+        <div style="font-family: var(--cond); font-size: 1.5rem; font-weight: 800; color: var(--white); margin-bottom: 0.25rem;">
+            Manage Tags
+        </div>
+        <p style="color: var(--white2); font-size: 0.8rem;">Create and manage tags for blog posts</p>
+    </div>
 
-        <!-- Create Tag Form -->
-        <form action="/admin/tags" method="POST" class="flex flex-col sm:flex-row gap-4 mb-8">
-            <input type="text" name="name" placeholder="New tag name" required
-                   class="input input-bordered input-primary w-full flex-1 focus:outline-none focus:ring-2 focus:ring-blue-400">
-            <button type="submit" class="btn btn-primary flex-shrink-0">
-                Add Tag
-            </button>
+    <!-- Create Tag Form -->
+    <div style="background: var(--ink2); border: 1px solid var(--rule); padding: 1.5rem; margin-bottom: 1px;">
+        <form action="/admin/tags" method="POST" style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+            <input type="text" name="name" placeholder="New tag name" required 
+                   style="flex: 1; background: var(--ink); border: 1px solid var(--rule); padding: 0.6rem 1rem; color: var(--white); font-family: var(--body); font-size: 0.85rem;">
+            <button type="submit" class="btn-primary" style="cursor: pointer; padding: 0.6rem 1.5rem;">Add Tag →</button>
         </form>
+    </div>
 
-        <hr class="my-6 border-gray-300">
-
-        <!-- Existing Tags -->
-        <ul class="space-y-3">
+    <!-- Existing Tags -->
+    <div style="background: var(--ink2); border: 1px solid var(--rule); overflow: hidden;">
+        {{ if .Tags }}
+        <div>
             {{ range .Tags }}
-            <li class="flex justify-between items-center bg-gray-50 p-4 rounded-lg shadow-sm hover:bg-gray-100 transition duration-200">
-                <span class="font-semibold text-gray-700">{{ .Name }}</span>
-                <form action="/admin/tags/delete/{{ .ID }}" method="POST">
-                    <button type="submit" 
-                            class="btn btn-sm btn-error hover:btn-outline transition duration-200" 
-                            onclick="return confirm('Delete this tag?')">
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 1rem; border-bottom: 1px solid var(--rule);">
+                <span style="font-family: var(--cond); font-size: 1rem; font-weight: 600; color: var(--white);">{{ .Name }}</span>
+                <form action="/admin/tags/delete/{{ .ID }}" method="POST" style="margin: 0;">
+                    <button type="submit" class="btn-ghost" style="color: var(--red); border-color: var(--red); padding: 0.3rem 0.8rem; cursor: pointer;" onclick="return confirm('Delete this tag?')">
                         Delete
                     </button>
                 </form>
-            </li>
+            </div>
             {{ end }}
-        </ul>
-
-        <div class="mt-10 text-center">
-            <a href="/admin/posts" class="btn btn-outline btn-secondary hover:bg-gray-100 transition">
-                Back to Posts
-            </a>
         </div>
+        {{ else }}
+        <div style="padding: 2rem; text-align: center;">
+            <div style="font-family: var(--mono); font-size: 2rem; color: var(--white3); margin-bottom: 1rem;">🏷️</div>
+            <div style="font-family: var(--cond); font-size: 1.2rem; font-weight: 600; color: var(--white); margin-bottom: 0.5rem;">No tags yet</div>
+            <p style="color: var(--white2); font-size: 0.8rem;">Create your first tag above.</p>
+        </div>
+        {{ end }}
     </div>
-
-</body>
-</html>
+</div>
 {{ end }}

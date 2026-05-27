@@ -1,4 +1,4 @@
-module github.com/C9b3rD3vi1/Go_blog
+module github.com/C9b3rD3vi1/forge
 
 go 1.23.6
 

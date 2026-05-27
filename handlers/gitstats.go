@@ -14,7 +14,7 @@ import (
 
 func GitHubStatsHandler(c *fiber.Ctx) error {
 	// Get repository details
-	repoResp, err := http.Get("https://api.github.com/repos/C9b3rD3vi1/Go_blog")
+	repoResp, err := http.Get("https://api.github.com/repos/C9b3rD3vi1/forge")
 	if err != nil {
 		return c.Status(500).JSON(fiber.Map{"error": "GitHub Repo API error"})
 	}
@@ -26,7 +26,7 @@ func GitHubStatsHandler(c *fiber.Ctx) error {
 	}
 
 	// Get contributors
-	contribResp, err := http.Get("https://api.github.com/repos/C9b3rD3vi1/Go_blog/contributors")
+	contribResp, err := http.Get("https://api.github.com/repos/C9b3rD3vi1/forge/contributors")
 	if err != nil {
 		return c.Status(500).JSON(fiber.Map{"error": "GitHub Contributors API error"})
 	}

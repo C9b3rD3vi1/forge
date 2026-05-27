@@ -1,60 +1,72 @@
-{{ define "content" }}
-<div class="w-full max-w-5xl mx-auto bg-white p-10 rounded-lg shadow-lg">
-    <!-- Header -->
-    <header class="text-center mb-8">
-        <h1 class="text-4xl font-bold text-gray-800">Create New Post</h1>
-    </header>
+{{ define "title" }}Create New Post | Admin Panel{{ end }}
 
-    <form action="/admin/posts" method="POST" enctype="multipart/form-data" class="space-y-8">
+{{ define "content" }}
+<div style="max-width: 900px; margin: 0 auto;">
+    
+    <!-- Header -->
+    <div style="margin-bottom: 2rem;">
+        <div style="font-family: var(--cond); font-size: 1.5rem; font-weight: 800; color: var(--white); margin-bottom: 0.25rem;">
+            Create New Post
+        </div>
+        <p style="color: var(--white2); font-size: 0.8rem;">Write and publish new blog content</p>
+    </div>
+
+    <!-- Form -->
+    <form action="/admin/posts" method="POST" enctype="multipart/form-data" style="background: var(--ink2); border: 1px solid var(--rule); padding: 2rem;">
+        
         <!-- Title -->
-        <div class="form-control w-full">
-            <label class="label" for="title">
-                <span class="label-text font-semibold">Title</span>
+        <div style="margin-bottom: 1.5rem;">
+            <label for="title" style="display: block; font-family: var(--mono); font-size: 0.65rem; color: var(--teal); letter-spacing: 0.1em; margin-bottom: 0.5rem;">
+                TITLE
             </label>
-            <input type="text" id="title" name="title" required class="input input-bordered input-lg w-full bg-white">
+            <input type="text" id="title" name="title" required 
+                   style="width: 100%; background: var(--ink); border: 1px solid var(--rule); padding: 0.75rem 1rem; color: var(--white); font-family: var(--body); font-size: 0.9rem;">
         </div>
 
         <!-- Content -->
-        <div class="form-control w-full">
-            <label class="label" for="content">
-                <span class="label-text font-semibold">Content</span>
+        <div style="margin-bottom: 1.5rem;">
+            <label for="content" style="display: block; font-family: var(--mono); font-size: 0.65rem; color: var(--teal); letter-spacing: 0.1em; margin-bottom: 0.5rem;">
+                CONTENT
             </label>
-            <textarea id="content" name="content" rows="16" class="textarea textarea-bordered textarea-lg w-full bg-white"></textarea>
+            <textarea id="content" name="content" rows="12" 
+                      style="width: 100%; background: var(--ink); border: 1px solid var(--rule); padding: 0.75rem 1rem; color: var(--white); font-family: var(--body); font-size: 0.85rem; resize: vertical;"></textarea>
         </div>
 
         <!-- Tags -->
-        <div class="form-control w-full">
-            <label class="label" for="tags">
-                <span class="label-text font-semibold">Tags</span>
+        <div style="margin-bottom: 1.5rem;">
+            <label for="tagInput" style="display: block; font-family: var(--mono); font-size: 0.65rem; color: var(--teal); letter-spacing: 0.1em; margin-bottom: 0.5rem;">
+                TAGS
             </label>
-            <div class="dropdown w-full">
-                <input type="text" placeholder="Select tags..." id="tagInput" class="input input-bordered input-lg w-full cursor-pointer bg-white" readonly onclick="toggleDropdown()">
-                <ul id="tagDropdown" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-full hidden max-h-60 overflow-y-auto">
+            <div style="position: relative;">
+                <input type="text" id="tagInput" placeholder="Select tags..." readonly 
+                       style="width: 100%; background: var(--ink); border: 1px solid var(--rule); padding: 0.75rem 1rem; color: var(--white); font-family: var(--body); font-size: 0.85rem; cursor: pointer;">
+                <ul id="tagDropdown" style="position: absolute; top: 100%; left: 0; right: 0; background: var(--ink2); border: 1px solid var(--rule); max-height: 200px; overflow-y: auto; z-index: 10; display: none; list-style: none; margin: 0; padding: 0.5rem;">
                     {{ range .AllTags }}
-                    <li>
-                        <label class="cursor-pointer flex items-center gap-2">
-                            <input type="checkbox" name="tags" value="{{ .Name }}" class="checkbox checkbox-primary">
+                    <li style="padding: 0.25rem 0;">
+                        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; padding: 0.25rem 0.5rem; font-family: var(--mono); font-size: 0.7rem; color: var(--white2);">
+                            <input type="checkbox" name="tags" value="{{ .Name }}" style="accent-color: var(--teal);">
                             {{ .Name }}
                         </label>
                     </li>
                     {{ end }}
                 </ul>
             </div>
-            <small class="text-gray-500 mt-1 block">Select multiple tags</small>
+            <small style="color: var(--white3); font-size: 0.6rem; margin-top: 0.5rem; display: block;">Select multiple tags</small>
         </div>
 
         <!-- Image -->
-        <div class="form-control w-full">
-            <label class="label" for="image">
-                <span class="label-text font-semibold">Image</span>
+        <div style="margin-bottom: 2rem;">
+            <label for="image" style="display: block; font-family: var(--mono); font-size: 0.65rem; color: var(--teal); letter-spacing: 0.1em; margin-bottom: 0.5rem;">
+                IMAGE
             </label>
-            <input type="file" id="image" name="image" class="file-input file-input-bordered file-input-lg w-full bg-white">
+            <input type="file" id="image" name="image" 
+                   style="width: 100%; background: var(--ink); border: 1px solid var(--rule); padding: 0.75rem 1rem; color: var(--white); font-family: var(--body); font-size: 0.85rem;">
         </div>
 
         <!-- Actions -->
-        <div class="flex justify-end gap-4">
-            <a href="/admin/posts" class="btn btn-outline btn-secondary btn-lg">Cancel</a>
-            <button type="submit" class="btn btn-primary btn-lg">Save Post</button>
+        <div style="display: flex; justify-content: flex-end; gap: 1rem; border-top: 1px solid var(--rule); padding-top: 1.5rem;">
+            <a href="/admin/posts" class="btn-ghost" style="display: inline-block; padding: 0.6rem 1.5rem;">Cancel</a>
+            <button type="submit" class="btn-primary" style="cursor: pointer; padding: 0.6rem 1.5rem;">Save Post →</button>
         </div>
     </form>
 </div>
@@ -64,8 +76,10 @@
     const tagDropdown = document.getElementById('tagDropdown');
 
     function toggleDropdown() {
-        tagDropdown.classList.toggle('hidden');
+        tagDropdown.style.display = tagDropdown.style.display === 'none' ? 'block' : 'none';
     }
+
+    tagInput.addEventListener('click', toggleDropdown);
 
     const checkboxes = tagDropdown.querySelectorAll('input[type="checkbox"]');
     checkboxes.forEach(cb => {
@@ -80,7 +94,7 @@
 
     document.addEventListener('click', (e) => {
         if (!tagDropdown.contains(e.target) && e.target !== tagInput) {
-            tagDropdown.classList.add('hidden');
+            tagDropdown.style.display = 'none';
         }
     });
 </script>
