@@ -1,9 +1,7 @@
 package auth
 
 import (
-	"encoding/base64"
 	"fmt"
-	"html/template"
 	"time"
 
 	"github.com/C9b3rD3vi1/forge/config"
@@ -161,26 +159,35 @@ func AdminSetup2FA(c *fiber.Ctx) error {
 		return c.Status(500).SendString("Failed to generate TOTP key")
 	}
 
-	// Save temporary secret in session
+	// Save temporary secret + URL in session
 	sess, _ := config.Store.Get(c)
 	sess.Set("2fa_temp_secret", key.Secret())
+	sess.Set("2fa_temp_url", key.URL())
 	sess.Save()
 
-	// Generate QR code PNG
-	png, err := qrcode.Encode(key.URL(), qrcode.Medium, 256)
+	return c.Render("admin/setup_2fa", fiber.Map{
+		"Title":  "Setup Two-Factor Authentication",
+		"Admin":  admin,
+		"Secret": key.Secret(),
+		"Error":  utils.GetFlash(c, "error"),
+	})
+}
+
+// AdminQRCode serves the TOTP QR code as a raw PNG
+func AdminQRCode(c *fiber.Ctx) error {
+	sess, _ := config.Store.Get(c)
+	tempURL, ok := sess.Get("2fa_temp_url").(string)
+	if !ok || tempURL == "" {
+		return c.Status(404).SendString("QR code not available")
+	}
+
+	png, err := qrcode.Encode(tempURL, qrcode.Medium, 256)
 	if err != nil {
 		return c.Status(500).SendString("Failed to generate QR code")
 	}
 
-	qrDataURI := template.URL("data:image/png;base64," + base64.StdEncoding.EncodeToString(png))
-
-	return c.Render("admin/setup_2fa", fiber.Map{
-		"Title":    "Setup Two-Factor Authentication",
-		"Admin":    admin,
-		"Secret":   key.Secret(),
-		"QRData":   qrDataURI,
-		"Error":    c.Query("error"),
-	})
+	c.Type("png")
+	return c.Send(png)
 }
 
 // AdminConfirm2FA validates OTP and saves the TOTP secret

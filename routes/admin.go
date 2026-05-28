@@ -94,6 +94,7 @@ func SetupAdminRoutes(app *fiber.App) {
     admin.Post("/settings/profile", handlers.AdminProfileUpdate)
     admin.Post("/settings/password", handlers.AdminPasswordUpdate)
     admin.Get("/settings/2fa/setup", auth.AdminSetup2FA)
+    admin.Get("/settings/2fa/qrcode", auth.AdminQRCode)
     admin.Post("/settings/2fa/confirm", auth.AdminConfirm2FA)
     admin.Post("/settings/2fa/disable", auth.AdminDisable2FA)
 }
