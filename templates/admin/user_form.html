@@ -1,0 +1,70 @@
+{{ define "content" }}
+<style>
+.form-group { margin-bottom: 1.25rem; }
+.form-group label { display: block; font-family: var(--mono); font-size: 0.6rem; color: var(--white3); margin-bottom: 0.4rem; text-transform: uppercase; letter-spacing: 0.05em; }
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="password"] { width: 100%; background: var(--ink2); border: 1px solid var(--rule); padding: 0.65rem 0.85rem; color: var(--white); font-family: var(--body); font-size: 0.85rem; border-radius: 2px; transition: border-color 0.15s; }
+.form-group input:focus { outline: none; border-color: var(--teal); }
+.form-group .checkbox-label { display: flex; align-items: center; gap: 0.5rem; font-family: var(--body); font-size: 0.8rem; color: var(--white2); text-transform: none; letter-spacing: 0; cursor: pointer; }
+.form-group input[type="checkbox"] { width: 16px; height: 16px; accent-color: var(--teal); }
+.card { background: var(--ink2); border: 1px solid var(--rule); padding: 1.5rem; max-width: 600px; }
+.flash-error { padding: 0.75rem 1rem; background: rgba(255, 77, 77, 0.1); border: 1px solid #ff4d4d; color: #ff4d4d; font-family: var(--mono); font-size: 0.7rem; margin-bottom: 1rem; }
+.btn { padding: 0.6rem 1.5rem; font-family: var(--mono); font-size: 0.7rem; border: none; cursor: pointer; border-radius: 2px; text-decoration: none; display: inline-block; transition: opacity 0.15s; }
+.btn:hover { opacity: 0.85; }
+.btn-primary { background: var(--teal); color: var(--ink); }
+.btn-ghost { background: transparent; border: 1px solid var(--rule); color: var(--white2); }
+</style>
+
+<div style="margin-bottom: 2rem;">
+    <div style="font-family: var(--cond); font-size: 1.5rem; font-weight: 800; color: var(--white);">{{ .Title }}</div>
+    <p style="color: var(--white2); font-size: 0.85rem;">Create a new user account.</p>
+</div>
+
+{{ if .Error }}<div class="flash-error">{{ .Error }}</div>{{ end }}
+
+<div class="card">
+    <form action="/admin/users/create" method="POST">
+        <div class="form-group">
+            <label>Full Name</label>
+            <input type="text" name="full_name" value="{{ if .User }}{{ .User.FullName }}{{ end }}">
+        </div>
+        <div class="form-group">
+            <label>Username</label>
+            <input type="text" name="username" value="{{ if .User }}{{ .User.Username }}{{ end }}" required>
+        </div>
+        <div class="form-group">
+            <label>Email</label>
+            <input type="email" name="email" value="{{ if .User }}{{ .User.Email }}{{ end }}" required>
+        </div>
+        <div class="form-group">
+            <label>Phone</label>
+            <input type="text" name="phone" value="{{ if .User }}{{ .User.Phone }}{{ end }}">
+        </div>
+        <div class="form-group">
+            <label>Address</label>
+            <input type="text" name="address" value="{{ if .User }}{{ .User.Address }}{{ end }}">
+        </div>
+        <div class="form-group">
+            <label>Password</label>
+            <input type="password" name="password" required>
+        </div>
+        <div class="form-group">
+            <label class="checkbox-label">
+                <input type="checkbox" name="is_admin" {{ if and .User .User.IsAdmin }}checked{{ end }}>
+                Administrator
+            </label>
+        </div>
+        <div class="form-group">
+            <label class="checkbox-label">
+                <input type="checkbox" name="is_active" {{ if or (not .User) .User.IsActive }}checked{{ end }}>
+                Active
+            </label>
+        </div>
+        <div style="display: flex; gap: 0.75rem;">
+            <button type="submit" class="btn btn-primary">Create User</button>
+            <a href="/admin/users" class="btn btn-ghost">Cancel</a>
+        </div>
+    </form>
+</div>
+{{ end }}

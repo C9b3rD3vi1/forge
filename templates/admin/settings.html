@@ -1,0 +1,178 @@
+{{ define "content" }}
+<style>
+.form-group { margin-bottom: 1.25rem; }
+.form-group label { display: block; font-family: var(--mono); font-size: 0.6rem; color: var(--white3); margin-bottom: 0.4rem; text-transform: uppercase; letter-spacing: 0.05em; }
+.form-group input,
+.form-group textarea { width: 100%; background: var(--ink2); border: 1px solid var(--rule); padding: 0.65rem 0.85rem; color: var(--white); font-family: var(--body); font-size: 0.85rem; border-radius: 2px; transition: border-color 0.15s; }
+.form-group input:focus,
+.form-group textarea:focus { outline: none; border-color: var(--teal); }
+.form-group textarea { min-height: 80px; resize: vertical; }
+.settings-section { background: var(--ink2); border: 1px solid var(--rule); margin-bottom: 1.5rem; }
+.settings-section-header { padding: 1rem 1.5rem; border-bottom: 1px solid var(--rule); font-family: var(--cond); font-size: 1rem; font-weight: 700; color: var(--white); }
+.settings-section-body { padding: 1.5rem; }
+.flash-success { padding: 0.75rem 1rem; background: rgba(45, 204, 122, 0.1); border: 1px solid var(--green); color: var(--green); font-family: var(--mono); font-size: 0.7rem; margin-bottom: 1rem; }
+.flash-error { padding: 0.75rem 1rem; background: rgba(255, 77, 77, 0.1); border: 1px solid #ff4d4d; color: #ff4d4d; font-family: var(--mono); font-size: 0.7rem; margin-bottom: 1rem; }
+.btn { padding: 0.6rem 1.5rem; font-family: var(--mono); font-size: 0.7rem; border: none; cursor: pointer; border-radius: 2px; text-decoration: none; display: inline-block; transition: opacity 0.15s; }
+.btn:hover { opacity: 0.85; }
+.btn-primary { background: var(--teal); color: var(--ink); }
+.btn-danger { background: #ff4d4d; color: #fff; }
+.inline-flex { display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap; }
+</style>
+
+<div style="margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center;">
+    <div>
+        <div style="font-family: var(--cond); font-size: 1.5rem; font-weight: 800; color: var(--white);">Settings</div>
+        <p style="color: var(--white2); font-size: 0.85rem;">Manage site configuration and your admin profile.</p>
+    </div>
+</div>
+
+{{ if .Success }}<div class="flash-success">{{ .Success }}</div>{{ end }}
+{{ if .Error }}<div class="flash-error">{{ .Error }}</div>{{ end }}
+
+<!-- Site Settings -->
+<form action="/admin/settings" method="POST">
+<div class="settings-section">
+    <div class="settings-section-header">Site Information</div>
+    <div class="settings-section-body">
+        <div class="form-group">
+            <label>Site Name</label>
+            <input type="text" name="site_name" value="{{ index .Settings "site_name" }}">
+        </div>
+        <div class="form-group">
+            <label>Site Tagline</label>
+            <input type="text" name="site_tagline" value="{{ index .Settings "site_tagline" }}">
+        </div>
+        <div class="form-group">
+            <label>Site Description</label>
+            <textarea name="site_description">{{ index .Settings "site_description" }}</textarea>
+        </div>
+        <div class="form-group">
+            <label>Site Keywords (comma-separated)</label>
+            <input type="text" name="site_keywords" value="{{ index .Settings "site_keywords" }}">
+        </div>
+    </div>
+</div>
+
+<div class="settings-section">
+    <div class="settings-section-header">Hero Section</div>
+    <div class="settings-section-body">
+        <div class="form-group">
+            <label>Hero Title</label>
+            <input type="text" name="hero_title" value="{{ index .Settings "hero_title" }}">
+        </div>
+        <div class="form-group">
+            <label>Hero Subtitle</label>
+            <input type="text" name="hero_subtitle" value="{{ index .Settings "hero_subtitle" }}">
+        </div>
+    </div>
+</div>
+
+<div class="settings-section">
+    <div class="settings-section-header">Social Links</div>
+    <div class="settings-section-body">
+        <div class="form-group">
+            <label>GitHub Username</label>
+            <input type="text" name="github_username" value="{{ index .Settings "github_username" }}">
+        </div>
+        <div class="form-group">
+            <label>Twitter / X URL</label>
+            <input type="text" name="twitter_url" value="{{ index .Settings "twitter_url" }}">
+        </div>
+        <div class="form-group">
+            <label>LinkedIn URL</label>
+            <input type="text" name="linkedin_url" value="{{ index .Settings "linkedin_url" }}">
+        </div>
+    </div>
+</div>
+
+<div class="settings-section">
+    <div class="settings-section-header">Contact</div>
+    <div class="settings-section-body">
+        <div class="form-group">
+            <label>Contact Email</label>
+            <input type="text" name="contact_email" value="{{ index .Settings "contact_email" }}">
+        </div>
+    </div>
+</div>
+
+<div style="margin-bottom: 2rem;">
+    <button type="submit" class="btn btn-primary">Save Settings</button>
+</div>
+</form>
+
+<!-- Profile Settings -->
+<form action="/admin/settings/profile" method="POST">
+<div class="settings-section">
+    <div class="settings-section-header">Admin Profile</div>
+    <div class="settings-section-body">
+        <div class="form-group">
+            <label>Full Name</label>
+            <input type="text" name="full_name" value="{{ .Admin.FullName }}">
+        </div>
+        <div class="form-group">
+            <label>Username</label>
+            <input type="text" name="username" value="{{ .Admin.Username }}">
+        </div>
+        <div class="form-group">
+            <label>Email</label>
+            <input type="email" name="email" value="{{ .Admin.Email }}">
+        </div>
+        <button type="submit" class="btn btn-primary">Update Profile</button>
+    </div>
+</div>
+</form>
+
+<!-- Two-Factor Authentication -->
+<div class="settings-section">
+    <div class="settings-section-header">Two-Factor Authentication</div>
+    <div class="settings-section-body">
+        {{ if .Admin.TwoFASecret }}
+        <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;">
+            <span style="width: 8px; height: 8px; background: var(--green); border-radius: 50%; display: inline-block;"></span>
+            <span style="font-family: var(--mono); font-size: 0.7rem; color: var(--green);">Enabled</span>
+        </div>
+        <p style="font-size: 0.8rem; color: var(--white2); margin-bottom: 1rem;">Your account is secured with time-based one-time passwords.</p>
+        <form action="/admin/settings/2fa/disable" method="POST" style="display: flex; align-items: flex-end; gap: 0.75rem; flex-wrap: wrap;">
+            <div>
+                <label style="display: block; font-family: var(--mono); font-size: 0.55rem; color: var(--white3); margin-bottom: 0.3rem;">Enter your password to disable:</label>
+                <input type="password" name="password" required style="background: var(--ink); border: 1px solid var(--rule); padding: 0.6rem 0.85rem; color: var(--white); font-family: var(--body); font-size: 0.8rem;">
+            </div>
+            <button type="submit" class="btn btn-danger">Disable 2FA</button>
+        </form>
+        {{ else }}
+        <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;">
+            <span style="width: 8px; height: 8px; background: var(--white3); border-radius: 50%; display: inline-block;"></span>
+            <span style="font-family: var(--mono); font-size: 0.7rem; color: var(--white3);">Disabled</span>
+        </div>
+        <p style="font-size: 0.8rem; color: var(--white2); margin-bottom: 1rem;">Add an extra layer of security by enabling two-factor authentication.</p>
+        <a href="/admin/settings/2fa/setup" class="btn btn-primary" style="text-decoration: none;">Enable 2FA →</a>
+        {{ end }}
+    </div>
+</div>
+
+<!-- Change Password -->
+<form action="/admin/settings/password" method="POST">
+<div class="settings-section">
+    <div class="settings-section-header">Change Password</div>
+    <div class="settings-section-body">
+        <div class="form-group">
+            <label>Current Password</label>
+            <input type="password" name="current_password" required>
+        </div>
+        <div class="form-group">
+            <label>New Password</label>
+            <input type="password" name="new_password" required>
+        </div>
+        <div class="form-group">
+            <label>Confirm New Password</label>
+            <input type="password" name="confirm_password" required>
+        </div>
+        <button type="submit" class="btn btn-danger">Change Password</button>
+    </div>
+</div>
+</form>
+
+<div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--rule); display: flex; justify-content: space-between; align-items: center;">
+    <div style="font-family: var(--mono); font-size: 0.55rem; color: var(--white3);">Settings are stored in the database and applied on page load.</div>
+</div>
+{{ end }}

@@ -1,0 +1,67 @@
+{{ define "content" }}
+<style>
+.mfa-card { background: var(--ink2); border: 1px solid var(--rule); padding: 2rem; max-width: 480px; margin: 0 auto; }
+.mfa-step { display: flex; gap: 0.75rem; margin-bottom: 1.25rem; align-items: flex-start; }
+.mfa-step-num { width: 24px; height: 24px; background: var(--teal); color: var(--ink); font-family: var(--mono); font-size: 0.65rem; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.mfa-step-text { font-size: 0.8rem; color: var(--white2); line-height: 1.5; }
+.secret-key { background: var(--ink); border: 1px solid var(--rule); padding: 0.65rem 0.85rem; font-family: var(--mono); font-size: 0.65rem; color: var(--teal); text-align: center; letter-spacing: 0.15em; word-break: break-all; user-select: all; }
+.btn { padding: 0.6rem 1.5rem; font-family: var(--mono); font-size: 0.7rem; border: none; cursor: pointer; border-radius: 2px; transition: opacity 0.15s; }
+.btn:hover { opacity: 0.85; }
+.btn-primary { background: var(--teal); color: var(--ink); }
+.btn-ghost { background: transparent; border: 1px solid var(--rule); color: var(--white2); text-decoration: none; display: inline-block; text-align: center; }
+.flash-error { padding: 0.75rem 1rem; background: rgba(255, 77, 77, 0.1); border: 1px solid #ff4d4d; color: #ff4d4d; font-family: var(--mono); font-size: 0.7rem; margin-bottom: 1rem; }
+</style>
+
+<div style="margin-bottom: 2rem;">
+    <div style="font-family: var(--cond); font-size: 1.5rem; font-weight: 800; color: var(--white);">Setup Two-Factor Authentication</div>
+    <p style="color: var(--white2); font-size: 0.85rem;">Enhance your account security with time-based one-time passwords.</p>
+</div>
+
+{{ if .Error }}<div class="flash-error">{{ .Error }}</div>{{ end }}
+
+<div class="mfa-card">
+    <!-- Step 1 -->
+    <div class="mfa-step">
+        <div class="mfa-step-num">1</div>
+        <div class="mfa-step-text">
+            <strong style="color: var(--white);">Scan the QR code</strong><br>
+            Open your authenticator app (Google Authenticator, Authy, or similar) and scan the code below.
+        </div>
+    </div>
+
+    <div style="text-align: center; margin: 1.5rem 0;">
+        <img src="{{ .QRData }}" alt="TOTP QR Code" style="width: 200px; height: 200px; image-rendering: pixelated;">
+    </div>
+
+    <!-- Step 2 -->
+    <div class="mfa-step">
+        <div class="mfa-step-num">2</div>
+        <div class="mfa-step-text">
+            <strong style="color: var(--white);">Or enter this key manually</strong><br>
+            If you can't scan the QR code, type this secret key into your authenticator app.
+        </div>
+    </div>
+
+    <div class="secret-key">{{ .Secret }}</div>
+
+    <!-- Step 3 -->
+    <div class="mfa-step" style="margin-top: 1.5rem;">
+        <div class="mfa-step-num">3</div>
+        <div class="mfa-step-text">
+            <strong style="color: var(--white);">Verify the code</strong><br>
+            Enter the 6-digit code from your authenticator app to confirm setup.
+        </div>
+    </div>
+
+    <form action="/admin/settings/2fa/confirm" method="POST" style="margin-top: 1rem;">
+        <div style="margin-bottom: 1rem;">
+            <input type="text" name="otp" placeholder="123456" maxlength="6" required
+                   style="width: 100%; background: var(--ink); border: 1px solid var(--rule); padding: 0.75rem 1rem; color: var(--white); font-family: var(--body); font-size: 0.85rem; text-align: center; letter-spacing: 0.2rem;">
+        </div>
+        <div style="display: flex; gap: 0.75rem;">
+            <button type="submit" class="btn btn-primary" style="flex: 1;">Verify & Enable →</button>
+            <a href="/admin/settings" class="btn btn-ghost" style="flex: 0.5;">Cancel</a>
+        </div>
+    </form>
+</div>
+{{ end }}

@@ -32,8 +32,11 @@ func AdminProfile(c *fiber.Ctx) error {
 func AdminCreateUser(c *fiber.Ctx) error {
     if c.Method() == "POST" {
         user := models.User{
+            FullName: c.FormValue("full_name"),
             Username: c.FormValue("username"),
             Email:    c.FormValue("email"),
+            Phone:    c.FormValue("phone"),
+            Address:  c.FormValue("address"),
             Password: c.FormValue("password"),
             IsAdmin:  c.FormValue("is_admin") == "on",
             IsActive: c.FormValue("is_active") == "on",

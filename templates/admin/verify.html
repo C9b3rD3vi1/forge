@@ -1,63 +1,92 @@
-{{ define "title" }}Two-Factor Authentication | Admin Panel{{ end }}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Two-Factor Authentication | Admin Panel</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,600;1,300&family=Barlow+Condensed:wght@300;400;600;700;800;900&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --ink: #080c10; --ink2: #111820; --ink3: #1c2630;
+            --mid: #5a6a7a; --faint: #9aacba;
+            --rule: #1e2e3e; --rule2: #162030;
+            --paper: #060c14;
+            --teal: #00c9b1; --teal2: #00a693;
+            --teal-glow: rgba(0,201,177,0.08);
+            --green: #2dcc7a; --red: #e03535;
+            --red-dim: rgba(224,53,53,0.15);
+            --white: #e8f0f8; --white2: rgba(232,240,248,0.6);
+            --white3: rgba(232,240,248,0.25);
+            --mono: 'IBM Plex Mono', monospace;
+            --cond: 'Barlow Condensed', sans-serif;
+            --body: 'Barlow', sans-serif;
+        }
+        body {
+            background: var(--paper); color: var(--white);
+            font-family: var(--body); min-height: 100vh;
+            display: flex; align-items: center; justify-content: center;
+            padding: 2rem; position: relative;
+        }
+        body::before {
+            content: ''; position: fixed; inset: 0;
+            background-image: linear-gradient(rgba(0,201,177,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0,201,177,0.03) 1px, transparent 1px);
+            background-size: 48px 48px; pointer-events: none; z-index: 0;
+        }
+        .card {
+            background: var(--ink2); border: 1px solid var(--rule);
+            padding: 2rem; width: 100%; max-width: 420px; position: relative; z-index: 1;
+        }
+        .corner { position: absolute; width: 16px; height: 16px; border-color: var(--teal); border-style: solid; opacity: 0.5; }
+        .corner.tl { top: 12px; left: 12px; border-width: 1px 0 0 1px; }
+        .corner.tr { top: 12px; right: 12px; border-width: 1px 1px 0 0; }
+        .corner.bl { bottom: 12px; left: 12px; border-width: 0 0 1px 1px; }
+        .corner.br { bottom: 12px; right: 12px; border-width: 0 1px 1px 0; }
+        input { width: 100%; background: var(--ink); border: 1px solid var(--rule); padding: 0.75rem 1rem; color: var(--white); font-family: var(--body); font-size: 0.85rem; transition: border-color 0.15s; text-align: center; letter-spacing: 0.2rem; }
+        input:focus { outline: none; border-color: var(--teal); }
+        .btn-primary { background: var(--teal); color: var(--ink); font-family: var(--mono); font-size: 0.75rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.85rem 2rem; border: none; cursor: pointer; width: 100%; transition: background 0.15s, transform 0.12s; }
+        .btn-primary:hover { background: var(--teal2); transform: translateY(-2px); }
+        .flash-error { background: var(--red-dim); border: 1px solid var(--red); padding: 0.75rem; margin-bottom: 1.5rem; text-align: center; font-family: var(--mono); font-size: 0.7rem; color: var(--red); }
+    </style>
+</head>
+<body>
+<div class="card">
+    <div class="corner tl"></div>
+    <div class="corner tr"></div>
+    <div class="corner bl"></div>
+    <div class="corner br"></div>
 
-{{ define "content" }}
-<div style="min-height: 70vh; display: flex; align-items: center; justify-content: center; padding: 2rem;">
-    <div style="width: 100%; max-width: 420px;">
-        
-        <!-- 2FA Card -->
-        <div style="background: var(--ink2); border: 1px solid var(--rule); padding: 2rem; position: relative;">
-            <div class="corner tl"></div>
-            <div class="corner tr"></div>
-            
-            <!-- Header -->
-            <div style="text-align: center; margin-bottom: 1.5rem;">
-                <div style="font-family: var(--cond); font-size: 1.5rem; font-weight: 800; color: var(--teal); margin-bottom: 0.5rem;">
-                    Two-Factor Authentication
-                </div>
-                <div style="font-family: var(--mono); font-size: 0.65rem; color: var(--white3);">
-                    Enter the 6-digit code from your authenticator app
-                </div>
-            </div>
-            
-            <!-- Form -->
-            <form method="POST" action="/admin/verify-otp">
-                
-                <!-- OTP Input -->
-                <div style="margin-bottom: 1.5rem;">
-                    <label for="otp" style="display: block; font-family: var(--mono); font-size: 0.6rem; color: var(--white3); letter-spacing: 0.1em; margin-bottom: 0.5rem;">
-                        AUTHENTICATION CODE
-                    </label>
-                    <input 
-                        type="text" 
-                        id="otp" 
-                        name="otp" 
-                        placeholder="123456"
-                        maxlength="6"
-                        style="width: 100%; background: var(--ink); border: 1px solid var(--rule); padding: 0.75rem 1rem; color: var(--white); font-family: var(--body); font-size: 0.85rem; text-align: center; letter-spacing: 0.2rem; transition: border-color 0.15s;"
-                        onfocus="this.style.borderColor='var(--teal)'" 
-                        onblur="this.style.borderColor='var(--rule)'"
-                        required
-                    />
-                </div>
-                
-                <!-- Submit Button -->
-                <button 
-                    type="submit" 
-                    class="btn-primary" 
-                    style="width: 100%; cursor: pointer; padding: 0.75rem;"
-                >
-                    Verify →
-                </button>
-            </form>
-            
-            <!-- Help Text -->
-            <div style="margin-top: 1rem; text-align: center;">
-                <p style="font-family: var(--mono); font-size: 0.55rem; color: var(--white3);">
-                    Lost access? Contact your system administrator.
-                </p>
-            </div>
+    <div style="text-align: center; margin-bottom: 1.5rem;">
+        <div style="font-family: var(--cond); font-size: 1.5rem; font-weight: 800; color: var(--teal); margin-bottom: 0.5rem;">
+            Two-Factor Authentication
         </div>
-        
+        <div style="font-family: var(--mono); font-size: 0.65rem; color: var(--white3);">
+            Enter the 6-digit code from your authenticator app
+        </div>
+    </div>
+
+    {{ if .Error }}
+    <div class="flash-error">✗ {{ .Error }}</div>
+    {{ end }}
+
+    <form method="POST" action="/admin/verify-otp">
+        <div style="margin-bottom: 1.5rem;">
+            <label for="otp" style="display: block; font-family: var(--mono); font-size: 0.6rem; color: var(--white3); letter-spacing: 0.1em; margin-bottom: 0.5rem;">
+                AUTHENTICATION CODE
+            </label>
+            <input type="text" id="otp" name="otp" placeholder="123456" maxlength="6" inputmode="numeric" pattern="[0-9]*" autocomplete="one-time-code" required>
+        </div>
+        <button type="submit" class="btn-primary">Verify →</button>
+    </form>
+
+    <div style="margin-top: 1rem; text-align: center;">
+        <p style="font-family: var(--mono); font-size: 0.55rem; color: var(--white3); margin-bottom: 0.5rem;">
+            Lost access? Contact your system administrator.
+        </p>
+        <a href="/admin/login" style="font-family: var(--mono); font-size: 0.55rem; color: var(--teal); text-decoration: none;">← Back to Login</a>
     </div>
 </div>
-{{ end }}
+</body>
+</html>

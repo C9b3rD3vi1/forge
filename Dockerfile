@@ -18,10 +18,10 @@ COPY --from=builder /app/forge .
 COPY --from=builder /app/templates ./templates
 COPY --from=builder /app/static ./static
 
-RUN mkdir -p /app/uploads
+RUN mkdir -p /app/data /app/uploads
 
 EXPOSE 3031
 
-VOLUME ["/app/server.db", "/app/uploads"]
+VOLUME ["/app/data", "/app/uploads"]
 
 CMD ["./forge"]

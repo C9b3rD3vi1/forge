@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"log"
+	"os"
 	"time"
 
 	"github.com/C9b3rD3vi1/forge/auth"
@@ -14,14 +15,17 @@ import (
 
 	"github.com/C9b3rD3vi1/forge/middleware"
 
-	//"github.com/C9b3rD3vi1/forge/routes"
-	//"github.com/C9b3rD3vi1/forge/models"
 	"github.com/gofiber/fiber/v2"
+	"github.com/joho/godotenv"
 	"github.com/znbang/gofiber-layout/html"
 )
 
 // fibre app main function
 func main() {
+	if err := godotenv.Load(); err != nil {
+		log.Println("No .env file found, falling back to defaults")
+	}
+
 	// load template engine
 	engine := html.New("./templates", ".html")
 
@@ -112,9 +116,12 @@ func main() {
 	// github stats
 	app.Get("/api/github-stats", handlers.GitHubStatsHandler)
 
-	// app listen on port 3000
-	fmt.Println("Server is running on port 3031")
-	if err := app.Listen(":3031"); err != nil {
+	port := os.Getenv("APP_PORT")
+	if port == "" {
+		port = "3031"
+	}
+	fmt.Println("Server is running on port " + port)
+	if err := app.Listen(":" + port); err != nil {
 		log.Fatal("Failed to start server:", err)
 	}
 }

@@ -15,8 +15,8 @@ func DynamicLayoutMiddleware(engine *html.Engine) fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		path := c.Path()
 
-		// ✅ Skip layout for admin login page
-		if path == "/admin/login" || path == "/admin/register" {
+		// ✅ Skip layout for admin login and 2FA verify pages
+		if path == "/admin/login" || path == "/admin/register" || path == "/admin/verify-otp" {
 			engine.Layout("") // no layout
 			return c.Next()
 		}

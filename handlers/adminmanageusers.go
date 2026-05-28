@@ -59,20 +59,15 @@ func AdminUserEdit(c *fiber.Ctx) error {
         return c.Status(404).SendString("User not found")
     }
 
-    form := new(models.User)
-    if err := c.BodyParser(form); err != nil {
-        return c.Status(fiber.StatusBadRequest).SendString("Invalid form data")
-    }
+    user.FullName = c.FormValue("full_name")
+    user.Email = c.FormValue("email")
+    user.Phone = c.FormValue("phone")
+    user.Address = c.FormValue("address")
+    user.IsAdmin = c.FormValue("is_admin") == "on"
 
-    // Update fields
-    user.FullName = form.FullName
-    user.Email = form.Email
-    user.Address = form.Address
-    user.IsAdmin = form.IsAdmin
-
-    // Update password only if provided
-    if form.Password != "" {
-        hashed, err := utils.HashPassword(form.Password)
+    password := c.FormValue("password")
+    if password != "" {
+        hashed, err := utils.HashPassword(password)
         if err != nil {
             return c.Status(500).SendString("Error hashing password")
         }

@@ -2,7 +2,7 @@
 
 {{ define "content" }}
 <div style="max-width: 800px; margin: 0 auto;">
-    
+
     <!-- Header -->
     <div style="margin-bottom: 2rem;">
         <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.5rem;">
@@ -22,14 +22,14 @@
     {{ end }}
 
     <!-- Form -->
-    <form method="POST" action="/admin/services/edit/{{ .Service.ID }}" style="background: var(--ink2); border: 1px solid var(--rule); padding: 2rem;">
-        
+    <form method="POST" action="/admin/services/edit/{{ .Service.ID }}" enctype="multipart/form-data" style="background: var(--ink2); border: 1px solid var(--rule); padding: 2rem;">
+
         <!-- Title -->
         <div style="margin-bottom: 1.5rem;">
             <label for="title" style="display: block; font-family: var(--mono); font-size: 0.65rem; color: var(--teal); letter-spacing: 0.1em; margin-bottom: 0.5rem;">
                 TITLE
             </label>
-            <input type="text" id="title" name="title" value="{{ .Service.Title }}" required 
+            <input type="text" id="title" name="title" value="{{ .Service.Title }}" required
                    style="width: 100%; background: var(--ink); border: 1px solid var(--rule); padding: 0.75rem 1rem; color: var(--white); font-family: var(--body); font-size: 0.9rem;">
         </div>
 
@@ -38,17 +38,56 @@
             <label for="description" style="display: block; font-family: var(--mono); font-size: 0.65rem; color: var(--teal); letter-spacing: 0.1em; margin-bottom: 0.5rem;">
                 DESCRIPTION
             </label>
-            <textarea id="description" name="description" rows="6" required 
+            <textarea id="description" name="description" rows="6" required
                       style="width: 100%; background: var(--ink); border: 1px solid var(--rule); padding: 0.75rem 1rem; color: var(--white); font-family: var(--body); font-size: 0.85rem; resize: vertical;">{{ .Service.Description }}</textarea>
         </div>
 
-        <!-- Image URL -->
-        <div style="margin-bottom: 2rem;">
+        <!-- Current Image -->
+        {{ if .Service.ImageURL }}
+        <div style="margin-bottom: 1.5rem;">
+            <label style="display: block; font-family: var(--mono); font-size: 0.65rem; color: var(--teal); letter-spacing: 0.1em; margin-bottom: 0.5rem;">CURRENT IMAGE</label>
+            <div style="background: var(--ink); border: 1px solid var(--rule); padding: 0.75rem;">
+                <img src="{{ .Service.ImageURL }}" alt="{{ .Service.Title }}" style="max-width: 200px; max-height: 120px; display: block;">
+            </div>
+        </div>
+        {{ end }}
+
+        <!-- Upload New Image -->
+        <div style="margin-bottom: 1.5rem;">
             <label for="image" style="display: block; font-family: var(--mono); font-size: 0.65rem; color: var(--teal); letter-spacing: 0.1em; margin-bottom: 0.5rem;">
-                IMAGE URL
+                UPLOAD NEW IMAGE{{ if .Service.ImageURL }} (leave empty to keep current){{ end }}
             </label>
-            <input type="text" id="image" name="image" value="{{ .Service.ImageURL }}" 
-                   style="width: 100%; background: var(--ink); border: 1px solid var(--rule); padding: 0.75rem 1rem; color: var(--white); font-family: var(--body); font-size: 0.85rem;">
+            <input type="file" id="image" name="image" accept="image/*"
+                   style="width: 100%; background: var(--ink); border: 1px solid var(--rule); padding: 0.6rem; color: var(--white); font-family: var(--body); font-size: 0.85rem;">
+        </div>
+
+        <!-- Tech Stacks Dropdown -->
+        <div id="tech-stacks-dropdown" style="position: relative; margin-bottom: 1.5rem;">
+            <label style="display: block; font-family: var(--mono); font-size: 0.65rem; color: var(--teal); letter-spacing: 0.1em; margin-bottom: 0.5rem;">
+                TECH STACKS
+            </label>
+
+            <input type="hidden" id="techstacks_hidden" name="techstacks" value="">
+
+            <button type="button" id="dropdown-button" style="width: 100%; background: var(--ink); border: 1px solid var(--rule); padding: 0.75rem 1rem; color: var(--white); text-align: left; cursor: pointer;">
+                <span id="button-text">Select tech stacks</span>
+                <span style="float: right;">▼</span>
+            </button>
+
+            <div id="dropdown-list" style="display: none; position: absolute; top: 100%; left: 0; right: 0; background: var(--ink2); border: 1px solid var(--rule); max-height: 200px; overflow-y: auto; z-index: 10;">
+                {{ if .TechStacks }}
+                    {{ range .TechStacks }}
+                    <label style="display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem; cursor: pointer;">
+                        <input type="checkbox" name="techstacks_checkbox" value="{{ .ID }}" data-name="{{ .Name }}" class="techstack-checkbox" style="accent-color: var(--teal);" {{ if index $.ServiceTechStackIDs (printf "%s" .ID) }}checked{{ end }}>
+                        <span style="color: var(--white2);">{{ .Name }}</span>
+                    </label>
+                    {{ end }}
+                {{ else }}
+                    <div style="padding: 0.5rem; color: var(--white3);">No tech stacks available</div>
+                {{ end }}
+            </div>
+
+            <div id="selected-items" style="margin-top: 0.5rem; display: flex; flex-wrap: wrap; gap: 0.5rem;"></div>
         </div>
 
         <!-- Submit Button -->
@@ -58,4 +97,88 @@
         </div>
     </form>
 </div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const dropdownContainer = document.getElementById("tech-stacks-dropdown");
+    const dropdownButton = document.getElementById("dropdown-button");
+    const dropdownList = document.getElementById("dropdown-list");
+    const buttonTextSpan = document.getElementById("button-text");
+    const checkboxes = document.querySelectorAll(".techstack-checkbox");
+    const hiddenInput = document.getElementById("techstacks_hidden");
+    const selectedItemsContainer = document.getElementById("selected-items");
+    let selectedIDs = [];
+
+    // Initialize from already-checked checkboxes
+    checkboxes.forEach(checkbox => {
+        if (checkbox.checked) {
+            selectedIDs.push(checkbox.value);
+        }
+    });
+    if (selectedIDs.length > 0) {
+        buttonTextSpan.textContent = selectedIDs.length + " selected";
+    }
+    hiddenInput.value = selectedIDs.join(",");
+    updateSelectedItemsDisplay();
+
+    dropdownButton.addEventListener("click", () => {
+        dropdownList.style.display = dropdownList.style.display === "none" ? "block" : "none";
+    });
+
+    checkboxes.forEach(checkbox => {
+        checkbox.addEventListener("change", () => {
+            if (checkbox.checked) {
+                selectedIDs.push(checkbox.value);
+            } else {
+                selectedIDs = selectedIDs.filter(id => id !== checkbox.value);
+            }
+
+            hiddenInput.value = selectedIDs.join(",");
+
+            if (selectedIDs.length > 0) {
+                buttonTextSpan.textContent = selectedIDs.length + " selected";
+            } else {
+                buttonTextSpan.textContent = "Select tech stacks";
+            }
+
+            updateSelectedItemsDisplay();
+        });
+    });
+
+    function updateSelectedItemsDisplay() {
+        selectedItemsContainer.innerHTML = "";
+
+        checkboxes.forEach(checkbox => {
+            if (checkbox.checked) {
+                const itemName = checkbox.getAttribute("data-name");
+                const itemId = checkbox.value;
+
+                const badge = document.createElement("span");
+                badge.style.cssText = "font-family: var(--mono); font-size: 0.6rem; color: var(--teal); background: var(--teal-glow); border: 1px solid var(--teal-line); padding: 0.2rem 0.6rem; display: inline-block;";
+                badge.innerHTML = `${itemName}<button type="button" class="remove-techstack" data-id="${itemId}" style="background: none; border: none; color: var(--teal); margin-left: 0.3rem; cursor: pointer;">×</button>`;
+
+                selectedItemsContainer.appendChild(badge);
+            }
+        });
+
+        document.querySelectorAll(".remove-techstack").forEach(button => {
+            button.addEventListener("click", (e) => {
+                e.preventDefault();
+                const idToRemove = button.getAttribute("data-id");
+                const checkboxToUncheck = document.querySelector(`.techstack-checkbox[value="${idToRemove}"]`);
+                if (checkboxToUncheck) {
+                    checkboxToUncheck.checked = false;
+                    checkboxToUncheck.dispatchEvent(new Event("change"));
+                }
+            });
+        });
+    }
+
+    document.addEventListener("click", (event) => {
+        if (!dropdownContainer.contains(event.target)) {
+            dropdownList.style.display = "none";
+        }
+    });
+});
+</script>
 {{ end }}

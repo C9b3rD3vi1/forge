@@ -52,7 +52,8 @@ func InitDB() (*gorm.DB, error) {
         &models.Services{},
         &models.Tag{},
         &models.ContactMessage{},
-        &models.TechStack{}); err != nil {
+        &models.TechStack{},
+        &models.Setting{}); err != nil {
         log.Fatal("Failed to migrate the database schema:", err)
         return nil, err
     }
@@ -60,25 +61,39 @@ func InitDB() (*gorm.DB, error) {
     // Log the migration
     log.Println("Database schema migrated successfully")
     
+    // Seed default settings if they don't exist
+    SeedSettings(db)
+    
     return db, nil
 }
 
 
-// CreateAdminUser creates the initial admin user
+// getEnv returns the value of an environment variable or a default value
+func getEnv(key, fallback string) string {
+    if v := os.Getenv(key); v != "" {
+        return v
+    }
+    return fallback
+}
+
+// CreateAdminUser creates the initial admin user from environment variables
 func CreateAdminUser(db *gorm.DB) error {
-    // Check if admin user already exists
+    username := getEnv("ADMIN_USERNAME", "admin")
+    email := getEnv("ADMIN_EMAIL", "admin@example.com")
+    password := getEnv("ADMIN_PASSWORD", "admin123")
+
     var count int64
-    db.Model(&models.User{}).Where("username = ?", "admin").Count(&count)
-    
+    db.Model(&models.User{}).Where("username = ?", username).Count(&count)
+
     if count > 0 {
-        return nil // Admin already exists
+        return nil
     }
 
     admin := models.User{
-    	ID: uuid.New(),
-    	Username: "admin",
-        Email:    "admin@example.com",
-        Password: "admin123", // Change this in production!
+    	ID:       uuid.New(),
+    	Username: username,
+        Email:    email,
+        Password: password,
         IsAdmin:  true,
         IsActive: true,
     }
@@ -88,4 +103,27 @@ func CreateAdminUser(db *gorm.DB) error {
     }
 
     return db.Create(&admin).Error
+}
+
+func SeedSettings(db *gorm.DB) {
+	defaults := map[string]string{
+		"site_name":        "Nickson Wekongo",
+		"site_tagline":     "Cybersecurity & DevOps Engineer",
+		"site_description": "Professional portfolio and blog covering cybersecurity, DevOps, and software engineering.",
+		"site_keywords":    "cybersecurity, devops, go, security auditing, cloud infrastructure",
+		"github_username":  "C9b3rD3vi1",
+		"twitter_url":      "",
+		"linkedin_url":     "",
+		"hero_title":       "Cybersecurity & DevOps Engineer",
+		"hero_subtitle":    "Securing systems, automating workflows, building resilient infrastructure.",
+		"contact_email":    "hello@simuxtech.com",
+	}
+	for key, value := range defaults {
+		var count int64
+		db.Model(&models.Setting{}).Where("key = ?", key).Count(&count)
+		if count == 0 {
+			db.Create(&models.Setting{Key: key, Value: value})
+		}
+	}
+	log.Println("Default settings seeded")
 }

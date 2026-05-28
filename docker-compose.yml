@@ -3,21 +3,21 @@ services:
     build: .
     container_name: cyberdev-hub
     ports:
-      - "3031:3031"
+      - "${APP_PORT:-3031}:${APP_PORT:-3031}"
     volumes:
       - forge_data:/app/data
       - forge_uploads:/app/uploads
     restart: unless-stopped
+    env_file:
+      - .env
     environment:
-      - TZ=Africa/Nairobi
-      - DB_PATH=/app/data/server.db    
+      - DB_PATH=/app/data/server.db
     healthcheck:
-          test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3031/health"]
-          interval: 30s
-          timeout: 10s
-          retries: 3
-          start_period: 40s
-
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:${APP_PORT:-3031}/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
 
 volumes:
   forge_data:

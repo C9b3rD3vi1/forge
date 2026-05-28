@@ -102,11 +102,17 @@ func AdminEditServiceForm(c *fiber.Ctx) error {
 	var allTechStacks []models.TechStack
 	database.DB.Order("created_at desc").Find(&allTechStacks)
 
+	serviceTechStackIDs := make(map[string]bool)
+	for _, ts := range service.TechStacks {
+		serviceTechStackIDs[ts.ID.String()] = true
+	}
+
 	return c.Render("admin/edit_service", fiber.Map{
-		"Title":      "Edit Service",
-		"Admin":      admin,
-		"Service":    service,
-		"TechStacks": allTechStacks,
+		"Title":               "Edit Service",
+		"Admin":               admin,
+		"Service":             service,
+		"TechStacks":          allTechStacks,
+		"ServiceTechStackIDs": serviceTechStackIDs,
 	})
 }
 
@@ -154,9 +160,9 @@ func AdminUpdateService(c *fiber.Ctx) error {
         return c.Redirect("/admin/login")
     }
 
-    slug := c.Params("slug")
+    id := c.Params("id")
     var service models.Services
-    if err := database.DB.Where("slug = ?", slug).First(&service).Error; err != nil {
+    if err := database.DB.Where("id = ?", id).First(&service).Error; err != nil {
         return c.Status(404).SendString("Service not found")
     }
 

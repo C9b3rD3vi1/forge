@@ -12,6 +12,8 @@ func SetupAdminRoutes(app *fiber.App) {
     // --- Public admin routes (NO middleware) ---
     app.Get("/admin/login", auth.AdminLoginForm)     // GET form
     app.Post("/admin/login", auth.AdminAuthHandler)    // POST form
+    app.Get("/admin/verify-otp", auth.ShowOTPPage)    // GET 2FA verification
+    app.Post("/admin/verify-otp", auth.VerifyOTPHandler) // POST 2FA verification
 
     // --- Protected admin routes ---
     admin := app.Group("/admin", middleware.RequireAdminAuth)
@@ -84,4 +86,13 @@ func SetupAdminRoutes(app *fiber.App) {
     admin.Post("/contacts/:id/delete", handlers.AdminContactDelete)
     admin.Post("/contacts/:id/read", handlers.AdminContactMarkRead)
     admin.Post("/contacts/:id/unread", handlers.AdminContactMarkUnread)
+
+    // Settings
+    admin.Get("/settings", handlers.AdminSettings)
+    admin.Post("/settings", handlers.AdminSettingsUpdate)
+    admin.Post("/settings/profile", handlers.AdminProfileUpdate)
+    admin.Post("/settings/password", handlers.AdminPasswordUpdate)
+    admin.Get("/settings/2fa/setup", auth.AdminSetup2FA)
+    admin.Post("/settings/2fa/confirm", auth.AdminConfirm2FA)
+    admin.Post("/settings/2fa/disable", auth.AdminDisable2FA)
 }
