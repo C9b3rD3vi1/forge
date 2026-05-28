@@ -154,7 +154,7 @@ func AdminSetup2FA(c *fiber.Ctx) error {
 	}
 
 	key, err := totp.Generate(totp.GenerateOpts{
-		Issuer:      "CyberDev Hub",
+		Issuer:      "Forge.Hub",
 		AccountName: admin.Email,
 	})
 	if err != nil {

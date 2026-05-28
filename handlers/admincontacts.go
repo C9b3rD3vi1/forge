@@ -1,11 +1,14 @@
 package handlers
 
 import (
+    "html/template"
     "math"
     "strconv"
 
+    "github.com/C9b3rD3vi1/forge/config"
     "github.com/C9b3rD3vi1/forge/database"
     "github.com/C9b3rD3vi1/forge/models"
+    "github.com/C9b3rD3vi1/forge/utils"
     "github.com/gofiber/fiber/v2"
     "github.com/google/uuid"
 )
@@ -70,8 +73,16 @@ func AdminContactView(c *fiber.Ctx) error {
         database.DB.Model(&contact).Update("is_read", true)
     }
 
+    smtpConfigured := "yes"
+    if !utils.IsSMTPConfigured() {
+        smtpConfigured = "no"
+    }
+
     return c.Render("admin/contacts/view", fiber.Map{
-        "Message": contact,
+        "Message":         contact,
+        "Success":         utils.GetFlash(c, "success"),
+        "Error":           utils.GetFlash(c, "error"),
+        "SMTPConfigured":  smtpConfigured,
     })
 }
 
@@ -122,4 +133,42 @@ func AdminContactMarkUnread(c *fiber.Ctx) error {
         Update("is_read", false)
 
     return c.Redirect("/admin/contacts")
+}
+
+// AdminContactReply sends an email reply to the original sender
+func AdminContactReply(c *fiber.Ctx) error {
+    idStr := c.Params("id")
+    id, err := uuid.Parse(idStr)
+    if err != nil {
+        return c.Status(400).SendString("Invalid message ID")
+    }
+
+    var contact models.ContactMessage
+    if err := database.DB.First(&contact, "id = ?", id).Error; err != nil {
+        return c.Status(404).SendString("Message not found")
+    }
+
+    replyBody := c.FormValue("reply_body")
+    if replyBody == "" {
+        sess, _ := config.Store.Get(c)
+        sess.Set("error", "Reply body is required")
+        sess.Save()
+        return c.Redirect("/admin/contacts/" + idStr)
+    }
+
+    siteURL := utils.GetEnv("SITE_URL", "http://localhost:3031")
+
+    utils.SendEmailAsync(contact.Email, "Re: "+contact.Subject, "admin_reply.html", utils.EmailData{
+        RecipientName:  contact.Name,
+        RecipientEmail: contact.Email,
+        Subject:        contact.Subject,
+        MessageBody:    template.HTML(utils.EscapeHTML(replyBody)),
+        SiteURL:        siteURL,
+    })
+
+    sess, _ := config.Store.Get(c)
+    sess.Set("success", "Reply sent to "+contact.Email)
+    sess.Save()
+
+    return c.Redirect("/admin/contacts/" + idStr)
 }

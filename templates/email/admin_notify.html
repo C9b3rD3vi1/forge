@@ -1,0 +1,15 @@
+{{define "content"}}
+<h2>New Contact Message</h2>
+
+<table style="width:100%;border-collapse:collapse;margin-bottom:16px;">
+  <tr><td style="padding:6px 0;color:#5a6a7a;font-size:12px;width:80px;">From</td><td style="padding:6px 0;color:#e8f0f8;">{{.RecipientName}}</td></tr>
+  <tr><td style="padding:6px 0;color:#5a6a7a;font-size:12px;">Email</td><td style="padding:6px 0;color:#e8f0f8;">{{.RecipientEmail}}</td></tr>
+  <tr><td style="padding:6px 0;color:#5a6a7a;font-size:12px;">Subject</td><td style="padding:6px 0;color:#00c9b1;">{{.Subject}}</td></tr>
+</table>
+
+<div class="quote">
+  {{.MessageBody}}
+</div>
+
+<a href="{{.LinkURL}}" class="btn">View in Admin →</a>
+{{end}}

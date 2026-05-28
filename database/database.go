@@ -107,7 +107,7 @@ func CreateAdminUser(db *gorm.DB) error {
 
 func SeedSettings(db *gorm.DB) {
 	defaults := map[string]string{
-		"site_name":        "Nickson Wekongo",
+		"site_name":        "Forge.Hub",
 		"site_tagline":     "Cybersecurity & DevOps Engineer",
 		"site_description": "Professional portfolio and blog covering cybersecurity, DevOps, and software engineering.",
 		"site_keywords":    "cybersecurity, devops, go, security auditing, cloud infrastructure",

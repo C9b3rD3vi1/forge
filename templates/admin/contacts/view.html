@@ -1,8 +1,42 @@
 {{ define "title" }}View Message | Admin Panel{{ end }}
 
 {{ define "content" }}
+<style>
+.flash-success {
+    padding: 0.75rem 1rem;
+    background: rgba(45, 204, 122, 0.1);
+    border: 1px solid #2dcc7a;
+    color: #2dcc7a;
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    margin-bottom: 1rem;
+}
+.flash-error {
+    padding: 0.75rem 1rem;
+    background: rgba(255, 77, 77, 0.1);
+    border: 1px solid #ff4d4d;
+    color: #ff4d4d;
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    margin-bottom: 1rem;
+}
+.smtp-warn {
+    padding: 0.6rem 1rem;
+    background: rgba(255, 191, 0, 0.08);
+    border: 1px solid rgba(255, 191, 0, 0.3);
+    color: #ffbf00;
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    margin-bottom: 1rem;
+}
+.btn { padding: 0.6rem 1.5rem; font-family: var(--mono); font-size: 0.7rem; border: none; cursor: pointer; border-radius: 2px; text-decoration: none; display: inline-block; transition: opacity 0.15s; }
+.btn:hover { opacity: 0.85; }
+.btn-primary { background: var(--teal); color: var(--ink); }
+.btn-ghost { background: transparent; border: 1px solid var(--rule); color: var(--white2); }
+</style>
+
 <div style="max-width: 700px; margin: 0 auto;">
-    
+
     <!-- Header -->
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
         <div>
@@ -16,9 +50,15 @@
         </div>
     </div>
 
+    {{ if .Success }}<div class="flash-success">{{ .Success }}</div>{{ end }}
+    {{ if .Error }}<div class="flash-error">{{ .Error }}</div>{{ end }}
+    {{ if eq .SMTPConfigured "no" }}
+    <div class="smtp-warn">SMTP not configured — emails will not be sent. Set SMTP_USER &amp; SMTP_PASSWORD in .env</div>
+    {{ end }}
+
     <!-- Message Details Card -->
     <div style="background: var(--ink2); border: 1px solid var(--rule); overflow: hidden;">
-        
+
         <!-- Sender Info Grid -->
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--rule);">
             <div style="background: var(--ink2); padding: 1rem 1.5rem;">
@@ -78,5 +118,26 @@
             </form>
         </div>
     </div>
+
+    <!-- Reply Card -->
+    <div style="background: var(--ink2); border: 1px solid var(--rule); overflow: hidden; margin-top: 2rem;">
+        <div style="padding: 1.5rem; border-bottom: 1px solid var(--rule);">
+            <div style="font-family: var(--cond); font-size: 1.1rem; font-weight: 700; color: var(--white);">Send Reply</div>
+            <p style="color: var(--white2); font-size: 0.8rem; margin-top: 0.25rem;">Your reply will be sent via email to <strong style="color: var(--teal);">{{ .Message.Email }}</strong></p>
+        </div>
+
+        <form action="/admin/contacts/{{ .Message.ID }}/reply" method="POST" style="padding: 1.5rem;">
+            <div style="margin-bottom: 1rem;">
+                <textarea id="reply_body" name="reply_body" rows="6" placeholder="Type your reply here..." required
+                          style="width: 100%; background: var(--ink); border: 1px solid var(--rule); padding: 0.75rem 1rem; color: var(--white); font-family: var(--body); font-size: 0.85rem; resize: vertical;"></textarea>
+            </div>
+            <div style="display: flex; justify-content: flex-end;">
+                <button type="submit" class="btn btn-primary" {{ if eq .SMTPConfigured "no" }}disabled style="opacity:0.4;cursor:not-allowed;"{{ end }}>
+                    Send Reply →
+                </button>
+            </div>
+        </form>
+    </div>
+
 </div>
 {{ end }}

@@ -1,7 +1,7 @@
 services:
   forge:
     build: .
-    container_name: cyberdev-hub
+    container_name: forge-hub
     ports:
       - "${APP_PORT:-3031}:${APP_PORT:-3031}"
     volumes:

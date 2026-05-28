@@ -15,7 +15,7 @@ NC='\033[0m' # No Color
 
 # Configuration
 PROJECT_DIR="/home/user/goapps/forge"
-CONTAINER_NAME="cyberdev-hub"
+CONTAINER_NAME="forge-hub"
 COMPOSE_FILE="docker-compose.yml"
 
 # Print colored output

@@ -86,6 +86,7 @@ func SetupAdminRoutes(app *fiber.App) {
     admin.Post("/contacts/:id/delete", handlers.AdminContactDelete)
     admin.Post("/contacts/:id/read", handlers.AdminContactMarkRead)
     admin.Post("/contacts/:id/unread", handlers.AdminContactMarkUnread)
+    admin.Post("/contacts/:id/reply", handlers.AdminContactReply)
 
     // Settings
     admin.Get("/settings", handlers.AdminSettings)
