@@ -44,6 +44,7 @@ func main() {
 	engine.AddFunc("add", utils.Add)
 	engine.AddFunc("split", utils.SplitString)
 	engine.AddFunc("seq", utils.Seq)
+	engine.AddFunc("colorClass", utils.ColorClass)
 	// time add function
 	engine.AddFunc("now", func() string {
 		return time.Now().Format("2006-01-02 15:04:05")
@@ -53,6 +54,9 @@ func main() {
 		Views: engine,
 	})
 	
+	// inject global template data (footer services, etc.)
+	app.Use(middleware.InjectGlobalData())
+
 	// provide layout for different pages
 	app.Use(middleware.DynamicLayoutMiddleware(engine))
 	
@@ -80,6 +84,15 @@ func main() {
 
     
     
+    // Health check endpoint
+    app.Get("/health", func(c *fiber.Ctx) error {
+        sqlDB, err := database.DB.DB()
+        if err != nil || sqlDB.Ping() != nil {
+            return c.Status(503).JSON(fiber.Map{"status": "unhealthy"})
+        }
+        return c.JSON(fiber.Map{"status": "ok"})
+    })
+
     // Setup Adminroutes
     routes.SetupAdminRoutes(app) 
     routes.SetupPublicRoutes(app)

@@ -24,6 +24,7 @@ type EmailData struct {
 	RecipientEmail string
 	MessageBody    template.HTML
 	Subject        string
+	Services       string
 	LinkURL        string
 	SiteName       string
 	SiteURL        string

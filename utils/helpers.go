@@ -42,9 +42,14 @@ func Trim(s string) string {
 
 
 func Seq(start, end int) []int {
-    s := make([]int, end-start+1)
-    for i := range s {
-        s[i] = start + i
-    }
-    return s
+	s := make([]int, end-start+1)
+	for i := range s {
+		s[i] = start + i
+	}
+	return s
+}
+
+func ColorClass(i int) string {
+	classes := []string{"c1", "c2", "c3", "c4", "c5", "c6", "c7", "c8"}
+	return classes[i%8]
 }

@@ -577,15 +577,14 @@
                 <ul class="footer-links">
                     <li><a href="/posts">Technical Blog</a></li>
                     <li><a href="/projects">Open Source</a></li>
-                    <li><a href="/tutorials">Tutorials</a></li>
                 </ul>
             </div>
             <div>
                 <div class="footer-title">Services</div>
                 <ul class="footer-links">
-                    <li><a href="/security-audit">Security Audit</a></li>
-                    <li><a href="/devops-consulting">DevOps Consulting</a></li>
-                    <li><a href="/training">Technical Training</a></li>
+                    {{ range .FooterServices }}
+                    <li><a href="/service/{{ .Slug }}">{{ .Title }}</a></li>
+                    {{ end }}
                 </ul>
             </div>
         </div>

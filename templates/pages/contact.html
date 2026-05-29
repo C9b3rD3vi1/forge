@@ -24,10 +24,10 @@
         <div style="margin-bottom: 2.5rem;">
             <div style="font-family: var(--mono); font-size: 0.7rem; color: var(--teal); margin-bottom: 1rem;">/ contact</div>
             <h3 style="font-family: var(--cond); font-size: 2rem; font-weight: 800; color: var(--white); margin-bottom: 0.5rem;">
-                Let's build
+                Let's Build
             </h3>
             <h3 style="font-family: var(--cond); font-size: 2rem; font-weight: 800; color: var(--teal);">
-                something great.
+                Reliable Systems
             </h3>
         </div>
         
@@ -76,8 +76,13 @@
     <div style="background: var(--ink2); padding: 3rem;">
         {{ if .Success }}
         <div style="background: var(--teal-glow); border: 1px solid var(--teal-line); padding: 1rem; margin-bottom: 1.5rem; text-align: center;">
-            <div style="color: var(--teal); font-family: var(--mono); font-size: 0.8rem;">✓ Message sent successfully</div>
+            <div style="color: var(--teal); font-family: var(--mono); font-size: 0.8rem;">✓ {{ .Success }}</div>
             <div style="color: var(--white3); font-size: 0.75rem; margin-top: 0.25rem;">I'll get back to you within 24 hours.</div>
+        </div>
+        {{ end }}
+        {{ if .Error }}
+        <div style="background: rgba(255,77,77,0.1); border: 1px solid #ff4d4d; padding: 1rem; margin-bottom: 1.5rem; text-align: center;">
+            <div style="color: #ff4d4d; font-family: var(--mono); font-size: 0.8rem;">✗ {{ .Error }}</div>
         </div>
         {{ end }}
         
@@ -134,6 +139,23 @@
                 </select>
             </div>
             
+            <!-- Services -->
+            <div style="margin-bottom: 1.5rem;">
+                <label style="display: block; font-family: var(--mono); font-size: 0.6rem; color: var(--white3); letter-spacing: 0.1em; margin-bottom: 0.75rem;">
+                    WHAT I CAN HELP WITH
+                </label>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;">
+                    <label class="svc-opt"><input type="checkbox" name="services" value="Backend APIs"><span>Backend APIs</span></label>
+                    <label class="svc-opt"><input type="checkbox" name="services" value="Infrastructure Setup"><span>Infrastructure Setup</span></label>
+                    <label class="svc-opt"><input type="checkbox" name="services" value="Dockerization"><span>Dockerization</span></label>
+                    <label class="svc-opt"><input type="checkbox" name="services" value="Linux Server Administration"><span>Linux Server Administration</span></label>
+                    <label class="svc-opt"><input type="checkbox" name="services" value="Observability &amp; Monitoring"><span>Observability &amp; Monitoring</span></label>
+                    <label class="svc-opt"><input type="checkbox" name="services" value="CI/CD Pipelines"><span>CI/CD Pipelines</span></label>
+                    <label class="svc-opt"><input type="checkbox" name="services" value="System Hardening"><span>System Hardening</span></label>
+                    <label class="svc-opt"><input type="checkbox" name="services" value="Technical Consulting"><span>Technical Consulting</span></label>
+                </div>
+            </div>
+
             <!-- Message -->
             <div style="margin-bottom: 1.5rem;">
                 <label style="display: block; font-family: var(--mono); font-size: 0.6rem; color: var(--white3); letter-spacing: 0.1em; margin-bottom: 0.5rem;">
@@ -181,21 +203,46 @@
             Services &amp; <span style="color: var(--teal);">Expertise</span>
         </h3>
         
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1px; background: var(--rule); max-width: 900px; margin: 0 auto;">
-            <div style="background: var(--ink2); padding: 2rem; text-align: center;">
-                <div style="font-family: var(--mono); font-size: 1.5rem; color: var(--teal); margin-bottom: 0.75rem;">⌨</div>
-                <h4 style="font-family: var(--cond); font-size: 1.2rem; font-weight: 800; color: var(--white); margin-bottom: 0.5rem;">Backend</h4>
-                <p style="font-size: 0.8rem; color: var(--mid);">Go, REST APIs, microservices, high-performance systems</p>
+        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--rule); max-width: 900px; margin: 0 auto;">
+            <div style="background: var(--ink2); padding: 1.5rem; text-align: center;">
+                <div style="font-family: var(--mono); font-size: 1.2rem; color: var(--teal); margin-bottom: 0.5rem;">⌨</div>
+                <h4 style="font-family: var(--cond); font-size: 1rem; font-weight: 800; color: var(--white); margin-bottom: 0.3rem;">Backend APIs</h4>
+                <p style="font-size: 0.75rem; color: var(--mid);">Go, REST, WebSockets, microservices, high-performance systems</p>
             </div>
-            <div style="background: var(--ink2); padding: 2rem; text-align: center;">
-                <div style="font-family: var(--mono); font-size: 1.5rem; color: var(--teal); margin-bottom: 0.75rem;">⎈</div>
-                <h4 style="font-family: var(--cond); font-size: 1.2rem; font-weight: 800; color: var(--white); margin-bottom: 0.5rem;">DevOps</h4>
-                <p style="font-size: 0.8rem; color: var(--mid);">Docker, CI/CD, Linux servers, infrastructure automation</p>
+            <div style="background: var(--ink2); padding: 1.5rem; text-align: center;">
+                <div style="font-family: var(--mono); font-size: 1.2rem; color: var(--teal); margin-bottom: 0.5rem;">🖧</div>
+                <h4 style="font-family: var(--cond); font-size: 1rem; font-weight: 800; color: var(--white); margin-bottom: 0.3rem;">Infrastructure Setup</h4>
+                <p style="font-size: 0.75rem; color: var(--mid);">Servers, networking, VPS, cloud provisioning, DNS, email</p>
             </div>
-            <div style="background: var(--ink2); padding: 2rem; text-align: center;">
-                <div style="font-family: var(--mono); font-size: 1.5rem; color: var(--teal); margin-bottom: 0.75rem;">🔒</div>
-                <h4 style="font-family: var(--cond); font-size: 1.2rem; font-weight: 800; color: var(--white); margin-bottom: 0.5rem;">Security</h4>
-                <p style="font-size: 0.8rem; color: var(--mid);">Hardening, audits, SSL/TLS, vulnerability assessment</p>
+            <div style="background: var(--ink2); padding: 1.5rem; text-align: center;">
+                <div style="font-family: var(--mono); font-size: 1.2rem; color: var(--teal); margin-bottom: 0.5rem;">⎈</div>
+                <h4 style="font-family: var(--cond); font-size: 1rem; font-weight: 800; color: var(--white); margin-bottom: 0.3rem;">Dockerization</h4>
+                <p style="font-size: 0.75rem; color: var(--mid);">Multi-stage builds, Compose, registries, zero-downtime swaps</p>
+            </div>
+            <div style="background: var(--ink2); padding: 1.5rem; text-align: center;">
+                <div style="font-family: var(--mono); font-size: 1.2rem; color: var(--teal); margin-bottom: 0.5rem;">🐧</div>
+                <h4 style="font-family: var(--cond); font-size: 1rem; font-weight: 800; color: var(--white); margin-bottom: 0.3rem;">Linux Server Admin</h4>
+                <p style="font-size: 0.75rem; color: var(--mid);">Hardening, UFW, Fail2Ban, backups, cron, performance tuning</p>
+            </div>
+            <div style="background: var(--ink2); padding: 1.5rem; text-align: center;">
+                <div style="font-family: var(--mono); font-size: 1.2rem; color: var(--teal); margin-bottom: 0.5rem;">📊</div>
+                <h4 style="font-family: var(--cond); font-size: 1rem; font-weight: 800; color: var(--white); margin-bottom: 0.3rem;">Observability</h4>
+                <p style="font-size: 0.75rem; color: var(--mid);">Grafana, Prometheus, logging, monitoring, alerting, dashboards</p>
+            </div>
+            <div style="background: var(--ink2); padding: 1.5rem; text-align: center;">
+                <div style="font-family: var(--mono); font-size: 1.2rem; color: var(--teal); margin-bottom: 0.5rem;">🔄</div>
+                <h4 style="font-family: var(--cond); font-size: 1rem; font-weight: 800; color: var(--white); margin-bottom: 0.3rem;">CI/CD Pipelines</h4>
+                <p style="font-size: 0.75rem; color: var(--mid);">GitHub Actions, build/test/deploy, rollback, secrets management</p>
+            </div>
+            <div style="background: var(--ink2); padding: 1.5rem; text-align: center;">
+                <div style="font-family: var(--mono); font-size: 1.2rem; color: var(--teal); margin-bottom: 0.5rem;">🔒</div>
+                <h4 style="font-family: var(--cond); font-size: 1rem; font-weight: 800; color: var(--white); margin-bottom: 0.3rem;">System Hardening</h4>
+                <p style="font-size: 0.75rem; color: var(--mid);">SSL A+, CSP, HSTS, OWASP, audits, vulnerability scanning</p>
+            </div>
+            <div style="background: var(--ink2); padding: 1.5rem; text-align: center;">
+                <div style="font-family: var(--mono); font-size: 1.2rem; color: var(--teal); margin-bottom: 0.5rem;">💡</div>
+                <h4 style="font-family: var(--cond); font-size: 1rem; font-weight: 800; color: var(--white); margin-bottom: 0.3rem;">Technical Consulting</h4>
+                <p style="font-size: 0.75rem; color: var(--mid);">Architecture review, stack selection, code audit, scaling advice</p>
             </div>
         </div>
     </div>
@@ -208,6 +255,49 @@
     
     input:focus, textarea:focus, select:focus {
         outline: none;
+    }
+
+    .svc-opt {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 0.75rem;
+        background: var(--ink);
+        border: 1px solid var(--rule);
+        cursor: pointer;
+        transition: border-color 0.15s;
+        font-family: var(--mono);
+        font-size: 0.7rem;
+        color: var(--white2);
+    }
+    .svc-opt:hover {
+        border-color: var(--teal);
+    }
+    .svc-opt input[type="checkbox"] {
+        appearance: none;
+        width: 14px;
+        height: 14px;
+        border: 1px solid var(--white3);
+        background: transparent;
+        cursor: pointer;
+        flex-shrink: 0;
+        margin: 0;
+        position: relative;
+    }
+    .svc-opt input[type="checkbox"]:checked {
+        background: var(--teal);
+        border-color: var(--teal);
+    }
+    .svc-opt input[type="checkbox"]:checked::after {
+        content: '✓';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: var(--ink);
+        font-size: 10px;
+        font-weight: 700;
+        line-height: 1;
     }
 </style>
 {{ end }}

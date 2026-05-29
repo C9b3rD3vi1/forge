@@ -42,14 +42,15 @@ type Comment struct {
 
 // ContactMessage struct represents a contact message entity with user and contact details.
 type ContactMessage struct {
-	ID      uuid.UUID `gorm:"primaryKey"`
-	Name    string
-	Email   string
-	Subject string
-	Message string
-	
+	ID       uuid.UUID `gorm:"primaryKey"`
+	Name     string
+	Email    string
+	Subject  string
+	Message  string
+	Services string `gorm:"type:text"`
+
 	IsRead bool `gorm:"default:false"`
-	
+
 	gorm.Model
 }
 

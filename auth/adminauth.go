@@ -90,6 +90,7 @@ func VerifyOTPHandler(c *fiber.Ctx) error {
 		return c.Redirect("/admin/login")
 	}
 
+
 	userID := sess.Get("2fa_user_id")
 	if userID == nil {
 		fmt.Println(" No 2FA user ID in session, redirecting to login")
@@ -243,6 +244,7 @@ func AdminDisable2FA(c *fiber.Ctx) error {
 	utils.SetFlash(c, "success", "Two-factor authentication has been disabled.")
 	return c.Redirect("/admin/settings")
 }
+
 
 // AdminLogoutHandler logs out the admin
 func AdminLogoutHandler(c *fiber.Ctx) error {

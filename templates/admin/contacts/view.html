@@ -77,6 +77,16 @@
                     </span>
                 </div>
             </div>
+            {{if .Message.Services}}
+            <div style="background: var(--ink2); padding: 1rem 1.5rem;">
+                <div style="font-family: var(--mono); font-size: 0.55rem; color: var(--teal); letter-spacing: 0.1em;">SERVICES</div>
+                <div style="margin-top: 0.25rem; display: flex; flex-wrap: wrap; gap: 0.3rem;">
+                    {{range split .Message.Services ", "}}
+                    <span style="font-family: var(--mono); font-size: 0.6rem; color: var(--teal); background: var(--teal-glow); border: 1px solid var(--teal-line); padding: 0.15rem 0.5rem;">{{.}}</span>
+                    {{end}}
+                </div>
+            </div>
+            {{end}}
             <div style="background: var(--ink2); padding: 1rem 1.5rem;">
                 <div style="font-family: var(--mono); font-size: 0.55rem; color: var(--teal); letter-spacing: 0.1em;">RECEIVED AT</div>
                 <div style="font-family: var(--cond); font-size: 1rem; font-weight: 600; color: var(--white); margin-top: 0.25rem;">{{ .Message.CreatedAt.Format "2006-01-02 15:04" }}</div>

@@ -43,6 +43,8 @@ func AdminSettingsUpdate(c *fiber.Ctx) error {
 		"github_username", "twitter_url", "linkedin_url",
 		"hero_title", "hero_subtitle",
 		"contact_email", "site_keywords",
+		"open_source_projects",
+		"stat_faster_deploys", "stat_uptime", "stat_certifications", "stat_yrs_production",
 	}
 
 	for _, key := range keys {

@@ -6,7 +6,11 @@ import (
 	"log"
 	"net/http"
 	"strings"
+	"sync"
+	"time"
 
+	"github.com/C9b3rD3vi1/forge/database"
+	"github.com/C9b3rD3vi1/forge/models"
 	"github.com/gofiber/fiber/v2"
 	"golang.org/x/net/html"
 )
@@ -132,4 +136,79 @@ func GitHubUserStatsHandler(c *fiber.Ctx) error {
 
 	log.Printf("Returning GitHub stats response")
 	return c.JSON(response)
+}
+
+var (
+	chartCache     []byte
+	chartCacheMut  sync.Mutex
+	chartCacheTime time.Time
+	chartCacheTTL  = 15 * time.Minute
+)
+
+func ContributionChartHandler(c *fiber.Ctx) error {
+	chartCacheMut.Lock()
+	if !chartCacheTime.IsZero() && time.Since(chartCacheTime) < chartCacheTTL && len(chartCache) > 0 {
+		data := chartCache
+		chartCacheMut.Unlock()
+		c.Set("Content-Type", "image/svg+xml;charset=utf-8")
+		c.Set("Cache-Control", "public, max-age=900")
+		return c.Send(data)
+	}
+	chartCacheMut.Unlock()
+
+	username := "C9b3rD3vi1"
+	var dbUser string
+	database.DB.Model(&models.Setting{}).Where("key = ?", "github_username").Select("value").Scan(&dbUser)
+	if dbUser != "" {
+		username = dbUser
+	}
+
+	client := &http.Client{Timeout: 10 * time.Second}
+	req, _ := http.NewRequest("GET", "https://ghchart.rshah.org/"+username, nil)
+	req.Header.Set("User-Agent", "forge/1.0")
+	resp, err := client.Do(req)
+	if err != nil {
+		return c.Status(502).SendString("Failed to fetch contribution chart")
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return c.Status(502).SendString("Contribution chart service returned " + resp.Status)
+	}
+
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return c.Status(502).SendString("Failed to read contribution chart")
+	}
+
+	svg := string(body)
+
+	// Inject viewBox so the SVG scales with width
+	svg = strings.Replace(svg, `<svg version="1.1"`, `<svg version="1.1" viewBox="0 0 663 104"`, 1)
+
+	// Add a dark background rect as the first child of the SVG
+	svg = strings.Replace(svg, `x="27" y="20"`, `x="0" y="0" width="663" height="104" fill="#0d1117" rx="4"/><rect x="27" y="20"`, 1)
+
+	// Recolor to GitHub-dark theme for better visibility
+	colorMap := map[string]string{
+		"#eeeeee": "#161b22",
+		"#c6e48b": "#0e4429",
+		"#7bc96f": "#006d32",
+		"#239a3b": "#26a641",
+		"#196127": "#39d353",
+	}
+	for old, new := range colorMap {
+		svg = strings.ReplaceAll(svg, old, new)
+	}
+
+	result := []byte(svg)
+
+	chartCacheMut.Lock()
+	chartCache = result
+	chartCacheTime = time.Now()
+	chartCacheMut.Unlock()
+
+	c.Set("Content-Type", "image/svg+xml;charset=utf-8")
+	c.Set("Cache-Control", "public, max-age=900")
+	return c.Send(result)
 }

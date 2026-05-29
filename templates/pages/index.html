@@ -222,17 +222,19 @@ h1 .l3{
 }
 .panel-hdr::before{content:'';width:12px;height:1px;background:var(--teal);}
 
-.sbar-row{display:flex;align-items:center;gap:.8rem;margin-bottom:.65rem;}
-.sbar-label{font-family:var(--mono);font-size:.67rem;color:var(--white2);width:125px;flex-shrink:0;}
-.sbar-track{flex:1;height:3px;background:var(--rule);position:relative;overflow:hidden;}
-.sbar-fill{
-  height:100%;background:linear-gradient(90deg,var(--teal2),var(--teal));
-  transform:scaleX(0);transform-origin:left;
-  animation:barFill 1.2s cubic-bezier(.16,1,.3,1) forwards;
-  animation-delay:var(--d,0s);
+.skill-tag{
+  display:inline-flex;align-items:center;
+  font-family:var(--mono);font-size:.6rem;
+  padding:.25rem .65rem;border-radius:2px;
 }
-@keyframes barFill{to{transform:scaleX(1)}}
-.sbar-pct{font-family:var(--mono);font-size:.6rem;color:var(--white3);width:28px;text-align:right;flex-shrink:0;}
+.c1{background:rgba(78,201,176,.12);color:#4ec9b0;border:1px solid rgba(78,201,176,.3);}
+.c2{background:rgba(156,220,254,.12);color:#9cdcfe;border:1px solid rgba(156,220,254,.3);}
+.c3{background:rgba(206,145,120,.12);color:#ce9178;border:1px solid rgba(206,145,120,.3);}
+.c4{background:rgba(197,134,192,.12);color:#c586c0;border:1px solid rgba(197,134,192,.3);}
+.c5{background:rgba(209,154,102,.12);color:#d19a66;border:1px solid rgba(209,154,102,.3);}
+.c6{background:rgba(86,156,214,.12);color:#569cd6;border:1px solid rgba(86,156,214,.3);}
+.c7{background:rgba(214,157,133,.12);color:#d69d85;border:1px solid rgba(214,157,133,.3);}
+.c8{background:rgba(103,188,110,.12);color:#67bc6e;border:1px solid rgba(103,188,110,.3);}
 
 /* TERMINAL */
 .terminal-panel{
@@ -397,26 +399,17 @@ h1 .l3{
   color:var(--teal);text-transform:uppercase;text-align:right;
 }
 
-/* ─── CERTS ─── */
-.cert-list{border-top:1px solid var(--rule2);}
-.cert-row{
-  display:grid;grid-template-columns:190px 1fr 170px;
-  align-items:center;gap:2rem;
-  border-bottom:1px solid var(--rule2);
-  padding:1.5rem 3rem;
-  transition:background .15s;
+/* ─── STACK ─── */
+.stack-chip{
+  display:inline-flex;align-items:center;gap:.4rem;
+  background:var(--ink2);border:1px solid var(--rule);
+  padding:.35rem .85rem;border-radius:2px;
+  font-family:var(--cond);font-size:.75rem;font-weight:600;
+  color:var(--white);letter-spacing:.02em;
+  transition:border-color .15s;
 }
-.cert-row:hover{background:var(--ink3);}
-.cert-org{font-family:var(--mono);font-size:.62rem;letter-spacing:.08em;
-  text-transform:uppercase;color:var(--white3);}
-.cert-name{font-family:var(--cond);font-weight:700;font-size:1.05rem;
-  text-transform:uppercase;letter-spacing:.03em;color:var(--white);}
-.cert-meta{text-align:right;}
-.cert-valid{
-  font-family:var(--mono);font-size:.6rem;color:var(--green);
-  display:block;margin-bottom:.15rem;letter-spacing:.06em;
-}
-.cert-date{font-family:var(--mono);font-size:.58rem;color:var(--white3);}
+.stack-chip:hover{border-color:var(--teal);}
+.sc-icon{font-size:.85rem;line-height:1;}
 
 /* ─── CONTACT ─── */
 #contact{
@@ -494,8 +487,8 @@ footer{
   .exp-right{padding:1.5rem;}
   .proj-row{grid-template-columns:1fr;padding:1.5rem;}
   .proj-stack,.proj-n,.proj-link{display:none;}
-  .cert-row{grid-template-columns:1fr 1fr;padding:1.2rem 1.5rem;}
-  .cert-meta{display:none;}
+  .stack-chip{padding:.3rem .65rem;font-size:.65rem;}
+  .sc-icon{font-size:.75rem;}
   #contact{grid-template-columns:1fr;}
   nav ul{display:none;}
   footer{padding:1rem 1.5rem;}
@@ -515,10 +508,10 @@ footer{
     <li><a href="#proof">Stack</a></li>
     <li><a href="#experience">Experience</a></li>
     <li><a href="#projects">Systems</a></li>
-    <li><a href="#certs">Certs</a></li>
+    <li><a href="#stack">Stack</a></li>
   </ul>
   <div class="nav-right">
-    <a href="#contact" class="nav-cta">Hire Me →</a>
+    <a href="/contact" class="nav-cta">Hire Me →</a>
   </div>
 </nav>
 
@@ -567,18 +560,50 @@ footer{
 
   <!-- RIGHT PANEL -->
   <div class="hero-right">
-    <!-- SKILL BARS -->
+    <!-- SKILL TAGS -->
     <div class="hr-panel">
       <div class="panel-hdr">Proficiency Matrix</div>
-      <div class="sbar-row"><span class="sbar-label">Go (Golang)</span><div class="sbar-track"><div class="sbar-fill" style="width:93%;--d:.05s"></div></div><span class="sbar-pct">93%</span></div>
-      <div class="sbar-row"><span class="sbar-label">Linux / Bash</span><div class="sbar-track"><div class="sbar-fill" style="width:91%;--d:.12s"></div></div><span class="sbar-pct">91%</span></div>
-      <div class="sbar-row"><span class="sbar-label">Docker</span><div class="sbar-track"><div class="sbar-fill" style="width:90%;--d:.19s"></div></div><span class="sbar-pct">90%</span></div>
-      <div class="sbar-row"><span class="sbar-label">PostgreSQL</span><div class="sbar-track"><div class="sbar-fill" style="width:88%;--d:.26s"></div></div><span class="sbar-pct">88%</span></div>
-      <div class="sbar-row"><span class="sbar-label">Python</span><div class="sbar-track"><div class="sbar-fill" style="width:85%;--d:.33s"></div></div><span class="sbar-pct">85%</span></div>
-      <div class="sbar-row"><span class="sbar-label">Nginx / Proxy</span><div class="sbar-track"><div class="sbar-fill" style="width:86%;--d:.40s"></div></div><span class="sbar-pct">86%</span></div>
-      <div class="sbar-row"><span class="sbar-label">CI/CD Pipelines</span><div class="sbar-track"><div class="sbar-fill" style="width:83%;--d:.47s"></div></div><span class="sbar-pct">83%</span></div>
-      <div class="sbar-row"><span class="sbar-label">Security Hardening</span><div class="sbar-track"><div class="sbar-fill" style="width:81%;--d:.54s"></div></div><span class="sbar-pct">81%</span></div>
-      <div class="sbar-row"><span class="sbar-label">AWS</span><div class="sbar-track"><div class="sbar-fill" style="width:76%;--d:.61s"></div></div><span class="sbar-pct">76%</span></div>
+      <div style="padding:1rem 1.25rem;display:flex;flex-direction:column;gap:.75rem;">
+        <div>
+          <div style="font-family:var(--mono);font-size:.55rem;color:var(--white3);letter-spacing:.08em;margin-bottom:.4rem;">BACKEND DEVELOPMENT</div>
+          <div style="display:flex;flex-wrap:wrap;gap:.3rem;">
+            <span class="skill-tag c1">Go (Fiber)</span>
+            <span class="skill-tag c2">REST APIs</span>
+            <span class="skill-tag c3">WebSockets</span>
+            <span class="skill-tag c4">Background Workers</span>
+            <span class="skill-tag c5">Authentication</span>
+            <span class="skill-tag c6">Session Management</span>
+            <span class="skill-tag c7">Redis Caching</span>
+            <span class="skill-tag c8">PostgreSQL</span>
+          </div>
+        </div>
+        <div>
+          <div style="font-family:var(--mono);font-size:.55rem;color:var(--white3);letter-spacing:.08em;margin-bottom:.4rem;">INFRASTRUCTURE &amp; DEVOPS</div>
+          <div style="display:flex;flex-wrap:wrap;gap:.3rem;">
+            <span class="skill-tag c1">Docker</span>
+            <span class="skill-tag c2">Linux Operations</span>
+            <span class="skill-tag c3">Reverse Proxies</span>
+            <span class="skill-tag c4">CI/CD Pipelines</span>
+            <span class="skill-tag c5">Monitoring Stack</span>
+            <span class="skill-tag c6">Grafana/Prometheus</span>
+            <span class="skill-tag c7">Nginx</span>
+            <span class="skill-tag c8">Container Orchestration</span>
+          </div>
+        </div>
+        <div>
+          <div style="font-family:var(--mono);font-size:.55rem;color:var(--white3);letter-spacing:.08em;margin-bottom:.4rem;">CYBERSECURITY</div>
+          <div style="display:flex;flex-wrap:wrap;gap:.3rem;">
+            <span class="skill-tag c1">SSL/TLS Hardening</span>
+            <span class="skill-tag c2">Security Headers</span>
+            <span class="skill-tag c3">Fail2Ban</span>
+            <span class="skill-tag c4">Fortinet</span>
+            <span class="skill-tag c5">DNS Security</span>
+            <span class="skill-tag c6">SPF/DKIM/DMARC</span>
+            <span class="skill-tag c7">Vulnerability Scanning</span>
+            <span class="skill-tag c8">Access Control</span>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- TERMINAL -->
@@ -604,19 +629,19 @@ footer{
     <!-- PROOF NUMBERS -->
     <div class="proof-grid">
       <div class="proof-item">
-        <div class="proof-num">8+</div>
+        <div class="proof-num">{{ .LiveSystems }}</div>
         <div class="proof-lbl">Live Systems</div>
       </div>
       <div class="proof-item">
-        <div class="proof-num">5×</div>
+        <div class="proof-num">{{ .FasterDeploys }}</div>
         <div class="proof-lbl">Faster Deploys</div>
       </div>
       <div class="proof-item">
-        <div class="proof-num">3+</div>
+        <div class="proof-num">{{ .YrsProduction }}</div>
         <div class="proof-lbl">Yrs Production</div>
       </div>
       <div class="proof-item">
-        <div class="proof-num">7</div>
+        <div class="proof-num">{{ .Certifications }}</div>
         <div class="proof-lbl">Certifications</div>
       </div>
     </div>
@@ -687,157 +712,121 @@ footer{
   </div>
 </section>
 
-<!-- ── EXPERIENCE ── -->
-<section id="experience" class="sec">
-  <div class="sec-head">
-    <div class="sec-num"><span class="teal">02</span> — Work History</div>
-    <h2 class="sec-title">Where I've<br><span>Shipped Things</span></h2>
-  </div>
-  <div class="exp-wrap">
-    <div class="exp-row reveal">
-      <div class="exp-left">
-        <div class="exp-period">2021 – Present</div>
-        <div class="exp-co">Simux Tech</div>
-        <div class="exp-loc">Nairobi, Kenya</div>
-      </div>
-      <div class="exp-right">
-        <div class="exp-role">Backend &amp; Infrastructure Engineer</div>
-        <ul class="exp-bullets">
-          <li>Engineered 4+ production SaaS platforms in Go, Python, PostgreSQL, Docker — fintech, booking, and automation verticals with real users and real revenue</li>
-          <li>Built multi-tenant WhatsApp booking SaaS with real-time scheduling, automated reminders, subscription billing, and M-Pesa/Twilio integrations <span class="badge">↗ Live</span></li>
-          <li>Developed WhatsApp M-Pesa analytics platform for SME financial reporting, integrating Safaricom Daraja API and Twilio <span class="badge">↗ Live</span></li>
-          <li>Designed AI-powered support automation handling 500+ monthly customer interactions using Groq, PostgreSQL memory, and n8n orchestration</li>
-          <li>Managed Linux production infrastructure for 8+ deployed applications: Nginx, SSL/TLS, Docker, automated deployment pipelines, monitoring, and backups</li>
-          <li>Reduced CI/CD deployment from ~30 minutes to under 5 minutes via GitHub Actions pipelines <span class="badge">5× faster</span></li>
-        </ul>
-      </div>
-    </div>
-    <div class="exp-row reveal">
-      <div class="exp-left">
-        <div class="exp-period">Jan 2024 – Nov 2025</div>
-        <div class="exp-co">TBC Group</div>
-        <div class="exp-loc">Nairobi, Kenya</div>
-      </div>
-      <div class="exp-right">
-        <div class="exp-role">IT Support Specialist</div>
-        <ul class="exp-bullets">
-          <li>Maintained ERP and internal business systems supporting 25+ employees across operational and administrative departments</li>
-          <li>Reduced average ticket resolution time by 25% through systematic documentation and proactive maintenance workflows <span class="badge">↑25%</span></li>
-          <li>Implemented SSL/TLS, CSP, HSTS, firewall hardening, and vulnerability scanning across company infrastructure</li>
-          <li>Managed full corporate DNS and email authentication stack — SPF, DKIM, DMARC configuration end-to-end</li>
-        </ul>
-      </div>
-    </div>
-    <div class="exp-row reveal">
-      <div class="exp-left">
-        <div class="exp-period">Jan 2023 – Dec 2023</div>
-        <div class="exp-co">Food for Education</div>
-        <div class="exp-loc">Nairobi, Kenya</div>
-      </div>
-      <div class="exp-right">
-        <div class="exp-role">Technical Support Engineer</div>
-        <ul class="exp-bullets">
-          <li>Optimised Django-based meal tracking platform through database query tuning and backend performance improvements</li>
-          <li>Built Python inventory automation tools reducing operational data-entry errors and improving reporting accuracy</li>
-          <li>Produced technical documentation and support guides that significantly reduced repetitive support load</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ── PROJECTS ── -->
+<!-- ── FEATURED PROJECTS ── -->
 <section id="projects" class="sec">
   <div class="sec-head">
-    <div class="sec-num"><span class="teal">03</span> — Systems Built</div>
-    <h2 class="sec-title">Real Systems,<br><span>Real Users</span></h2>
+    <div class="sec-num"><span class="teal">02</span> — Live Systems</div>
+    <h2 class="sec-title">What's Running<br><span>Right Now</span></h2>
   </div>
-  <div class="proj-list">
-    <a href="https://cashflow.simuxtech.com" target="_blank" class="proj-row reveal">
-      <div class="proj-n">01</div>
-      <div><div class="proj-name">CashFlow Tracker</div><div class="proj-desc">WhatsApp-native M-Pesa analytics for SMEs. Parses Safaricom SMS formats, auto-categorises transactions, delivers financial reports directly in WhatsApp.</div></div>
-      <div class="proj-stack">Go · PostgreSQL<br>Twilio · Daraja API<br>Docker · Nginx</div>
-      <div class="proj-link">↗ Live Platform</div>
-    </a>
-    <a href="https://salonbook.simuxtech.com" target="_blank" class="proj-row reveal">
-      <div class="proj-n">02</div>
-      <div><div class="proj-name">SalonBook</div><div class="proj-desc">Multi-tenant booking SaaS — WhatsApp notifications, subscription billing, automated reminders, WebSocket real-time updates, payment integration.</div></div>
-      <div class="proj-stack">Go · PostgreSQL<br>Redis · WebSockets<br>Twilio · Docker</div>
-      <div class="proj-link">↗ Live Platform</div>
-    </a>
-    <div class="proj-row reveal" style="cursor:default;">
-      <div class="proj-n">03</div>
-      <div><div class="proj-name">InvoiceFast</div><div class="proj-desc">African invoicing SaaS — M-Pesa payments, Flutterwave, recurring invoices, automated reminders, multi-currency, client management portal.</div></div>
-      <div class="proj-stack">Go · PostgreSQL<br>Daraja · Flutterwave<br>Twilio · VPS</div>
-      <div class="proj-link">In Production</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--rule);">
+    {{ range $i, $project := .Projects }}
+    {{ $link := $project.Link }}
+    <div style="background:var(--ink2);padding:1.75rem;display:flex;flex-direction:column;">
+      {{ if $project.ImageURL }}
+      <a href="/projects/{{ $project.Slug }}" style="display:block;margin:-1.75rem -1.75rem .75rem;border-radius:4px 4px 0 0;overflow:hidden;line-height:0;">
+        <img src="{{ $project.ImageURL }}" alt="{{ $project.Title }}" style="width:100%;height:120px;object-fit:cover;display:block;">
+      </a>
+      {{ end }}
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:.75rem;">
+        <div style="font-family:var(--cond);font-size:.75rem;font-weight:400;color:var(--white3);letter-spacing:.05em;">{{ printf "%02d" (add $i 1) }}</div>
+        {{ if $link }}
+        <div style="font-size:.65rem;color:var(--teal);font-family:var(--mono);">🔗 Live</div>
+        {{ else if eq $project.ProjectType "Open Source" }}
+        <div style="font-size:.65rem;color:var(--orange);font-family:var(--mono);">📦 Open Source</div>
+        {{ else if eq $project.ProjectType "Internal" }}
+        <div style="font-size:.65rem;color:var(--white3);font-family:var(--mono);">🔧 Internal</div>
+        {{ else }}
+        <div style="font-size:.65rem;color:var(--white3);font-family:var(--mono);">🚀 In Production</div>
+        {{ end }}
+      </div>
+      <div style="font-family:var(--cond);font-size:1.05rem;font-weight:700;color:var(--white);margin-bottom:.35rem;">{{ $project.Title }}</div>
+      <div style="font-family:var(--mono);font-size:.6rem;color:var(--white2);line-height:1.5;margin-bottom:.75rem;flex:1;">{{ $project.Description }}</div>
+      <div style="display:flex;flex-wrap:wrap;gap:.35rem;margin-bottom:.75rem;">
+        {{ range $j, $ts := $project.TechStacks }}
+        <span class="skill-tag {{ colorClass $j }}" style="font-size:.5rem;">{{ $ts.Name }}</span>
+        {{ end }}
+      </div>
+      <div>
+        <a href="/projects/{{ $project.Slug }}" style="font-family:var(--mono);font-size:.55rem;color:var(--teal);text-decoration:none;">→ More</a>
+        {{ if $link }}
+        <span style="font-family:var(--mono);font-size:.55rem;color:var(--white3);margin:0 .3rem;">·</span>
+        <a href="{{ $link }}" target="_blank" style="font-family:var(--mono);font-size:.55rem;color:var(--white3);text-decoration:none;">↗ Visit</a>
+        {{ end }}
+      </div>
     </div>
-    <div class="proj-row reveal" style="cursor:default;">
-      <div class="proj-n">04</div>
-      <div><div class="proj-name">PasteVault</div><div class="proj-desc">Zero-knowledge self-destructing secret sharing. Time-limited + single-use encrypted workflows with automated expiration and full CI/CD.</div></div>
-      <div class="proj-stack">Go Fiber · Docker<br>CI/CD · Encryption<br>GitHub Actions</div>
-      <div class="proj-link">Open Source</div>
-    </div>
-    <div class="proj-row reveal" style="cursor:default;">
-      <div class="proj-n">05</div>
-      <div><div class="proj-name">AI Support Agent</div><div class="proj-desc">Conversational AI handling 500+ monthly interactions. Context-aware PostgreSQL memory, Groq inference, n8n orchestration, API integrations.</div></div>
-      <div class="proj-stack">Groq AI · PostgreSQL<br>n8n · Go<br>API Integrations</div>
-      <div class="proj-link">Internal System</div>
-    </div>
-    <a href="https://n8n.simuxtech.com" target="_blank" class="proj-row reveal">
-      <div class="proj-n">06</div>
-      <div><div class="proj-name">Automation Platform</div><div class="proj-desc">Self-hosted n8n infrastructure managing integrations and automation pipelines across all Simux Tech services. Dockerised, SSL-secured, monitored.</div></div>
-      <div class="proj-stack">n8n · Docker<br>Nginx · Linux<br>SSL/TLS · DNS</div>
-      <div class="proj-link">↗ Live Instance</div>
-    </a>
+    {{ end }}
   </div>
 </section>
 
-<!-- ── CERTS ── -->
-<section id="certs" class="sec">
+<!-- ── STACK & OPEN SOURCE ── -->
+<section id="stack" class="sec" style="border-bottom:none;">
   <div class="sec-head">
-    <div class="sec-num"><span class="teal">04</span> — Certifications</div>
-    <h2 class="sec-title">Verified,<br><span>Not Just Claimed</span></h2>
+    <div class="sec-num"><span class="teal">03</span> — GitHub & Open Source</div>
+    <h2 class="sec-title">What I Use &<br><span>What I Ship</span></h2>
   </div>
-  <div class="cert-list">
-    <div class="cert-row reveal">
-      <div class="cert-org">Fortinet</div>
-      <div class="cert-name">Certified Associate in Cybersecurity (FCA)</div>
-      <div class="cert-meta"><span class="cert-valid">✓ Valid</span><span class="cert-date">Nov 2025 – Nov 2027 · #2873237187NW</span></div>
+
+  <!-- Stack Row -->
+  <div style="padding:2rem 3rem 0;">
+    <div style="font-family:var(--mono);font-size:.55rem;color:var(--white3);letter-spacing:.1em;margin-bottom:1rem;">DAILY TOOLCHAIN</div>
+    <div style="display:flex;flex-wrap:wrap;gap:.5rem;">
+      <span class="stack-chip"><span class="sc-icon">⌨</span> Go</span>
+      <span class="stack-chip"><span class="sc-icon">🐳</span> Docker</span>
+      <span class="stack-chip"><span class="sc-icon">🗄️</span> PostgreSQL</span>
+      <span class="stack-chip"><span class="sc-icon">⚡</span> Redis</span>
+      <span class="stack-chip"><span class="sc-icon">🌐</span> Nginx</span>
+      <span class="stack-chip"><span class="sc-icon">🐧</span> Linux</span>
+      <span class="stack-chip"><span class="sc-icon">📊</span> Grafana</span>
+      <span class="stack-chip"><span class="sc-icon">🤖</span> GitHub Actions</span>
+      <span class="stack-chip"><span class="sc-icon">🔗</span> Fiber</span>
+      <span class="stack-chip"><span class="sc-icon">☁️</span> VPS</span>
     </div>
-    <div class="cert-row reveal">
-      <div class="cert-org">AWS</div>
-      <div class="cert-name">Security Fundamentals — Second Edition</div>
-      <div class="cert-meta"><span class="cert-valid">✓ Completed</span><span class="cert-date">November 2025</span></div>
-    </div>
-    <div class="cert-row reveal">
-      <div class="cert-org">Fortinet</div>
-      <div class="cert-name">FortiGate 7.6 Operator</div>
-      <div class="cert-meta"><span class="cert-valid">✓ Completed</span><span class="cert-date">November 2025</span></div>
-    </div>
-    <div class="cert-row reveal">
-      <div class="cert-org">Fortinet</div>
-      <div class="cert-name">FortiAnalyzer 7.4 Analyst</div>
-      <div class="cert-meta"><span class="cert-valid">✓ Completed</span><span class="cert-date">November 2025</span></div>
-    </div>
-    <div class="cert-row reveal">
-      <div class="cert-org">Fortinet</div>
-      <div class="cert-name">Getting Started in Cybersecurity 3.0</div>
-      <div class="cert-meta"><span class="cert-valid">✓ Completed</span><span class="cert-date">November 2025</span></div>
-    </div>
-    <div class="cert-row reveal">
-      <div class="cert-org">Linux Foundation</div>
-      <div class="cert-name">System Administration · Developing Secure Software (LFD121)</div>
-      <div class="cert-meta"><span class="cert-valid">✓ Completed</span><span class="cert-date">2023</span></div>
-    </div>
-    <div class="cert-row reveal">
-      <div class="cert-org">Oracle</div>
-      <div class="cert-name">Oracle Certified Associate</div>
-      <div class="cert-meta"><span class="cert-valid">✓ Active</span></div>
-    </div>
-    <div class="cert-row reveal">
-      <div class="cert-org">University of Embu</div>
-      <div class="cert-name">BSc Computer Science — Software Engineering · Cybersecurity · Databases</div>
-      <div class="cert-meta"><span class="cert-valid">✓ Degree</span></div>
+  </div>
+
+  <!-- GitHub Activity -->
+  <div style="padding:3rem 3rem 2rem;">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--rule);">
+      <div style="background:var(--ink2);padding:2rem;">
+        <div style="font-family:var(--mono);font-size:.55rem;color:var(--white3);letter-spacing:.1em;margin-bottom:.75rem;">GITHUB STATS</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--rule);">
+          <div style="background:var(--ink);padding:1.25rem;text-align:center;">
+            <div style="font-family:var(--cond);font-size:1.8rem;font-weight:900;color:var(--teal);">{{ .GHStats.TotalRepos }}</div>
+            <div style="font-family:var(--mono);font-size:.5rem;color:var(--white3);letter-spacing:.08em;">REPOS</div>
+          </div>
+          <div style="background:var(--ink);padding:1.25rem;text-align:center;">
+            <div style="font-family:var(--cond);font-size:1.8rem;font-weight:900;color:var(--teal);">{{ .GHStats.TotalStars }}</div>
+            <div style="font-family:var(--mono);font-size:.5rem;color:var(--white3);letter-spacing:.08em;">STARS</div>
+          </div>
+          <div style="background:var(--ink);padding:1.25rem;text-align:center;">
+            <div style="font-family:var(--cond);font-size:1.8rem;font-weight:900;color:var(--teal);">{{ .GHStats.TotalForks }}</div>
+            <div style="font-family:var(--mono);font-size:.5rem;color:var(--white3);letter-spacing:.08em;">FORKS</div>
+          </div>
+          <div style="background:var(--ink);padding:1.25rem;text-align:center;">
+            <div style="font-family:var(--cond);font-size:1.8rem;font-weight:900;color:var(--teal);">{{ .GHStats.Followers }}</div>
+            <div style="font-family:var(--mono);font-size:.5rem;color:var(--white3);letter-spacing:.08em;">FOLLOWERS</div>
+          </div>
+        </div>
+        <div style="margin-top:1rem;text-align:center;">
+          <a href="{{ .GitHubProfileURL }}" target="_blank" style="font-family:var(--mono);font-size:.65rem;color:var(--teal);text-decoration:none;border:1px solid var(--teal-line);padding:.4rem 1rem;display:inline-block;">View GitHub Profile →</a>
+        </div>
+      </div>
+      <div style="background:var(--ink2);padding:2rem;">
+        <div style="font-family:var(--mono);font-size:.55rem;color:var(--white3);letter-spacing:.1em;margin-bottom:.75rem;">CURRENT ENGINEERING ACTIVITY</div>
+        <div style="margin-bottom:1.25rem;">
+          <img src="/ghchart" alt="GitHub Contribution Graph" style="width:100%;border-radius:4px;display:block;">
+        </div>
+        <div style="font-family:var(--mono);font-size:.55rem;color:var(--white3);letter-spacing:.1em;margin-bottom:.75rem;">CONTRIBUTIONS</div>
+        <div style="display:flex;flex-direction:column;gap:.6rem;">
+          {{ range .OSSProjects }}
+          <div style="display:flex;align-items:center;gap:.75rem;padding:.5rem .75rem;background:var(--ink);border:1px solid var(--rule);">
+            <span style="font-family:var(--mono);font-size:.7rem;color:var(--teal);">{{ .Icon }}</span>
+            <span style="font-family:var(--mono);font-size:.7rem;color:var(--white2);">{{ .Name }} — {{ .Desc }}</span>
+          </div>
+          {{ end }}
+        </div>
+        <div style="margin-top:1rem;text-align:center;">
+          <a href="{{ .GitHubReposURL }}" target="_blank" style="font-family:var(--mono);font-size:.55rem;color:var(--white3);text-decoration:none;">More on GitHub →</a>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -848,7 +837,7 @@ footer{
     <div class="corner tl"></div>
     <div class="corner br"></div>
     <div>
-      <div style="font-family:var(--mono);font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--teal);margin-bottom:1.5rem;">05 — Contact</div>
+      <div style="font-family:var(--mono);font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--teal);margin-bottom:1.5rem;">04 — Contact</div>
       <div class="contact-h">
         Ready to hire<br><em>serious</em><br>talent?
       </div>
@@ -884,11 +873,8 @@ footer{
 </section>
 
 <!-- FOOTER -->
-<footer>
-  <div class="footer-l">© 2025 Forge.Hub · All rights reserved · Built to be found by the right people</div>
-  <div class="footer-r">SIMUX<span>TECH</span></div>
-</footer>
 
+        
 <script>
 // Cursor
 const cur = document.getElementById('cursor');
@@ -897,7 +883,7 @@ let mx=0,my=0,rx=0,ry=0;
 document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
 function animRing(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animRing);}
 animRing();
-document.querySelectorAll('a,button,.proj-row,.proof-item,.tc-cell,.cert-row,.exp-row').forEach(el=>{
+document.querySelectorAll('a,button,.proj-row,.proof-item,.tc-cell,.stack-chip,.exp-row').forEach(el=>{
   el.addEventListener('mouseenter',()=>{cur.classList.add('big');ring.classList.add('big');});
   el.addEventListener('mouseleave',()=>{cur.classList.remove('big');ring.classList.remove('big');});
 });

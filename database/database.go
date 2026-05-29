@@ -117,6 +117,11 @@ func SeedSettings(db *gorm.DB) {
 		"hero_title":       "Cybersecurity & DevOps Engineer",
 		"hero_subtitle":    "Securing systems, automating workflows, building resilient infrastructure.",
 		"contact_email":    "hello@simuxtech.com",
+		"stat_faster_deploys":      "5×",
+		"stat_uptime":             "99.9%",
+		"stat_certifications":     "7",
+		"stat_yrs_production":     "3+",
+		"open_source_projects": `[{"icon":"📦","name":"forgebuild","desc":"auto-build CLI for Go projects"},{"icon":"🔐","name":"openvpn-manager","desc":"VPN user management API"},{"icon":"⚙️","name":"deploy-scripts","desc":"Infrastructure automation toolkit"},{"icon":"🧪","name":"security-audit-tools","desc":"Hardening & compliance scripts"}]`,
 	}
 	for key, value := range defaults {
 		var count int64
