@@ -115,6 +115,99 @@ Ensure your data is safe with built-in backup and restore capabilities:
 
 ## 📂 Project Architecture
 
+Forge Hub follows a **Modular Monolith Architecture**, designed for high efficiency and low latency.
+
+### 🗺️ System Diagram
+```mermaid
+graph TB
+    subgraph Client_Layer [Client Layer]
+        User((User/Browser))
+        Admin((Admin User))
+    end
+
+    subgraph Presentation_Layer [Presentation Layer - Fiber v2]
+        direction TB
+        Router{Request Router}
+        TemplateEngine[GoFiber Layout Engine]
+        StaticFiles[Static Assets/Uploads]
+    end
+
+    subgraph Logic_Layer [Application Logic Layer]
+        direction TB
+        MW_Global[Global Data Middleware]
+        MW_Auth[Admin Auth Middleware]
+        
+        subgraph Handlers [Route Handlers]
+            PublicH[Public Handlers]
+            AdminH[Admin CRUD Handlers]
+            GitHubH[GitHub Stats Handler]
+        end
+    end
+
+    subgraph Data_Layer [Persistence & Infrastructure]
+        direction LR
+        DB[(SQLite Database)]
+        Redis[(Redis Session Store)]
+        Filesystem[(Disk: /uploads)]
+    end
+
+    subgraph External_Layer [External Integrations]
+        GH_API[GitHub REST API]
+    end
+
+    %% Connections
+    User --> Router
+    Admin --> Router
+    
+    Router --> MW_Global
+    MW_Global --> MW_Auth
+    MW_Auth --> Handlers
+    
+    PublicH --> DB
+    AdminH --> DB
+    AdminH --> Redis
+    AdminH --> Filesystem
+    GitHubH --> GH_API
+    
+    Handlers --> TemplateEngine
+    TemplateEngine --> User
+    StaticFiles --> User
+
+    %% Styling
+    style Client_Layer fill:#f9f9f9,stroke:#333,stroke-width:2px
+    style Presentation_Layer fill:#e1f5fe,stroke:#01579b,stroke-width:2px
+    style Logic_Layer fill:#fff3e0,stroke:#e65100,stroke-width:2px
+    style Data_Layer fill:#e8f5e9,stroke:#1b5e20,stroke-width:2px
+    style External_Layer fill:#f3e5f5,stroke:#4a148c,stroke-width:2px
+    
+    style DB fill:#C5E1A5,stroke:#33691E
+    style Redis fill:#FFCDD2,stroke:#B71C1C
+    style GH_API fill:#D1C4E9,stroke:#311B92
+```
+
+### ⚙️ Architectural Analysis
+
+#### Request Lifecycle
+1. **Entry**: HTTP request $\rightarrow$ Fiber Server.
+2. **Middleware**: `InjectGlobalData` $\rightarrow$ `DynamicLayoutMiddleware` $\rightarrow$ `RequireAdminAuth` (if applicable).
+3. **Routing**: Dispatch to specialized Handlers.
+4. **Persistence**: Business logic $\rightarrow$ GORM $\rightarrow$ SQLite (Disk) / Redis (Session).
+5. **Response**: Template Engine $\rightarrow$ HTML $\rightarrow$ Client.
+
+#### Key Technical Decisions
+- **SQLite with WAL**: Optimized for high-read performance and simple portability.
+- **Defense-in-Depth**: Combination of `bcrypt` hashing and TOTP 2FA for administrative security.
+- **SSR Architecture**: Pure server-side rendering for maximum SEO and speed.
+
+### 🎨 Component Legend
+| Color | Layer | Responsibility |
+| :--- | :--- | :--- |
+| **Blue** | Presentation | HTTP Routing & HTML Rendering |
+| **Orange** | Logic | Auth Guards & Business Logic |
+| **Green** | Data | SQLite Persistence & Redis Sessioning |
+| **Purple** | External | Third-party API Integrations |
+
+### 📂 Directory Structure
 ```text
 .
 ├── auth/           # Authentication logic (JWT, OTP, Admin Auth)
@@ -128,6 +221,7 @@ Ensure your data is safe with built-in backup and restore capabilities:
 ├── templates/      # HTML templates (Admin and Public)
 └── utils/          # Helper functions (Mail, Hashing, GitHub API)
 ```
+
 
 ## 🛡️ Security Note
 Forge Hub implements:
