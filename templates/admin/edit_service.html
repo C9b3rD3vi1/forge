@@ -3,7 +3,6 @@
 {{ define "content" }}
 <div style="max-width: 800px; margin: 0 auto;">
 
-    <!-- Header -->
     <div style="margin-bottom: 2rem;">
         <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.5rem;">
             <a href="/admin/services" style="font-family: var(--mono); font-size: 0.7rem; color: var(--teal); text-decoration: none;">← Back to Services</a>
@@ -14,17 +13,14 @@
         <p style="color: var(--white2); font-size: 0.8rem;">Update service information</p>
     </div>
 
-    <!-- Error Message -->
     {{ if .Error }}
     <div style="background: var(--red-dim); border: 1px solid var(--red); padding: 0.75rem 1rem; margin-bottom: 1.5rem; color: var(--red); font-family: var(--mono); font-size: 0.8rem;">
         {{ .Error }}
     </div>
     {{ end }}
 
-    <!-- Form -->
     <form method="POST" action="/admin/services/edit/{{ .Service.ID }}" enctype="multipart/form-data" style="background: var(--ink2); border: 1px solid var(--rule); padding: 2rem;">
 
-        <!-- Title -->
         <div style="margin-bottom: 1.5rem;">
             <label for="title" style="display: block; font-family: var(--mono); font-size: 0.65rem; color: var(--teal); letter-spacing: 0.1em; margin-bottom: 0.5rem;">
                 TITLE
@@ -33,7 +29,6 @@
                    style="width: 100%; background: var(--ink); border: 1px solid var(--rule); padding: 0.75rem 1rem; color: var(--white); font-family: var(--body); font-size: 0.9rem;">
         </div>
 
-        <!-- Description -->
         <div style="margin-bottom: 1.5rem;">
             <label for="description" style="display: block; font-family: var(--mono); font-size: 0.65rem; color: var(--teal); letter-spacing: 0.1em; margin-bottom: 0.5rem;">
                 DESCRIPTION
@@ -42,7 +37,75 @@
                       style="width: 100%; background: var(--ink); border: 1px solid var(--rule); padding: 0.75rem 1rem; color: var(--white); font-family: var(--body); font-size: 0.85rem; resize: vertical;">{{ .Service.Description }}</textarea>
         </div>
 
-        <!-- Current Image -->
+        <div style="margin-bottom: 1.5rem;">
+            <label for="category" style="display: block; font-family: var(--mono); font-size: 0.65rem; color: var(--teal); letter-spacing: 0.1em; margin-bottom: 0.5rem;">
+                CATEGORY
+            </label>
+            <input type="text" id="category" name="category" value="{{ .Service.Category }}" placeholder="e.g. Cybersecurity, SaaS, Mobile"
+                   style="width: 100%; background: var(--ink); border: 1px solid var(--rule); padding: 0.75rem 1rem; color: var(--white); font-family: var(--body); font-size: 0.9rem;">
+        </div>
+
+        <div style="margin-bottom: 1.5rem;">
+            <label for="tags" style="display: block; font-family: var(--mono); font-size: 0.65rem; color: var(--teal); letter-spacing: 0.1em; margin-bottom: 0.5rem;">
+                TAGS
+            </label>
+            <input type="text" id="tags" name="tags" value="{{ .Service.Tags }}" placeholder="Comma-separated tags"
+                   style="width: 100%; background: var(--ink); border: 1px solid var(--rule); padding: 0.75rem 1rem; color: var(--white); font-family: var(--body); font-size: 0.9rem;">
+            <small style="color: var(--white3); font-size: 0.6rem; margin-top: 0.5rem; display: block;">Separate tags with commas</small>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem;">
+            <div>
+                <label for="status" style="display: block; font-family: var(--mono); font-size: 0.65rem; color: var(--teal); letter-spacing: 0.1em; margin-bottom: 0.5rem;">
+                    STATUS
+                </label>
+                <select id="status" name="status"
+                        style="width: 100%; background: var(--ink); border: 1px solid var(--rule); padding: 0.75rem 1rem; color: var(--white); font-family: var(--body); font-size: 0.85rem;">
+                    <option value="active" style="background: var(--ink2);" {{ if eq .Service.Status "active" }}selected{{ end }}>Active</option>
+                    <option value="inactive" style="background: var(--ink2);" {{ if eq .Service.Status "inactive" }}selected{{ end }}>Inactive</option>
+                    <option value="coming-soon" style="background: var(--ink2);" {{ if eq .Service.Status "coming-soon" }}selected{{ end }}>Coming Soon</option>
+                </select>
+            </div>
+            <div>
+                <label for="published_at" style="display: block; font-family: var(--mono); font-size: 0.65rem; color: var(--teal); letter-spacing: 0.1em; margin-bottom: 0.5rem;">
+                    PUBLISH DATE
+                </label>
+                <input type="date" id="published_at" name="published_at" value="{{ if not .Service.PublishedAt.IsZero }}{{ .Service.PublishedAt.Format "2006-01-02" }}{{ end }}"
+                       style="width: 100%; background: var(--ink); border: 1px solid var(--rule); padding: 0.6rem 1rem; color: var(--white); font-family: var(--body); font-size: 0.85rem;">
+            </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem;">
+            <div>
+                <label style="display: flex; align-items: center; gap: 0.5rem; font-family: var(--mono); font-size: 0.65rem; color: var(--white2); cursor: pointer;">
+                    <input type="checkbox" name="featured" id="featured" style="accent-color: var(--teal); width: 16px; height: 16px;" {{ if .Service.Featured }}checked{{ end }}>
+                    Featured service
+                </label>
+            </div>
+            <div>
+                <label style="display: flex; align-items: center; gap: 0.5rem; font-family: var(--mono); font-size: 0.65rem; color: var(--white2); cursor: pointer;">
+                    <input type="checkbox" name="published" id="published" style="accent-color: var(--teal); width: 16px; height: 16px;" {{ if .Service.Published }}checked{{ end }}>
+                    Published
+                </label>
+            </div>
+        </div>
+
+        <div style="margin-bottom: 1.5rem;">
+            <label for="meta_description" style="display: block; font-family: var(--mono); font-size: 0.65rem; color: var(--teal); letter-spacing: 0.1em; margin-bottom: 0.5rem;">
+                META DESCRIPTION
+            </label>
+            <textarea id="meta_description" name="meta_description" rows="3" placeholder="SEO meta description"
+                      style="width: 100%; background: var(--ink); border: 1px solid var(--rule); padding: 0.75rem 1rem; color: var(--white); font-family: var(--body); font-size: 0.85rem; resize: vertical;">{{ .Service.MetaDescription }}</textarea>
+        </div>
+
+        <div style="margin-bottom: 1.5rem;">
+            <label for="canonical_url" style="display: block; font-family: var(--mono); font-size: 0.65rem; color: var(--teal); letter-spacing: 0.1em; margin-bottom: 0.5rem;">
+                CANONICAL URL
+            </label>
+            <input type="text" id="canonical_url" name="canonical_url" value="{{ .Service.CanonicalURL }}" placeholder="https://example.com/canonical-page"
+                   style="width: 100%; background: var(--ink); border: 1px solid var(--rule); padding: 0.75rem 1rem; color: var(--white); font-family: var(--body); font-size: 0.9rem;">
+        </div>
+
         {{ if .Service.ImageURL }}
         <div style="margin-bottom: 1.5rem;">
             <label style="display: block; font-family: var(--mono); font-size: 0.65rem; color: var(--teal); letter-spacing: 0.1em; margin-bottom: 0.5rem;">CURRENT IMAGE</label>
@@ -52,7 +115,6 @@
         </div>
         {{ end }}
 
-        <!-- Upload New Image -->
         <div style="margin-bottom: 1.5rem;">
             <label for="image" style="display: block; font-family: var(--mono); font-size: 0.65rem; color: var(--teal); letter-spacing: 0.1em; margin-bottom: 0.5rem;">
                 UPLOAD NEW IMAGE{{ if .Service.ImageURL }} (leave empty to keep current){{ end }}
@@ -61,19 +123,33 @@
                    style="width: 100%; background: var(--ink); border: 1px solid var(--rule); padding: 0.6rem; color: var(--white); font-family: var(--body); font-size: 0.85rem;">
         </div>
 
-        <!-- Tech Stacks Dropdown -->
+        <div style="margin-bottom: 1.5rem;">
+            <label for="gallery" style="display: block; font-family: var(--mono); font-size: 0.65rem; color: var(--teal); letter-spacing: 0.1em; margin-bottom: 0.5rem;">
+                GALLERY IMAGES
+            </label>
+            <input type="file" id="gallery" name="gallery" accept="image/*" multiple
+                   style="width: 100%; background: var(--ink); border: 1px solid var(--rule); padding: 0.6rem; color: var(--white); font-family: var(--body); font-size: 0.85rem;">
+            <small style="color: var(--white3); font-size: 0.6rem; margin-top: 0.5rem; display: block;">Upload new images or leave empty to keep existing</small>
+        </div>
+
+        {{ if .Service.Gallery }}
+        <div style="margin-bottom: 1.5rem;" id="existing-gallery-section">
+            <label style="display: block; font-family: var(--mono); font-size: 0.65rem; color: var(--teal); letter-spacing: 0.1em; margin-bottom: 0.5rem;">
+                EXISTING GALLERY
+            </label>
+            <div id="existing-gallery" style="display: flex; flex-wrap: wrap; gap: 0.5rem; background: var(--ink); border: 1px solid var(--rule); padding: 0.75rem;"></div>
+        </div>
+        {{ end }}
+
         <div id="tech-stacks-dropdown" style="position: relative; margin-bottom: 1.5rem;">
             <label style="display: block; font-family: var(--mono); font-size: 0.65rem; color: var(--teal); letter-spacing: 0.1em; margin-bottom: 0.5rem;">
                 TECH STACKS
             </label>
-
             <input type="hidden" id="techstacks_hidden" name="techstacks" value="">
-
             <button type="button" id="dropdown-button" style="width: 100%; background: var(--ink); border: 1px solid var(--rule); padding: 0.75rem 1rem; color: var(--white); text-align: left; cursor: pointer;">
                 <span id="button-text">Select tech stacks</span>
                 <span style="float: right;">▼</span>
             </button>
-
             <div id="dropdown-list" style="display: none; position: absolute; top: 100%; left: 0; right: 0; background: var(--ink2); border: 1px solid var(--rule); max-height: 200px; overflow-y: auto; z-index: 10;">
                 {{ if .TechStacks }}
                     {{ range .TechStacks }}
@@ -86,11 +162,9 @@
                     <div style="padding: 0.5rem; color: var(--white3);">No tech stacks available</div>
                 {{ end }}
             </div>
-
             <div id="selected-items" style="margin-top: 0.5rem; display: flex; flex-wrap: wrap; gap: 0.5rem;"></div>
         </div>
 
-        <!-- Submit Button -->
         <div style="display: flex; justify-content: flex-end; gap: 1rem; border-top: 1px solid var(--rule); padding-top: 1.5rem;">
             <a href="/admin/services" class="btn-ghost" style="display: inline-block; padding: 0.6rem 1.5rem;">Cancel</a>
             <button type="submit" class="btn-primary" style="cursor: pointer; padding: 0.6rem 1.5rem;">Update Service →</button>
@@ -109,7 +183,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const selectedItemsContainer = document.getElementById("selected-items");
     let selectedIDs = [];
 
-    // Initialize from already-checked checkboxes
     checkboxes.forEach(checkbox => {
         if (checkbox.checked) {
             selectedIDs.push(checkbox.value);
@@ -132,35 +205,28 @@ document.addEventListener("DOMContentLoaded", () => {
             } else {
                 selectedIDs = selectedIDs.filter(id => id !== checkbox.value);
             }
-
             hiddenInput.value = selectedIDs.join(",");
-
             if (selectedIDs.length > 0) {
                 buttonTextSpan.textContent = selectedIDs.length + " selected";
             } else {
                 buttonTextSpan.textContent = "Select tech stacks";
             }
-
             updateSelectedItemsDisplay();
         });
     });
 
     function updateSelectedItemsDisplay() {
         selectedItemsContainer.innerHTML = "";
-
         checkboxes.forEach(checkbox => {
             if (checkbox.checked) {
                 const itemName = checkbox.getAttribute("data-name");
                 const itemId = checkbox.value;
-
                 const badge = document.createElement("span");
                 badge.style.cssText = "font-family: var(--mono); font-size: 0.6rem; color: var(--teal); background: var(--teal-glow); border: 1px solid var(--teal-line); padding: 0.2rem 0.6rem; display: inline-block;";
                 badge.innerHTML = `${itemName}<button type="button" class="remove-techstack" data-id="${itemId}" style="background: none; border: none; color: var(--teal); margin-left: 0.3rem; cursor: pointer;">×</button>`;
-
                 selectedItemsContainer.appendChild(badge);
             }
         });
-
         document.querySelectorAll(".remove-techstack").forEach(button => {
             button.addEventListener("click", (e) => {
                 e.preventDefault();
@@ -179,6 +245,23 @@ document.addEventListener("DOMContentLoaded", () => {
             dropdownList.style.display = "none";
         }
     });
+
+    const galleryJSON = {{ if .Service.Gallery }}"{{ .Service.Gallery }}"{{ else }}""{{ end }};
+    if (galleryJSON) {
+        try {
+            const urls = JSON.parse(galleryJSON);
+            const container = document.getElementById("existing-gallery");
+            if (container && urls.length > 0) {
+                container.innerHTML = "";
+                urls.forEach(function(url) {
+                    const img = document.createElement("img");
+                    img.src = url;
+                    img.style.cssText = "max-width: 120px; max-height: 80px; border: 1px solid var(--rule); object-fit: cover;";
+                    container.appendChild(img);
+                });
+            }
+        } catch(e) {}
+    }
 });
 </script>
 {{ end }}

@@ -30,22 +30,70 @@
                    style="width: 100%; background: var(--ink); border: 1px solid var(--rule); padding: 0.75rem 1rem; color: var(--white); font-family: var(--body); font-size: 0.9rem;">
         </div>
 
-        <!-- Content -->
+        <!-- Excerpt -->
         <div style="margin-bottom: 1.5rem;">
-            <label for="content" style="display: block; font-family: var(--mono); font-size: 0.65rem; color: var(--teal); letter-spacing: 0.1em; margin-bottom: 0.5rem;">
-                CONTENT
+            <label for="excerpt" style="display: block; font-family: var(--mono); font-size: 0.65rem; color: var(--teal); letter-spacing: 0.1em; margin-bottom: 0.5rem;">
+                EXCERPT
             </label>
-            <textarea id="content" name="content" rows="12" 
-                      style="width: 100%; background: var(--ink); border: 1px solid var(--rule); padding: 0.75rem 1rem; color: var(--white); font-family: var(--body); font-size: 0.85rem; resize: vertical;">{{ .Post.Content }}</textarea>
+            <textarea id="excerpt" name="excerpt" rows="3" placeholder="Brief summary for cards and SEO..."
+                      style="width: 100%; background: var(--ink); border: 1px solid var(--rule); padding: 0.75rem 1rem; color: var(--white); font-family: var(--body); font-size: 0.85rem; resize: vertical;">{{ .Post.Excerpt }}</textarea>
+        </div>
+
+        <!-- Category -->
+        <div style="margin-bottom: 1.5rem;">
+            <label for="category" style="display: block; font-family: var(--mono); font-size: 0.65rem; color: var(--teal); letter-spacing: 0.1em; margin-bottom: 0.5rem;">
+                CATEGORY
+            </label>
+            <select id="category" name="category"
+                    style="width: 100%; background: var(--ink); border: 1px solid var(--rule); padding: 0.75rem 1rem; color: var(--white); font-family: var(--body); font-size: 0.85rem;">
+                <option value="general" {{ if eq .Post.Category "general" }}selected{{ end }}>General</option>
+                <option value="backend" {{ if eq .Post.Category "backend" }}selected{{ end }}>Backend</option>
+                <option value="security" {{ if eq .Post.Category "security" }}selected{{ end }}>Security</option>
+                <option value="devops" {{ if eq .Post.Category "devops" }}selected{{ end }}>DevOps</option>
+                <option value="infrastructure" {{ if eq .Post.Category "infrastructure" }}selected{{ end }}>Infrastructure</option>
+            </select>
+        </div>
+
+        <!-- Content with Markdown Preview -->
+        <div style="margin-bottom: 1.5rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                <label style="display: block; font-family: var(--mono); font-size: 0.65rem; color: var(--teal); letter-spacing: 0.1em;">
+                    CONTENT (Markdown)
+                </label>
+                <div style="display: flex; gap: 0.25rem;">
+                    <button type="button" id="writeTab" class="editor-tab active" onclick="switchTab('write')" style="font-family: var(--mono); font-size: 0.6rem; padding: 0.3rem 0.8rem; background: var(--teal); color: var(--ink); border: none; cursor: pointer;">Write</button>
+                    <button type="button" id="previewTab" class="editor-tab" onclick="switchTab('preview')" style="font-family: var(--mono); font-size: 0.6rem; padding: 0.3rem 0.8rem; background: var(--ink); color: var(--white3); border: 1px solid var(--rule); cursor: pointer;">Preview</button>
+                </div>
+            </div>
+            <div id="writePane">
+                <textarea id="content" name="content" rows="16" 
+                          style="width: 100%; background: var(--ink); border: 1px solid var(--rule); padding: 0.75rem 1rem; color: var(--white); font-family: var(--body); font-size: 0.85rem; resize: vertical;">{{ .Post.Content }}</textarea>
+            </div>
+            <div id="previewPane" style="display: none; width: 100%; min-height: 300px; background: var(--ink); border: 1px solid var(--rule); padding: 1.5rem; color: var(--white2); font-family: var(--body); font-size: 0.85rem; line-height: 1.7; overflow-y: auto;"></div>
         </div>
 
         <!-- Tags -->
         <div style="margin-bottom: 1.5rem;">
-            <label for="tags" style="display: block; font-family: var(--mono); font-size: 0.65rem; color: var(--teal); letter-spacing: 0.1em; margin-bottom: 0.5rem;">
-                TAGS (comma-separated)
+            <label for="tagInput" style="display: block; font-family: var(--mono); font-size: 0.65rem; color: var(--teal); letter-spacing: 0.1em; margin-bottom: 0.5rem;">
+                TAGS
             </label>
-            <input type="text" id="tags" name="tags" value="{{ .Post.Tags }}" 
-                   style="width: 100%; background: var(--ink); border: 1px solid var(--rule); padding: 0.75rem 1rem; color: var(--white); font-family: var(--body); font-size: 0.85rem;">
+            <div style="position: relative;">
+                <input type="text" id="tagInput" name="tag" placeholder="Select tags..." readonly 
+                       value="{{ range $i, $tag := .Post.Tags }}{{ if $i }}, {{ end }}{{ $tag.Name }}{{ end }}"
+                       style="width: 100%; background: var(--ink); border: 1px solid var(--rule); padding: 0.75rem 1rem; color: var(--white); font-family: var(--body); font-size: 0.85rem; cursor: pointer;">
+                <ul id="tagDropdown" style="position: absolute; top: 100%; left: 0; right: 0; background: var(--ink2); border: 1px solid var(--rule); max-height: 200px; overflow-y: auto; z-index: 10; display: none; list-style: none; margin: 0; padding: 0.5rem;">
+                    {{ range .AllTags }}
+                    <li style="padding: 0.25rem 0;">
+                        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; padding: 0.25rem 0.5rem; font-family: var(--mono); font-size: 0.7rem; color: var(--white2);">
+                            <input type="checkbox" data-tag-name="{{ .Name }}" style="accent-color: var(--teal);"
+                                   {{ range $.Post.Tags }}{{ if eq .Name $.Name }}checked{{ end }}{{ end }}>
+                            {{ .Name }}
+                        </label>
+                    </li>
+                    {{ end }}
+                </ul>
+            </div>
+            <small style="color: var(--white3); font-size: 0.6rem; margin-top: 0.5rem; display: block;">Select multiple tags</small>
         </div>
 
         <!-- Current Image -->
@@ -66,8 +114,25 @@
             <label for="image" style="display: block; font-family: var(--mono); font-size: 0.65rem; color: var(--teal); letter-spacing: 0.1em; margin-bottom: 0.5rem;">
                 UPLOAD NEW IMAGE
             </label>
-            <input type="file" id="image" name="image" 
+            <input type="file" id="image" name="image" accept="image/*"
                    style="width: 100%; background: var(--ink); border: 1px solid var(--rule); padding: 0.75rem 1rem; color: var(--white); font-family: var(--body); font-size: 0.85rem;">
+        </div>
+
+        <!-- Featured & Published Date Row -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem;">
+            <div>
+                <label style="display: flex; align-items: center; gap: 0.5rem; font-family: var(--mono); font-size: 0.65rem; color: var(--white2); cursor: pointer;">
+                    <input type="checkbox" name="featured" id="featured" {{ if .Post.Featured }}checked{{ end }} style="accent-color: var(--teal); width: 16px; height: 16px;">
+                    Featured post
+                </label>
+            </div>
+            <div>
+                <label for="published_at" style="display: block; font-family: var(--mono); font-size: 0.65rem; color: var(--teal); letter-spacing: 0.1em; margin-bottom: 0.5rem;">
+                    PUBLISH DATE
+                </label>
+                <input type="date" id="published_at" name="published_at" value="{{ if .Post.PublishedAt }}{{ .Post.PublishedAt.Format "2006-01-02" }}{{ end }}"
+                       style="width: 100%; background: var(--ink); border: 1px solid var(--rule); padding: 0.6rem 1rem; color: var(--white); font-family: var(--body); font-size: 0.85rem;">
+            </div>
         </div>
 
         <!-- Actions -->
@@ -77,4 +142,65 @@
         </div>
     </form>
 </div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.0/marked.min.js"></script>
+<script>
+    // Tag dropdown
+    const tagInput = document.getElementById('tagInput');
+    const tagDropdown = document.getElementById('tagDropdown');
+
+    function toggleDropdown() {
+        tagDropdown.style.display = tagDropdown.style.display === 'none' ? 'block' : 'none';
+    }
+
+    tagInput.addEventListener('click', toggleDropdown);
+
+    const checkboxes = tagDropdown.querySelectorAll('input[type="checkbox"]');
+    checkboxes.forEach(function(cb) {
+        cb.addEventListener('change', function() {
+            const selected = Array.from(checkboxes)
+                .filter(function(chk) { return chk.checked; })
+                .map(function(chk) { return chk.getAttribute('data-tag-name'); })
+                .join(', ');
+            tagInput.value = selected;
+        });
+    });
+
+    document.addEventListener('click', function(e) {
+        if (!tagDropdown.contains(e.target) && e.target !== tagInput) {
+            tagDropdown.style.display = 'none';
+        }
+    });
+
+    // Markdown preview
+    function switchTab(tab) {
+        const writePane = document.getElementById('writePane');
+        const previewPane = document.getElementById('previewPane');
+        const writeTab = document.getElementById('writeTab');
+        const previewTab = document.getElementById('previewTab');
+
+        if (tab === 'write') {
+            writePane.style.display = 'block';
+            previewPane.style.display = 'none';
+            writeTab.style.background = 'var(--teal)';
+            writeTab.style.color = 'var(--ink)';
+            previewTab.style.background = 'var(--ink)';
+            previewTab.style.color = 'var(--white3)';
+        } else {
+            writePane.style.display = 'none';
+            previewPane.style.display = 'block';
+            previewTab.style.background = 'var(--teal)';
+            previewTab.style.color = 'var(--ink)';
+            writeTab.style.background = 'var(--ink)';
+            writeTab.style.color = 'var(--white3)';
+
+            var content = document.getElementById('content').value;
+            if (typeof marked !== 'undefined') {
+                previewPane.innerHTML = marked.parse(content);
+            } else {
+                previewPane.textContent = 'Loading preview...';
+            }
+        }
+    }
+</script>
 {{ end }}

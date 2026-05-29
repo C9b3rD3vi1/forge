@@ -1,0 +1,291 @@
+{{ define "title" }}View Project | Admin Panel{{ end }}
+
+{{ define "content" }}
+<div style="max-width: 1000px; margin: 0 auto;">
+
+    <!-- Header -->
+    <div style="margin-bottom: 2rem;">
+        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.5rem;">
+            <a href="/admin/projects" style="font-family: var(--mono); font-size: 0.7rem; color: var(--teal); text-decoration: none;">← Back to Projects</a>
+        </div>
+        <div style="font-family: var(--cond); font-size: 1.5rem; font-weight: 800; color: var(--white); margin-bottom: 0.25rem;">
+            View Project
+        </div>
+        <p style="color: var(--white2); font-size: 0.8rem;">Detailed view of {{ .Project.Title }}</p>
+    </div>
+
+    <!-- Cover Image -->
+    {{ if .Project.ImageURL }}
+    <div style="background: var(--ink2); border: 1px solid var(--rule); margin-bottom: 1px; padding: 1.5rem; text-align: center;">
+        <img src="{{ .Project.ImageURL }}" alt="{{ .Project.Title }}" style="max-width: 100%; max-height: 400px; object-fit: cover; border: 1px solid var(--rule);">
+    </div>
+    {{ end }}
+
+    <!-- Basic Information -->
+    <div style="background: var(--ink2); border: 1px solid var(--rule); margin-bottom: 1px; padding: 1.5rem;">
+        <h2 style="font-family: var(--cond); font-size: 1.2rem; font-weight: 800; color: var(--teal); margin-bottom: 1rem;">Basic Information</h2>
+
+        <div style="margin-bottom: 1rem;">
+            <div style="font-family: var(--mono); font-size: 0.6rem; color: var(--teal); margin-bottom: 0.3rem;">TITLE</div>
+            <div style="font-family: var(--cond); font-size: 1.4rem; font-weight: 700; color: var(--white);">{{ .Project.Title }}</div>
+        </div>
+
+        <div style="margin-bottom: 1rem;">
+            <div style="font-family: var(--mono); font-size: 0.6rem; color: var(--teal); margin-bottom: 0.3rem;">SLUG</div>
+            <div style="font-family: var(--mono); font-size: 0.8rem; color: var(--white2);">/{{ .Project.Slug }}</div>
+        </div>
+
+        <div style="margin-bottom: 1rem;">
+            <div style="font-family: var(--mono); font-size: 0.6rem; color: var(--teal); margin-bottom: 0.3rem;">SHORT DESCRIPTION</div>
+            <div style="font-size: 0.9rem; color: var(--white2); line-height: 1.6;">{{ .Project.Description }}</div>
+        </div>
+
+        <div>
+            <div style="font-family: var(--mono); font-size: 0.6rem; color: var(--teal); margin-bottom: 0.3rem;">DETAILED DESCRIPTION</div>
+            <div style="font-size: 0.85rem; color: var(--white2); line-height: 1.7;">{{ .Project.LongDescription }}</div>
+        </div>
+    </div>
+
+    <!-- Problem & Solution -->
+    {{ if or .Project.ProblemStatement .Project.SolutionApproach }}
+    <div style="background: var(--ink2); border: 1px solid var(--rule); margin-bottom: 1px; padding: 1.5rem;">
+        <h2 style="font-family: var(--cond); font-size: 1.2rem; font-weight: 800; color: var(--teal); margin-bottom: 1rem;">Problem & Solution</h2>
+
+        {{ if .Project.ProblemStatement }}
+        <div style="margin-bottom: 1rem;">
+            <div style="font-family: var(--mono); font-size: 0.6rem; color: var(--teal); margin-bottom: 0.3rem;">PROBLEM STATEMENT</div>
+            <div style="font-size: 0.85rem; color: var(--white2); line-height: 1.7;">{{ .Project.ProblemStatement }}</div>
+        </div>
+        {{ end }}
+
+        {{ if .Project.SolutionApproach }}
+        <div>
+            <div style="font-family: var(--mono); font-size: 0.6rem; color: var(--teal); margin-bottom: 0.3rem;">SOLUTION APPROACH</div>
+            <div style="font-size: 0.85rem; color: var(--white2); line-height: 1.7;">{{ .Project.SolutionApproach }}</div>
+        </div>
+        {{ end }}
+
+        {{ if .Project.ResultsOutcome }}
+        <div style="margin-top: 1rem; padding: 1rem; border-left: 3px solid #c5a55a; background: rgba(197,165,90,0.06);">
+            <div style="font-family: var(--mono); font-size: 0.6rem; color: #c5a55a; margin-bottom: 0.3rem;">RESULTS & OUTCOME</div>
+            <div style="font-size: 0.85rem; color: var(--white2); line-height: 1.7;">{{ .Project.ResultsOutcome }}</div>
+        </div>
+        {{ end }}
+    </div>
+    {{ end }}
+
+    <!-- Key Features -->
+    {{ if .Project.KeyFeatures }}
+    <div style="background: var(--ink2); border: 1px solid var(--rule); margin-bottom: 1px; padding: 1.5rem;">
+        <h2 style="font-family: var(--cond); font-size: 1.2rem; font-weight: 800; color: var(--teal); margin-bottom: 1rem;">Key Features</h2>
+        <ul style="margin: 0; padding-left: 1.5rem;">
+            {{ range parseJSON .Project.KeyFeatures }}
+            <li style="font-size: 0.85rem; color: var(--white2); line-height: 1.8; margin-bottom: 0.3rem;">{{ . }}</li>
+            {{ end }}
+        </ul>
+    </div>
+    {{ end }}
+
+    <!-- Classification -->
+    <div style="background: var(--ink2); border: 1px solid var(--rule); margin-bottom: 1px; padding: 1.5rem;">
+        <h2 style="font-family: var(--cond); font-size: 1.2rem; font-weight: 800; color: var(--teal); margin-bottom: 1rem;">Classification</h2>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+            <div>
+                <div style="font-family: var(--mono); font-size: 0.6rem; color: var(--teal); margin-bottom: 0.3rem;">CATEGORY</div>
+                <div style="font-size: 0.85rem; color: var(--white2);">{{ .Project.Category }}</div>
+            </div>
+            <div>
+                <div style="font-family: var(--mono); font-size: 0.6rem; color: var(--teal); margin-bottom: 0.3rem;">DIFFICULTY</div>
+                <div style="font-size: 0.85rem; color: var(--white2);">{{ .Project.Difficulty }}</div>
+            </div>
+            <div>
+                <div style="font-family: var(--mono); font-size: 0.6rem; color: var(--teal); margin-bottom: 0.3rem;">PROJECT TYPE</div>
+                <div style="font-size: 0.85rem; color: var(--white2);">{{ .Project.ProjectType }}</div>
+            </div>
+        </div>
+
+        <div style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
+            <div>
+                <div style="font-family: var(--mono); font-size: 0.6rem; color: var(--teal); margin-bottom: 0.3rem;">STATUS</div>
+                {{ if eq .Project.Status "planned" }}<span style="font-family: var(--mono); font-size: 0.6rem; color: #fff; background: #569cd6; padding: 0.25rem 0.8rem;">Planned</span>{{ end }}
+                {{ if eq .Project.Status "in-progress" }}<span style="font-family: var(--mono); font-size: 0.6rem; color: #fff; background: #d19a66; padding: 0.25rem 0.8rem;">In Progress</span>{{ end }}
+                {{ if eq .Project.Status "completed" }}<span style="font-family: var(--mono); font-size: 0.6rem; color: #fff; background: #4ec9b0; padding: 0.25rem 0.8rem;">Completed</span>{{ end }}
+                {{ if eq .Project.Status "maintenance" }}<span style="font-family: var(--mono); font-size: 0.6rem; color: #fff; background: #c5a55a; padding: 0.25rem 0.8rem;">Maintenance</span>{{ end }}
+                {{ if eq .Project.Status "archived" }}<span style="font-family: var(--mono); font-size: 0.6rem; color: #fff; background: #888; padding: 0.25rem 0.8rem;">Archived</span>{{ end }}
+            </div>
+            {{ if .Project.Featured }}
+            <div>
+                <div style="font-family: var(--mono); font-size: 0.6rem; color: var(--teal); margin-bottom: 0.3rem;">FEATURED</div>
+                <span style="font-family: var(--mono); font-size: 0.6rem; color: var(--teal); background: var(--teal-glow); border: 1px solid var(--teal-line); padding: 0.25rem 0.8rem;">Featured</span>
+            </div>
+            {{ end }}
+            {{ if .Project.Published }}
+            <div>
+                <div style="font-family: var(--mono); font-size: 0.6rem; color: var(--teal); margin-bottom: 0.3rem;">PUBLISHED</div>
+                <span style="font-family: var(--mono); font-size: 0.6rem; color: #4ec9b0; background: rgba(78, 201, 176, 0.1); border: 1px solid rgba(78, 201, 176, 0.3); padding: 0.25rem 0.8rem;">Published</span>
+            </div>
+            {{ end }}
+        </div>
+    </div>
+
+    <!-- Tags -->
+    {{ if .Project.Tags }}
+    <div style="background: var(--ink2); border: 1px solid var(--rule); margin-bottom: 1px; padding: 1.5rem;">
+        <h2 style="font-family: var(--cond); font-size: 1.2rem; font-weight: 800; color: var(--teal); margin-bottom: 1rem;">Tags</h2>
+        <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+            {{ range split .Project.Tags "," }}
+            <span style="font-family: var(--mono); font-size: 0.6rem; color: var(--teal); background: var(--teal-glow); border: 1px solid var(--teal-line); padding: 0.25rem 0.7rem;">{{ . }}</span>
+            {{ end }}
+        </div>
+    </div>
+    {{ end }}
+
+    <!-- Tech Stacks -->
+    {{ if .Project.TechStacks }}
+    <div style="background: var(--ink2); border: 1px solid var(--rule); margin-bottom: 1px; padding: 1.5rem;">
+        <h2 style="font-family: var(--cond); font-size: 1.2rem; font-weight: 800; color: var(--teal); margin-bottom: 1rem;">Tech Stacks</h2>
+        <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+            {{ range .Project.TechStacks }}
+            <span style="font-family: var(--mono); font-size: 0.6rem; color: var(--white); background: var(--ink); border: 1px solid var(--rule); padding: 0.25rem 0.7rem;">{{ .Name }}</span>
+            {{ end }}
+        </div>
+    </div>
+    {{ end }}
+
+    <!-- Statistics -->
+    <div style="background: var(--ink2); border: 1px solid var(--rule); margin-bottom: 1px; padding: 1.5rem;">
+        <h2 style="font-family: var(--cond); font-size: 1.2rem; font-weight: 800; color: var(--teal); margin-bottom: 1rem;">Statistics & Metrics</h2>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+            <div>
+                <div style="font-family: var(--mono); font-size: 0.6rem; color: var(--white3); margin-bottom: 0.3rem;">DEVELOPMENT TIME</div>
+                <div style="font-size: 0.9rem; color: var(--white);">{{ .Project.DevelopmentTime }}</div>
+            </div>
+            <div>
+                <div style="font-family: var(--mono); font-size: 0.6rem; color: var(--white3); margin-bottom: 0.3rem;">TEAM SIZE</div>
+                <div style="font-size: 0.9rem; color: var(--white);">{{ .Project.TeamSize }}</div>
+            </div>
+            <div>
+                <div style="font-family: var(--mono); font-size: 0.6rem; color: var(--white3); margin-bottom: 0.3rem;">LINES OF CODE</div>
+                <div style="font-size: 0.9rem; color: var(--white);">{{ .Project.LinesOfCode }}</div>
+            </div>
+            <div>
+                <div style="font-family: var(--mono); font-size: 0.6rem; color: var(--white3); margin-bottom: 0.3rem;">USERS/LOADS</div>
+                <div style="font-size: 0.9rem; color: var(--white);">{{ .Project.UsersCount }}</div>
+            </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem;">
+            <div>
+                <div style="font-family: var(--mono); font-size: 0.6rem; color: var(--white3); margin-bottom: 0.3rem;">UPTIME</div>
+                <div style="font-size: 0.9rem; color: var(--white);">{{ .Project.Uptime }}</div>
+            </div>
+            <div>
+                <div style="font-family: var(--mono); font-size: 0.6rem; color: var(--white3); margin-bottom: 0.3rem;">RESPONSE TIME</div>
+                <div style="font-size: 0.9rem; color: var(--white);">{{ .Project.ResponseTime }}</div>
+            </div>
+            <div>
+                <div style="font-family: var(--mono); font-size: 0.6rem; color: var(--white3); margin-bottom: 0.3rem;">VIEWS</div>
+                <div style="font-size: 0.9rem; color: var(--white);">{{ .Project.ViewCount }}</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Links -->
+    {{ if or .Project.Link .Project.GithubLink .Project.DemoLink .Project.DocsLink }}
+    <div style="background: var(--ink2); border: 1px solid var(--rule); margin-bottom: 1px; padding: 1.5rem;">
+        <h2 style="font-family: var(--cond); font-size: 1.2rem; font-weight: 800; color: var(--teal); margin-bottom: 1rem;">Project Links</h2>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            {{ if .Project.Link }}
+            <div>
+                <div style="font-family: var(--mono); font-size: 0.6rem; color: var(--teal); margin-bottom: 0.3rem;">LIVE DEMO</div>
+                <a href="{{ .Project.Link }}" target="_blank" style="font-size: 0.85rem; color: var(--teal); text-decoration: none; word-break: break-all;">{{ .Project.Link }}</a>
+            </div>
+            {{ end }}
+            {{ if .Project.GithubLink }}
+            <div>
+                <div style="font-family: var(--mono); font-size: 0.6rem; color: var(--teal); margin-bottom: 0.3rem;">GITHUB</div>
+                <a href="{{ .Project.GithubLink }}" target="_blank" style="font-size: 0.85rem; color: var(--teal); text-decoration: none; word-break: break-all;">{{ .Project.GithubLink }}</a>
+            </div>
+            {{ end }}
+            {{ if .Project.DemoLink }}
+            <div>
+                <div style="font-family: var(--mono); font-size: 0.6rem; color: var(--teal); margin-bottom: 0.3rem;">VIDEO DEMO</div>
+                <a href="{{ .Project.DemoLink }}" target="_blank" style="font-size: 0.85rem; color: var(--teal); text-decoration: none; word-break: break-all;">{{ .Project.DemoLink }}</a>
+            </div>
+            {{ end }}
+            {{ if .Project.DocsLink }}
+            <div>
+                <div style="font-family: var(--mono); font-size: 0.6rem; color: var(--teal); margin-bottom: 0.3rem;">DOCUMENTATION</div>
+                <a href="{{ .Project.DocsLink }}" target="_blank" style="font-size: 0.85rem; color: var(--teal); text-decoration: none; word-break: break-all;">{{ .Project.DocsLink }}</a>
+            </div>
+            {{ end }}
+        </div>
+    </div>
+    {{ end }}
+
+    <!-- Gallery -->
+    {{ if .Project.Gallery }}
+    <div style="background: var(--ink2); border: 1px solid var(--rule); margin-bottom: 1px; padding: 1.5rem;">
+        <h2 style="font-family: var(--cond); font-size: 1.2rem; font-weight: 800; color: var(--teal); margin-bottom: 1rem;">Gallery</h2>
+        <div style="display: flex; gap: 1rem; overflow-x: auto; padding-bottom: 0.5rem; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;">
+            {{ range parseJSON .Project.Gallery }}
+            <div style="flex: 0 0 280px; scroll-snap-align: start; border: 1px solid var(--rule); overflow: hidden;">
+                <img src="{{ . }}" alt="Gallery image" style="width: 100%; height: 180px; object-fit: cover; display: block;">
+            </div>
+            {{ end }}
+        </div>
+    </div>
+    {{ end }}
+
+    <!-- Timeline -->
+    <div style="background: var(--ink2); border: 1px solid var(--rule); margin-bottom: 1px; padding: 1.5rem;">
+        <h2 style="font-family: var(--cond); font-size: 1.2rem; font-weight: 800; color: var(--teal); margin-bottom: 1rem;">Timeline</h2>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem;">
+            <div>
+                <div style="font-family: var(--mono); font-size: 0.6rem; color: var(--white3); margin-bottom: 0.3rem;">CREATED AT</div>
+                <div style="font-size: 0.85rem; color: var(--white);">{{ .Project.CreatedAt.Format "Jan 02, 2006 15:04" }}</div>
+            </div>
+            <div>
+                <div style="font-family: var(--mono); font-size: 0.6rem; color: var(--white3); margin-bottom: 0.3rem;">STARTED AT</div>
+                <div style="font-size: 0.85rem; color: var(--white);">{{ if .Project.StartedAt }}{{ .Project.StartedAt.Format "Jan 02, 2006" }}{{ else }}—{{ end }}</div>
+            </div>
+            <div>
+                <div style="font-family: var(--mono); font-size: 0.6rem; color: var(--white3); margin-bottom: 0.3rem;">COMPLETION DATE</div>
+                <div style="font-size: 0.85rem; color: var(--white);">{{ if .Project.CompletionDate }}{{ .Project.CompletionDate.Format "Jan 02, 2006" }}{{ else }}—{{ end }}</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SEO -->
+    {{ if or .Project.MetaDescription .Project.CanonicalURL }}
+    <div style="background: var(--ink2); border: 1px solid var(--rule); margin-bottom: 1px; padding: 1.5rem;">
+        <h2 style="font-family: var(--cond); font-size: 1.2rem; font-weight: 800; color: var(--teal); margin-bottom: 1rem;">SEO</h2>
+
+        {{ if .Project.MetaDescription }}
+        <div style="margin-bottom: 1rem;">
+            <div style="font-family: var(--mono); font-size: 0.6rem; color: var(--teal); margin-bottom: 0.3rem;">META DESCRIPTION</div>
+            <div style="font-size: 0.85rem; color: var(--white2); line-height: 1.6;">{{ .Project.MetaDescription }}</div>
+        </div>
+        {{ end }}
+
+        {{ if .Project.CanonicalURL }}
+        <div>
+            <div style="font-family: var(--mono); font-size: 0.6rem; color: var(--teal); margin-bottom: 0.3rem;">CANONICAL URL</div>
+            <a href="{{ .Project.CanonicalURL }}" target="_blank" style="font-size: 0.85rem; color: var(--teal); text-decoration: none; word-break: break-all;">{{ .Project.CanonicalURL }}</a>
+        </div>
+        {{ end }}
+    </div>
+    {{ end }}
+
+    <!-- Action Buttons -->
+    <div style="display: flex; gap: 1rem; margin-top: 1.5rem; justify-content: flex-end;">
+        <a href="/admin/projects" class="btn-ghost" style="padding: 0.6rem 1.5rem;">← Back</a>
+        <a href="/admin/projects/edit/{{ .Project.ID }}" class="btn-primary" style="padding: 0.6rem 1.5rem;">Edit Project →</a>
+        <a href="/admin/projects/delete/{{ .Project.ID }}" class="btn-ghost" style="padding: 0.6rem 1.5rem; color: var(--red); border-color: var(--red);" onclick="return confirm('Are you sure you want to delete this project? This action cannot be undone.');">Delete Project</a>
+    </div>
+</div>
+{{ end }}

@@ -34,14 +34,14 @@ func SetupAdminRoutes(app *fiber.App) {
 
     // Posts
     // Posts CRUD
-	admin.Get("/posts", handlers.AdminPostList)               // List all posts
-	admin.Get("/posts/new", handlers.AdminFetchTags)        // Fetch all tags and render them in the template
-	admin.Get("/posts/new", handlers.AdminNewPostForm)        // Show create form
-	admin.Post("/posts", handlers.AdminCreatePost)            // Handle create
-	admin.Get("/posts/:slug", handlers.AdminViewPosts)        //View single post
-	admin.Get("/posts/edit/:id", handlers.AdminEditPostsForm) // Show edit form
-	admin.Post("/posts/update/:id", handlers.AdminUpdatePost) // Handle update
-	admin.Post("/posts/delete/:id", handlers.AdminDeletePost) // Handle delete
+	admin.Get("/posts", handlers.AdminPostList)                // List all posts
+	admin.Get("/posts/new", handlers.AdminFetchTags)           // Fetch all tags
+	admin.Get("/posts/new", handlers.AdminNewPostForm)         // Show create form
+	admin.Post("/posts", handlers.AdminCreatePost)             // Handle create
+	admin.Get("/posts/edit/:id", handlers.AdminEditPostsForm)  // Show edit form
+	admin.Post("/posts/update/:id", handlers.AdminUpdatePost)  // Handle update
+	admin.Post("/posts/delete/:id", handlers.AdminDeletePost)  // Handle delete
+	admin.Get("/posts/:slug", handlers.AdminViewPosts)         // View single post (must be after all /posts/* routes)
 
 
     // Projects admin routes

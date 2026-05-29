@@ -28,13 +28,12 @@ type User struct {
 // Comment struct represents a comment entity with user and post details.
 type Comment struct {
 	ID      uuid.UUID `gorm:"primaryKey"`
-	Content string
-	// UserID is the foreign key for the user
-	UserID uuid.UUID `gorm:"not null"`
-	User   User `gorm:"foreignKey:UserID"`
-	// PostID is the foreign key for the post
-	PostID uuid.UUID `gorm:"not null"`
-	Post   Post `gorm:"foreignKey:PostID"`
+	Content string    `gorm:"type:text;not null"`
+	UserID  uuid.UUID `gorm:"not null"`
+	User    User      `gorm:"foreignKey:UserID"`
+	PostID  uuid.UUID `gorm:"not null"`
+	Post    Post      `gorm:"foreignKey:PostID"`
+	ParentID *uuid.UUID `gorm:""`
 
 	gorm.Model
 }

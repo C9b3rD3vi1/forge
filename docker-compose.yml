@@ -2,23 +2,44 @@ services:
   forge:
     build: .
     container_name: forge-hub
+
     ports:
       - "${APP_PORT:-3031}:${APP_PORT:-3031}"
+
+    env_file:
+      - .env
+
+    environment:
+      - DB_PATH=/app/data/server.db
+
     volumes:
       - forge_data:/app/data
       - forge_uploads:/app/uploads
+
     restart: unless-stopped
-    env_file:
-      - .env
-    environment:
-      - DB_PATH=/app/data/server.db
+
     healthcheck:
-      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:${APP_PORT:-3031}/"]
+      test: ["CMD-SHELL", "curl -f http://localhost:${APP_PORT:-3031}/health || exit 1"]
       interval: 30s
       timeout: 10s
       retries: 3
       start_period: 40s
 
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+    security_opt:
+      - no-new-privileges:true
+
+    networks:
+      - forge_network
+
 volumes:
   forge_data:
   forge_uploads:
+
+networks:
+  forge_network:

@@ -17,6 +17,7 @@ type Projects struct {
     ProblemStatement string   `gorm:"type:text"`           // What problem does it solve?
     SolutionApproach string   `gorm:"type:text"`           // How does it solve it?
     KeyFeatures      string   `gorm:"type:text"`           // JSON array of features
+    ResultsOutcome   string   `gorm:"type:text"`           // Results and outcomes achieved
     
     // Media
     ImageURL    string    `gorm:"type:text"`               // project cover image
@@ -37,6 +38,11 @@ type Projects struct {
     Tags        string    `gorm:"type:text"`               // comma-separated list
     Featured    bool      `gorm:"default:false"`           // highlight in frontend
     Published   bool      `gorm:"default:true"`            // control visibility
+    ViewCount   int       `gorm:"default:0"`               // analytics tracking
+    
+    // SEO
+    MetaDescription string `gorm:"type:text"`
+    CanonicalURL    string `gorm:"type:text"`
     
     // Project Stats & Metrics
     CompletionDate *time.Time `gorm:"type:timestamp"`      // When project was completed
@@ -61,8 +67,6 @@ type Projects struct {
 }
 
 
-// Service model (renamed to singular for convention)
-// Service model
 type Services struct {
 	ID          uuid.UUID `gorm:"primaryKey"`
 	Title       string    `gorm:"size:200;not null"`
@@ -71,13 +75,23 @@ type Services struct {
 	ImageURL    string    `gorm:"type:text"`
 
 	// Categorization & metadata
-	Category  string `gorm:"size:100"`
-	Tags      string `gorm:"type:text"` // e.g. "cloud,hosting,servers"
-	Featured  bool   `gorm:"default:false"`
-	Published bool   `gorm:"default:true"`
+	Category    string `gorm:"size:100"`
+	Tags        string `gorm:"type:text"`
+	Featured    bool   `gorm:"default:false"`
+	Published   bool   `gorm:"default:true"`
+	Status      string `gorm:"size:50;default:'active'"`
+	ViewCount   int    `gorm:"default:0"`
+	PublishedAt time.Time
 
-	// Author (admin who created it)
-	AuthorID *uint
+	// SEO
+	MetaDescription string `gorm:"type:text"`
+	CanonicalURL    string `gorm:"type:text"`
+
+	// Rich media (JSON array of image URLs)
+	Gallery string `gorm:"type:text"`
+
+	// Author
+	AuthorID string
 	Author   *User `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
 
 	// TechStack Many-to-Many relationship

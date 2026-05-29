@@ -72,7 +72,7 @@ func UserLoginHandler(c *fiber.Ctx) error {
 		return c.Status(500).SendString("Session error")
 	}
 
-	sess.Set("userID", user.ID.String()) // store UUID as string
+	sess.Set("user_id", user.ID.String()) // store UUID as string
 	sess.Set("username", user.Username)
 	sess.Set("_ip", c.IP())
 
@@ -80,7 +80,15 @@ func UserLoginHandler(c *fiber.Ctx) error {
 		return c.Status(500).SendString("Session save error")
 	}
 
-	return c.Redirect("/")
+	redirect := c.FormValue("redirect")
+	if redirect == "" {
+		redirect = c.Query("redirect")
+	}
+	if redirect == "" {
+		redirect = "/"
+	}
+
+	return c.Redirect(redirect)
 }
 
 // UserLogoutHandler logs out the user

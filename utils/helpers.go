@@ -1,12 +1,25 @@
 package utils
 
 import (
+	"math"
 	"strings"
 	"github.com/google/uuid"
     "encoding/json"
     "github.com/C9b3rD3vi1/forge/models"
     
 )
+
+func ComputeReadingTime(content string) int {
+	words := len(strings.Fields(content))
+	if words == 0 {
+		return 1
+	}
+	minutes := int(math.Ceil(float64(words) / 200.0))
+	if minutes < 1 {
+		return 1
+	}
+	return minutes
+}
 
 // Template helper functions
 func HasTechStack(project *models.Projects, techStackID uuid.UUID) bool {

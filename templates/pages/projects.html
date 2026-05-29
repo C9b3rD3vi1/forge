@@ -1,131 +1,200 @@
-{{ block "content" . }}
-<!-- Hero Section -->
+{{ define "title" }}Projects | Forge.Hub{{ end }}
+
+{{ define "content" }}
 <section class="sec" style="border-top: none;">
     <div class="sec-head">
         <div class="sec-num"><span class="teal">03</span> — Portfolio</div>
         <h2 class="sec-title">Live <span>Systems</span></h2>
     </div>
-    <div style="padding: 3rem 3rem 2rem;">
+    <div style="padding: 2rem 3rem 3rem;">
         <p style="font-size: 1rem; color: var(--white2); line-height: 1.6; max-width: 700px;">
-            Production-grade applications built with Go, PostgreSQL, Docker, and deployed on Linux infrastructure. 
+            Production-grade applications built with Go, PostgreSQL, Docker, and deployed on Linux infrastructure.
             Each system is containerized, secured, and running in live environments.
         </p>
     </div>
 </section>
 
-<!-- Projects Grid -->
-<section class="sec" style="border-bottom: none;">
-    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); gap: 2rem; background: transparent; padding: 2rem 3rem;">
-        {{ range $i, $project := .Projects }}
-        <a href="/projects/{{ $project.Slug }}" class="project-card" style="text-decoration: none; display: block;">
-            <div style="background: var(--ink2); height: 100%; transition: all 0.3s ease; position: relative; overflow: hidden; border: 1px solid var(--rule);">
-                <!-- Hover accent line -->
-                <div style="position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--teal); transform: scaleX(0); transform-origin: left; transition: transform 0.3s ease; z-index: 1;"></div>
-                
-                <!-- Project Image -->
-                {{ if $project.ImageURL }}
-                <div style="overflow: hidden; height: 220px;">
-                    <img src="{{ $project.ImageURL }}" alt="{{ $project.Title }}" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease;">
+<div style="padding: 0 3rem 2rem; display: flex; gap: 1rem; flex-wrap: wrap; align-items: center;">
+    <form method="GET" action="/projects" style="display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; flex: 1;">
+        <input type="text" name="search" value="{{ .SearchQuery }}" placeholder="Search projects..." style="flex: 1; min-width: 200px; background: var(--ink2); border: 1px solid var(--rule); padding: 0.6rem 1rem; color: var(--white); font-family: var(--mono); font-size: 0.75rem; outline: none;">
+        <select name="category" style="background: var(--ink2); border: 1px solid var(--rule); padding: 0.6rem 1rem; color: var(--white); font-family: var(--mono); font-size: 0.7rem; outline: none; min-width: 140px;">
+            <option value="">All Categories</option>
+            <option value="Cybersecurity" {{ if eq .Category "Cybersecurity" }}selected{{ end }}>Cybersecurity</option>
+            <option value="Web Development" {{ if eq .Category "Web Development" }}selected{{ end }}>Web Development</option>
+            <option value="DevOps" {{ if eq .Category "DevOps" }}selected{{ end }}>DevOps</option>
+            <option value="AI/ML" {{ if eq .Category "AI/ML" }}selected{{ end }}>AI/ML</option>
+            <option value="Mobile" {{ if eq .Category "Mobile" }}selected{{ end }}>Mobile</option>
+            <option value="Desktop" {{ if eq .Category "Desktop" }}selected{{ end }}>Desktop</option>
+            <option value="IoT" {{ if eq .Category "IoT" }}selected{{ end }}>IoT</option>
+        </select>
+        <select name="status" style="background: var(--ink2); border: 1px solid var(--rule); padding: 0.6rem 1rem; color: var(--white); font-family: var(--mono); font-size: 0.7rem; outline: none; min-width: 120px;">
+            <option value="">All Status</option>
+            <option value="planned" {{ if eq .Status "planned" }}selected{{ end }}>Planned</option>
+            <option value="in-progress" {{ if eq .Status "in-progress" }}selected{{ end }}>In Progress</option>
+            <option value="completed" {{ if eq .Status "completed" }}selected{{ end }}>Completed</option>
+            <option value="maintenance" {{ if eq .Status "maintenance" }}selected{{ end }}>Maintenance</option>
+        </select>
+        <select name="difficulty" style="background: var(--ink2); border: 1px solid var(--rule); padding: 0.6rem 1rem; color: var(--white); font-family: var(--mono); font-size: 0.7rem; outline: none; min-width: 120px;">
+            <option value="">All Difficulty</option>
+            <option value="beginner" {{ if eq .Difficulty "beginner" }}selected{{ end }}>Beginner</option>
+            <option value="intermediate" {{ if eq .Difficulty "intermediate" }}selected{{ end }}>Intermediate</option>
+            <option value="advanced" {{ if eq .Difficulty "advanced" }}selected{{ end }}>Advanced</option>
+        </select>
+        <button type="submit" class="btn-primary" style="padding: 0.6rem 1.2rem; font-size: 0.7rem; cursor: pointer; font-family: var(--mono); background: var(--teal); color: var(--ink); border: none; letter-spacing: 0.05em;">Search</button>
+    </form>
+</div>
+
+{{ if .Projects }}
+<div class="card-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 2rem; background: transparent; padding: 2rem 3rem;">
+    {{ range .Projects }}
+    <a href="/projects/{{ .Slug }}" class="card" style="text-decoration: none; display: block;">
+        <div style="background: var(--ink2); height: 100%; transition: all 0.3s ease; position: relative; overflow: hidden; border: 1px solid {{ if .Featured }}#c5a55a{{ else }}var(--rule){{ end }};">
+            <div style="position: absolute; top: 0; left: 0; right: 0; height: 3px; background: {{ if .Featured }}#c5a55a{{ else }}var(--teal){{ end }}; transform: scaleX(0); transform-origin: left; transition: transform 0.3s ease; z-index: 1;"></div>
+            {{ if .ImageURL }}
+            <div class="card-image" style="overflow: hidden; height: 200px;">
+                <img src="{{ .ImageURL }}" alt="{{ .Title }}" style="width: 100%; height: 100%; object-fit: cover; transition: all 0.3s ease;">
+            </div>
+            {{ end }}
+            <div class="card-body" style="padding: 1.75rem;">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 0.5rem; margin-bottom: 0.75rem;">
+                    <h3 style="font-family: var(--cond); font-size: 1.5rem; font-weight: 800; color: var(--white);">{{ .Title }}</h3>
+                    {{ if .Featured }}
+                    <span style="font-family: var(--mono); font-size: 0.5rem; color: #c5a55a; background: rgba(197,165,90,0.12); border: 1px solid rgba(197,165,90,0.3); padding: 0.2rem 0.5rem; border-radius: 2px; text-transform: uppercase; letter-spacing: 0.05em; white-space: nowrap;">Featured</span>
+                    {{ end }}
+                </div>
+                <div class="card-meta" style="display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem;">
+                    {{ if .Category }}
+                    <span style="font-family: var(--mono); font-size: 0.55rem; color: var(--teal); background: var(--teal-glow); border: 1px solid var(--teal-line); padding: 0.2rem 0.6rem; border-radius: 2px;">{{ .Category }}</span>
+                    {{ end }}
+                    {{ if .Status }}
+                    <span class="status-{{ .Status }}">{{ .Status }}</span>
+                    {{ end }}
+                    {{ if .Difficulty }}
+                    <span style="font-family: var(--mono); font-size: 0.5rem; color: var(--white3); border: 1px solid var(--rule); padding: 0.2rem 0.5rem; border-radius: 2px;">{{ .Difficulty }}</span>
+                    {{ end }}
+                    {{ if .ProjectType }}
+                    <span style="font-family: var(--mono); font-size: 0.5rem; color: var(--white3); border: 1px solid var(--rule); padding: 0.2rem 0.5rem; border-radius: 2px;">{{ .ProjectType }}</span>
+                    {{ end }}
+                </div>
+                <p style="font-size: 0.85rem; color: var(--mid); line-height: 1.7; margin-bottom: 1rem; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;">
+                    {{ .Description }}
+                </p>
+                {{ if .TechStacks }}
+                <div style="display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1rem;">
+                    {{ range .TechStacks }}
+                    <span style="font-family: var(--mono); font-size: 0.5rem; color: var(--teal); background: var(--teal-glow); border: 1px solid var(--teal-line); padding: 0.15rem 0.5rem; border-radius: 2px;">{{ .Name }}</span>
+                    {{ end }}
                 </div>
                 {{ end }}
-                
-                <!-- Content -->
-                <div style="padding: 1.75rem;">
-                    <!-- Project number / badge -->
-                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.25rem;">
-                        <div style="font-family: var(--mono); font-size: 0.75rem; color: var(--teal); letter-spacing: 0.1em;">
-                            {{ add $i 1 }} /
-                        </div>
-                        <div style="font-family: var(--mono); font-size: 0.65rem; color: var(--white3); background: var(--teal-glow); padding: 0.25rem 0.75rem; border-radius: 2px;">
-                            LIVE
-                        </div>
-                    </div>
-                    
-                    <!-- Project title -->
-                    <h3 style="font-family: var(--cond); font-size: 1.6rem; font-weight: 800; color: var(--white); margin-bottom: 1rem; letter-spacing: -0.02em;">
-                        {{ $project.Title }}
-                    </h3>
-                    
-                    <!-- Description -->
-                    <p style="font-size: 0.9rem; color: var(--mid); line-height: 1.7; margin-bottom: 1.25rem;">
-                        {{ $project.Description }}
-                    </p>
-                    
-                    <!-- Tech stack tags -->
-                    <div style="display: flex; flex-wrap: wrap; gap: 0.6rem; margin-bottom: 1.5rem;">
-                        {{ range $project.TechStacks }}
-                        <span style="font-family: var(--mono); font-size: 0.6rem; color: var(--teal); background: var(--teal-glow); border: 1px solid var(--teal-line); padding: 0.25rem 0.75rem; border-radius: 2px;">
-                            {{ . }}
-                        </span>
-                        {{ end }}
-                    </div>
-                    
-                    <!-- Divider -->
-                    <div style="height: 1px; background: var(--rule); margin: 1rem 0 1.25rem 0;"></div>
-                    
-                    <!-- View link -->
-                    <div style="display: flex; align-items: center; gap: 0.5rem; font-family: var(--mono); font-size: 0.7rem; color: var(--teal); transition: all 0.2s ease;">
-                        <span>View Project</span>
-                        <span style="transition: transform 0.2s ease;">→</span>
-                    </div>
+                <div style="font-family: var(--mono); font-size: 0.5rem; color: var(--white3);">
+                    {{ .ViewCount }} views
+                </div>
+                <div style="height: 1px; background: var(--rule); margin: 1rem 0 1rem 0;"></div>
+                <div style="font-family: var(--mono); font-size: 0.7rem; color: var(--teal); display: inline-flex; align-items: center; gap: 0.5rem;">
+                    <span>View Project</span>
+                    <span style="transition: transform 0.2s ease;">→</span>
                 </div>
             </div>
-        </a>
-        {{ else }}
-        <div style="background: var(--ink2); padding: 4rem; text-align: center; grid-column: 1 / -1; border: 1px solid var(--rule);">
-            <p style="color: var(--white3); font-family: var(--mono); font-size: 0.9rem;">No projects available yet.</p>
         </div>
-        {{ end }}
-    </div>
-</section>
+    </a>
+    {{ end }}
+</div>
 
-<!-- CTA Section -->
-<section class="sec" style="border-bottom: none;">
-    <div style="text-align: center; padding: 5rem 2rem;">
-        <h3 style="font-family: var(--cond); font-size: 2rem; font-weight: 800; color: var(--white); margin-bottom: 1rem;">
-            Want to see more?
-        </h3>
-        <p style="color: var(--white2); margin-bottom: 2rem; font-size: 1rem;">
-            All code is production-ready, documented, and maintained.
-        </p>
-        <a href="/contact" class="btn-primary">Discuss your project →</a>
-    </div>
-</section>
+{{ if gt .TotalPages 1 }}
+<div style="display: flex; justify-content: center; gap: 0.5rem; margin-top: 3rem; padding: 2rem;">
+    {{ range seq 1 .TotalPages }}
+    <a href="/projects?page={{ . }}{{ if $.SearchQuery }}&q={{ $.SearchQuery }}{{ end }}{{ if $.Category }}&category={{ $.Category }}{{ end }}{{ if $.Status }}&status={{ $.Status }}{{ end }}{{ if $.Difficulty }}&difficulty={{ $.Difficulty }}{{ end }}" 
+       style="font-family: var(--mono); font-size: 0.75rem; padding: 0.5rem 0.9rem; text-decoration: none; 
+              {{ if eq $.CurrentPage . }}
+              background: var(--teal); color: var(--ink); border-radius: 2px;
+              {{ else }}
+              color: var(--white3); border: 1px solid var(--rule);
+              {{ end }}">
+        {{ . }}
+    </a>
+    {{ end }}
+</div>
+{{ end }}
+
+{{ else }}
+<div style="background: var(--ink2); padding: 4rem; text-align: center; border: 1px solid var(--rule); margin: 2rem 3rem;">
+    <p style="color: var(--white3); font-family: var(--mono); font-size: 0.9rem;">No projects available yet.</p>
+</div>
+{{ end }}
 
 <style>
-    .project-card > div {
+    .card > div {
         transition: all 0.3s ease;
     }
-    
-    .project-card:hover > div {
+    .card:hover > div {
         background: var(--ink3) !important;
         border-color: var(--teal-line);
+        transform: translateY(-4px);
     }
-    
-    .project-card:hover > div > div:first-child {
+    .card:hover > div > div:first-child {
         transform: scaleX(1);
     }
-    
-    .project-card:hover img {
+    .card:hover img {
         transform: scale(1.05);
+        opacity: 0.95;
     }
-    
-    .project-card:hover a span:last-child {
-        transform: translateX(4px);
+    .status-planned {
+        font-family: var(--mono);
+        font-size: 0.55rem;
+        color: #569cd6;
+        background: rgba(86,156,214,0.12);
+        border: 1px solid rgba(86,156,214,0.3);
+        padding: 0.2rem 0.6rem;
+        border-radius: 2px;
     }
-    
+    .status-in-progress {
+        font-family: var(--mono);
+        font-size: 0.55rem;
+        color: #d19a66;
+        background: rgba(209,154,102,0.12);
+        border: 1px solid rgba(209,154,102,0.3);
+        padding: 0.2rem 0.6rem;
+        border-radius: 2px;
+    }
+    .status-completed {
+        font-family: var(--mono);
+        font-size: 0.55rem;
+        color: #4ec9b0;
+        background: rgba(78,201,176,0.12);
+        border: 1px solid rgba(78,201,176,0.3);
+        padding: 0.2rem 0.6rem;
+        border-radius: 2px;
+    }
+    .status-maintenance {
+        font-family: var(--mono);
+        font-size: 0.55rem;
+        color: #c5a55a;
+        background: rgba(197,165,90,0.12);
+        border: 1px solid rgba(197,165,90,0.3);
+        padding: 0.2rem 0.6rem;
+        border-radius: 2px;
+    }
+    .status-archived {
+        font-family: var(--mono);
+        font-size: 0.55rem;
+        color: var(--white3);
+        border: 1px solid var(--rule);
+        padding: 0.2rem 0.6rem;
+        border-radius: 2px;
+    }
+    @media (max-width: 1024px) {
+        .card-grid {
+            grid-template-columns: repeat(2, 1fr) !important;
+        }
+    }
     @media (max-width: 768px) {
-        .projects-grid {
+        .card-grid {
+            grid-template-columns: 1fr !important;
             padding: 1rem !important;
             gap: 1rem !important;
         }
-        
-        .project-card > div > div:last-child {
-            padding: 1.25rem;
-        }
-        
-        .project-card h3 {
-            font-size: 1.3rem;
+        .card-body {
+            padding: 1.25rem !important;
         }
     }
 </style>

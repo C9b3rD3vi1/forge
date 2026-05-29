@@ -31,6 +31,9 @@
                     <tr>
                         <th style="text-align: left; padding: 1rem; font-family: var(--mono); font-size: 0.55rem; color: var(--white3); letter-spacing: 0.05em;">IMAGE</th>
                         <th style="text-align: left; padding: 1rem; font-family: var(--mono); font-size: 0.55rem; color: var(--white3); letter-spacing: 0.05em;">TITLE</th>
+                        <th style="text-align: left; padding: 1rem; font-family: var(--mono); font-size: 0.55rem; color: var(--white3); letter-spacing: 0.05em;">STATUS</th>
+                        <th style="text-align: left; padding: 1rem; font-family: var(--mono); font-size: 0.55rem; color: var(--white3); letter-spacing: 0.05em;">VIEWS</th>
+                        <th style="text-align: left; padding: 1rem; font-family: var(--mono); font-size: 0.55rem; color: var(--white3); letter-spacing: 0.05em;">FEATURED</th>
                         <th style="text-align: left; padding: 1rem; font-family: var(--mono); font-size: 0.55rem; color: var(--white3); letter-spacing: 0.05em; display: none;">SLUG</th>
                         <th style="text-align: left; padding: 1rem; font-family: var(--mono); font-size: 0.55rem; color: var(--white3); letter-spacing: 0.05em; display: none;">CREATED</th>
                         <th style="text-align: right; padding: 1rem; font-family: var(--mono); font-size: 0.55rem; color: var(--white3); letter-spacing: 0.05em;">ACTIONS</th>
@@ -44,6 +47,19 @@
                         </td>
                         <td style="padding: 1rem;">
                             <div style="font-family: var(--cond); font-size: 1rem; font-weight: 600; color: var(--white);">{{ .Title }}</div>
+                        </td>
+                        <td style="padding: 1rem;">
+                            {{ if eq .Status "planned" }}<span style="font-family: var(--mono); font-size: 0.55rem; color: #fff; background: #569cd6; padding: 0.2rem 0.6rem;">Planned</span>{{ end }}
+                            {{ if eq .Status "in-progress" }}<span style="font-family: var(--mono); font-size: 0.55rem; color: #fff; background: #d19a66; padding: 0.2rem 0.6rem;">In Progress</span>{{ end }}
+                            {{ if eq .Status "completed" }}<span style="font-family: var(--mono); font-size: 0.55rem; color: #fff; background: #4ec9b0; padding: 0.2rem 0.6rem;">Completed</span>{{ end }}
+                            {{ if eq .Status "maintenance" }}<span style="font-family: var(--mono); font-size: 0.55rem; color: #fff; background: #c5a55a; padding: 0.2rem 0.6rem;">Maintenance</span>{{ end }}
+                            {{ if eq .Status "archived" }}<span style="font-family: var(--mono); font-size: 0.55rem; color: #fff; background: #888; padding: 0.2rem 0.6rem;">Archived</span>{{ end }}
+                        </td>
+                        <td style="padding: 1rem;">
+                            <span style="font-family: var(--mono); font-size: 0.7rem; color: var(--white2);">{{ .ViewCount }}</span>
+                        </td>
+                        <td style="padding: 1rem;">
+                            {{ if .Featured }}<span style="font-family: var(--mono); font-size: 0.55rem; color: var(--teal); background: var(--teal-glow); border: 1px solid var(--teal-line); padding: 0.2rem 0.6rem;">Featured</span>{{ end }}
                         </td>
                         <td style="padding: 1rem; display: none;">
                             <span style="font-family: var(--mono); font-size: 0.6rem; color: var(--white3);">/{{ .Slug }}</span>

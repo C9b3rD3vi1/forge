@@ -64,6 +64,7 @@ func AdminCreateProject(c *fiber.Ctx) error {
         ProblemStatement: c.FormValue("problem_statement"),
         SolutionApproach: c.FormValue("solution_approach"),
         KeyFeatures:      c.FormValue("key_features"),
+        ResultsOutcome:   c.FormValue("results_outcome"),
 
         Link:       c.FormValue("link"),
         GithubLink: c.FormValue("github_link"),
@@ -215,7 +216,7 @@ func AdminEditProjectForm(c *fiber.Ctx) error {
     var project models.Projects
     
     // Preload TechStacks to show in form
-    if err := database.DB.Preload("TechStacks").First(&project, id).Error; err != nil {
+    if err := database.DB.Where("id = ?", id).Preload("TechStacks").First(&project).Error; err != nil {
         return c.Status(404).Render("errors/404", fiber.Map{"Message": "Project not found"})
     }
 
@@ -240,7 +241,7 @@ func AdminUpdateProject(c *fiber.Ctx) error {
 
     id := c.Params("id")
     var project models.Projects
-    if err := database.DB.First(&project, id).Error; err != nil {
+    if err := database.DB.Where("id = ?", id).First(&project).Error; err != nil {
         return c.Status(404).Render("errors/404", fiber.Map{"Message": "Project not found"})
     }
 
@@ -251,6 +252,7 @@ func AdminUpdateProject(c *fiber.Ctx) error {
     project.ProblemStatement = c.FormValue("problem_statement")
     project.SolutionApproach = c.FormValue("solution_approach")
     project.KeyFeatures = c.FormValue("key_features")
+    project.ResultsOutcome = c.FormValue("results_outcome")
     
     // Links
     project.Link = c.FormValue("link")
@@ -369,10 +371,10 @@ func AdminDeleteProject(c *fiber.Ctx) error {
         return c.Redirect("/admin/login")
     }
 
-    id := c.Params("id")
-    if err := database.DB.Delete(&models.Projects{}, id).Error; err != nil {
-        return c.Status(500).SendString("Error deleting project")
-    }
+	id := c.Params("id")
+	if err := database.DB.Where("id = ?", id).Delete(&models.Projects{}).Error; err != nil {
+		return c.Status(500).SendString("Error deleting project")
+	}
 
     return c.Redirect("/admin/projects")
 }

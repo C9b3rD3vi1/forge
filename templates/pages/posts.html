@@ -4,7 +4,7 @@
 <!-- Hero Section -->
 <section class="sec" style="border-top: none;">
     <div class="sec-head">
-        <div class="sec-num"><span class="teal">02</span> — Writing</div>
+        <div class="sec-num"><span class="teal">01</span> — Writing</div>
         <h2 class="sec-title">All <span>Posts</span></h2>
     </div>
     <div style="padding: 2rem 3rem 3rem;">
@@ -23,26 +23,45 @@
             <!-- Hover accent line -->
             <div style="position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--teal); transform: scaleX(0); transform-origin: left; transition: transform 0.3s ease;"></div>
             
-            <!-- Post Image -->
+            <!-- Featured Image -->
             {{ if .ImageURL }}
             <div style="margin-bottom: 1.25rem; overflow: hidden; border-radius: 2px;">
                 <img src="{{ .ImageURL }}" alt="{{ .Title }}" style="width: 100%; height: 200px; object-fit: cover; transition: all 0.3s ease;">
             </div>
             {{ end }}
             
+            <!-- Category Badge -->
+            {{ if .Category }}
+            <div style="margin-bottom: 0.75rem;">
+                <span class="cat-badge cat-{{ .Category }}">{{ .Category }}</span>
+            </div>
+            {{ end }}
+            
             <!-- Post Title -->
-            <h3 style="font-family: var(--cond); font-size: 1.5rem; font-weight: 800; color: var(--white); margin-bottom: 1rem; line-height: 1.3;">
+            <h3 style="font-family: var(--cond); font-size: 1.5rem; font-weight: 800; color: var(--white); margin-bottom: 0.75rem; line-height: 1.3;">
                 {{ .Title }}
             </h3>
             
-            <!-- Content Preview -->
-            <p style="font-size: 0.85rem; color: var(--mid); line-height: 1.7; margin-bottom: 1.25rem;">
-                {{ if gt (len .Content) 140 }}{{ slice .Content 0 140 }}...{{ else }}{{ .Content }}{{ end }}
+            <!-- Excerpt -->
+            <p style="font-size: 0.85rem; color: var(--mid); line-height: 1.7; margin-bottom: 1rem;">
+                {{ .Excerpt }}
             </p>
+            
+            <!-- Meta: Author · Date · Reading Time -->
+            <div style="display: flex; align-items: center; gap: 0.5rem; font-family: var(--mono); font-size: 0.6rem; color: var(--white3); margin-bottom: 1rem;">
+                <span style="width: 18px; height: 18px; background: var(--teal-glow); border: 1px solid var(--teal-line); border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 0.45rem; color: var(--teal); font-weight: 600;">{{ slice .Author 0 1 }}</span>
+                <span>{{ .Author }}</span>
+                <span>·</span>
+                <span>{{ if .PublishedAt }}{{ .PublishedAt.Format "Jan 2, 2006" }}{{ else }}{{ .CreatedAt.Format "Jan 2, 2006" }}{{ end }}</span>
+                {{ if .ReadingTime }}
+                <span>·</span>
+                <span>{{ .ReadingTime }} min read</span>
+                {{ end }}
+            </div>
             
             <!-- Tags -->
             {{ if .Tags }}
-            <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.25rem;">
+            <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
                 {{ range .Tags }}
                 <span style="font-family: var(--mono); font-size: 0.55rem; color: var(--teal); background: var(--teal-glow); border: 1px solid var(--teal-line); padding: 0.25rem 0.7rem; border-radius: 2px;">
                     {{ .Name }}
@@ -63,6 +82,24 @@
     </a>
     {{ end }}
 </div>
+
+<!-- Pagination -->
+{{ if gt .TotalPages 1 }}
+<div style="display: flex; justify-content: center; gap: 0.5rem; margin-top: 3rem; padding: 2rem;">
+    {{ range .PageRange }}
+    <a href="/posts?page={{ . }}" 
+       style="font-family: var(--mono); font-size: 0.75rem; padding: 0.5rem 0.9rem; text-decoration: none; 
+              {{ if eq $.CurrentPage . }}
+              background: var(--teal); color: var(--ink); border-radius: 2px;
+              {{ else }}
+              color: var(--white3); border: 1px solid var(--rule);
+              {{ end }}">
+        {{ . }}
+    </a>
+    {{ end }}
+</div>
+{{ end }}
+
 {{ else }}
 <div style="background: var(--ink2); padding: 4rem; text-align: center; border: 1px solid var(--rule); margin: 2rem 3rem;">
     <p style="color: var(--white3); font-family: var(--mono); font-size: 0.9rem;">No posts published yet.</p>
@@ -89,6 +126,52 @@
     
     .post-card:hover a span:last-child {
         transform: translateX(4px);
+    }
+    
+    .cat-badge {
+        font-family: var(--mono);
+        font-size: 0.55rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        padding: 0.2rem 0.65rem;
+        border-radius: 2px;
+    }
+    
+    .cat-backend {
+        color: #4ec9b0;
+        background: rgba(78,201,176,0.12);
+        border: 1px solid rgba(78,201,176,0.3);
+    }
+    
+    .cat-security {
+        color: #f48771;
+        background: rgba(244,135,113,0.12);
+        border: 1px solid rgba(244,135,113,0.3);
+    }
+    
+    .cat-devops {
+        color: #d19a66;
+        background: rgba(209,154,102,0.12);
+        border: 1px solid rgba(209,154,102,0.3);
+    }
+    
+    .cat-infrastructure {
+        color: #569cd6;
+        background: rgba(86,156,214,0.12);
+        border: 1px solid rgba(86,156,214,0.3);
+    }
+    
+    .cat-general {
+        color: var(--white3);
+        background: transparent;
+        border: 1px solid var(--rule);
+    }
+    
+    @media (max-width: 768px) {
+        .posts-grid {
+            padding: 1rem !important;
+            gap: 1rem !important;
+        }
     }
 </style>
 {{ end }}

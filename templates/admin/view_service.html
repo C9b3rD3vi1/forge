@@ -2,22 +2,26 @@
 
 {{ define "content" }}
 <div style="max-width: 900px; margin: 0 auto;">
-    
-    <!-- Header -->
+
     <div style="margin-bottom: 2rem;">
         <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.5rem;">
             <a href="/admin/services" style="font-family: var(--mono); font-size: 0.7rem; color: var(--teal); text-decoration: none;">← Back to Services</a>
         </div>
-        <div style="font-family: var(--cond); font-size: 1.5rem; font-weight: 800; color: var(--white); margin-bottom: 0.25rem;">
-            View Service
+        <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+            <div>
+                <div style="font-family: var(--cond); font-size: 1.5rem; font-weight: 800; color: var(--white); margin-bottom: 0.25rem;">
+                    View Service
+                </div>
+                <p style="color: var(--white2); font-size: 0.8rem;">Service details</p>
+            </div>
+            <div style="display: flex; gap: 0.75rem;">
+                <a href="/admin/services/edit/{{ .Service.ID }}" class="btn-primary" style="display: inline-block; padding: 0.6rem 1.5rem;">Edit Service →</a>
+            </div>
         </div>
-        <p style="color: var(--white2); font-size: 0.8rem;">View service details</p>
     </div>
 
-    <!-- Service Details Card -->
     <div style="background: var(--ink2); border: 1px solid var(--rule); overflow: hidden;">
-        
-        <!-- Service Image -->
+
         {{ if .Service.ImageURL }}
         <div style="padding: 1.5rem; border-bottom: 1px solid var(--rule); text-align: center;">
             <div style="overflow: hidden; border: 1px solid var(--rule); max-width: 100%; display: inline-block;">
@@ -26,19 +30,104 @@
         </div>
         {{ end }}
 
-        <!-- Service Title -->
         <div style="padding: 1.5rem; border-bottom: 1px solid var(--rule);">
             <div style="font-family: var(--mono); font-size: 0.6rem; color: var(--teal); margin-bottom: 0.5rem;">TITLE</div>
             <div style="font-family: var(--cond); font-size: 1.5rem; font-weight: 800; color: var(--white);">{{ .Service.Title }}</div>
         </div>
 
-        <!-- Service Description -->
         <div style="padding: 1.5rem; border-bottom: 1px solid var(--rule);">
             <div style="font-family: var(--mono); font-size: 0.6rem; color: var(--teal); margin-bottom: 0.5rem;">DESCRIPTION</div>
             <div style="font-size: 0.9rem; color: var(--white2); line-height: 1.7;">{{ .Service.Description }}</div>
         </div>
 
-        <!-- Action Buttons -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--rule);">
+            <div style="padding: 1.5rem; background: var(--ink2);">
+                <div style="font-family: var(--mono); font-size: 0.6rem; color: var(--teal); margin-bottom: 0.5rem;">CATEGORY</div>
+                <div style="font-size: 0.9rem; color: var(--white);">{{ if .Service.Category }}{{ .Service.Category }}{{ else }}<span style="color: var(--white3);">Not set</span>{{ end }}</div>
+            </div>
+            <div style="padding: 1.5rem; background: var(--ink2);">
+                <div style="font-family: var(--mono); font-size: 0.6rem; color: var(--teal); margin-bottom: 0.5rem;">STATUS</div>
+                <div>
+                    {{ if eq .Service.Status "active" }}
+                    <span style="font-family: var(--mono); font-size: 0.65rem; color: #fff; background: #4ec9b0; padding: 0.2rem 0.6rem;">Active</span>
+                    {{ else if eq .Service.Status "inactive" }}
+                    <span style="font-family: var(--mono); font-size: 0.65rem; color: var(--ink); background: var(--white3); padding: 0.2rem 0.6rem;">Inactive</span>
+                    {{ else if eq .Service.Status "coming-soon" }}
+                    <span style="font-family: var(--mono); font-size: 0.65rem; color: #fff; background: #d19a66; padding: 0.2rem 0.6rem;">Coming Soon</span>
+                    {{ else }}
+                    <span style="font-family: var(--mono); font-size: 0.65rem; color: var(--white2);">{{ .Service.Status }}</span>
+                    {{ end }}
+                </div>
+            </div>
+            <div style="padding: 1.5rem; background: var(--ink2);">
+                <div style="font-family: var(--mono); font-size: 0.6rem; color: var(--teal); margin-bottom: 0.5rem;">FEATURED</div>
+                <div>
+                    {{ if .Service.Featured }}
+                    <span style="font-family: var(--mono); font-size: 0.65rem; color: #fff; background: #c5a55a; padding: 0.2rem 0.6rem;">Featured</span>
+                    {{ else }}
+                    <span style="font-family: var(--mono); font-size: 0.65rem; color: var(--white3);">No</span>
+                    {{ end }}
+                </div>
+            </div>
+            <div style="padding: 1.5rem; background: var(--ink2);">
+                <div style="font-family: var(--mono); font-size: 0.6rem; color: var(--teal); margin-bottom: 0.5rem;">PUBLISHED</div>
+                <div>
+                    {{ if .Service.Published }}
+                    <span style="font-family: var(--mono); font-size: 0.65rem; color: #4ec9b0;">Yes</span>
+                    {{ else }}
+                    <span style="font-family: var(--mono); font-size: 0.65rem; color: var(--red);">No</span>
+                    {{ end }}
+                </div>
+            </div>
+            <div style="padding: 1.5rem; background: var(--ink2);">
+                <div style="font-family: var(--mono); font-size: 0.6rem; color: var(--teal); margin-bottom: 0.5rem;">PUBLISHED AT</div>
+                <div style="font-size: 0.9rem; color: var(--white);">{{ if not .Service.PublishedAt.IsZero }}{{ .Service.PublishedAt.Format "Jan 02, 2006 15:04" }}{{ else }}<span style="color: var(--white3);">Not published</span>{{ end }}</div>
+            </div>
+            <div style="padding: 1.5rem; background: var(--ink2);">
+                <div style="font-family: var(--mono); font-size: 0.6rem; color: var(--teal); margin-bottom: 0.5rem;">VIEW COUNT</div>
+                <div style="font-size: 0.9rem; color: var(--white);">{{ .Service.ViewCount }}</div>
+            </div>
+        </div>
+
+        {{ if .Service.Tags }}
+        <div style="padding: 1.5rem; border-bottom: 1px solid var(--rule);">
+            <div style="font-family: var(--mono); font-size: 0.6rem; color: var(--teal); margin-bottom: 0.5rem;">TAGS</div>
+            <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+                {{ range split .Service.Tags "," }}
+                <span style="font-family: var(--mono); font-size: 0.65rem; color: var(--teal); background: var(--teal-glow); border: 1px solid var(--teal-line); padding: 0.2rem 0.6rem;">{{ trim . }}</span>
+                {{ end }}
+            </div>
+        </div>
+        {{ end }}
+
+        {{ if .Service.TechStacks }}
+        <div style="padding: 1.5rem; border-bottom: 1px solid var(--rule);">
+            <div style="font-family: var(--mono); font-size: 0.6rem; color: var(--teal); margin-bottom: 0.5rem;">TECH STACKS</div>
+            <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+                {{ range .Service.TechStacks }}
+                <span style="font-family: var(--mono); font-size: 0.65rem; color: var(--teal); background: var(--teal-glow); border: 1px solid var(--teal-line); padding: 0.2rem 0.6rem;">{{ .Name }}</span>
+                {{ end }}
+            </div>
+        </div>
+        {{ end }}
+
+        <div style="padding: 1.5rem; border-bottom: 1px solid var(--rule);">
+            <div style="font-family: var(--mono); font-size: 0.6rem; color: var(--teal); margin-bottom: 0.5rem;">META DESCRIPTION</div>
+            <div style="font-size: 0.85rem; color: var(--white2); line-height: 1.6;">{{ if .Service.MetaDescription }}{{ .Service.MetaDescription }}{{ else }}<span style="color: var(--white3);">Not set</span>{{ end }}</div>
+        </div>
+
+        <div style="padding: 1.5rem; border-bottom: 1px solid var(--rule);">
+            <div style="font-family: var(--mono); font-size: 0.6rem; color: var(--teal); margin-bottom: 0.5rem;">CANONICAL URL</div>
+            <div style="font-size: 0.85rem;">{{ if .Service.CanonicalURL }}<a href="{{ .Service.CanonicalURL }}" target="_blank" style="color: var(--teal); text-decoration: none;">{{ .Service.CanonicalURL }}</a>{{ else }}<span style="color: var(--white3);">Not set</span>{{ end }}</div>
+        </div>
+
+        {{ if .Service.Gallery }}
+        <div style="padding: 1.5rem; border-bottom: 1px solid var(--rule);">
+            <div style="font-family: var(--mono); font-size: 0.6rem; color: var(--teal); margin-bottom: 0.5rem;">GALLERY</div>
+            <div id="service-gallery" style="display: flex; flex-wrap: wrap; gap: 0.75rem;"></div>
+        </div>
+        {{ end }}
+
         <div style="display: flex; gap: 0.75rem; padding: 1.5rem; justify-content: center; flex-wrap: wrap;">
             <a href="/admin/services/edit/{{ .Service.ID }}" class="btn-primary" style="display: inline-block; padding: 0.6rem 1.5rem;">Edit Service →</a>
             <a href="/admin/services/delete/{{ .Service.ID }}" class="btn-ghost" style="display: inline-block; padding: 0.6rem 1.5rem; color: var(--red); border-color: var(--red);" onclick="return confirm('Are you sure you want to delete this service?');">Delete Service</a>
@@ -46,4 +135,27 @@
         </div>
     </div>
 </div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const galleryJSON = {{ if .Service.Gallery }}"{{ .Service.Gallery }}"{{ else }}""{{ end }};
+    if (galleryJSON) {
+        try {
+            const urls = JSON.parse(galleryJSON);
+            const container = document.getElementById("service-gallery");
+            if (container && urls.length > 0) {
+                urls.forEach(function(url) {
+                    const wrapper = document.createElement("div");
+                    wrapper.style.cssText = "border: 1px solid var(--rule); overflow: hidden;";
+                    const img = document.createElement("img");
+                    img.src = url;
+                    img.style.cssText = "max-width: 180px; max-height: 120px; display: block; object-fit: cover;";
+                    wrapper.appendChild(img);
+                    container.appendChild(wrapper);
+                });
+            }
+        } catch(e) {}
+    }
+});
+</script>
 {{ end }}

@@ -19,6 +19,7 @@
             
             <!-- Login Form -->
             <form method="POST" action="/login">
+                {{ if .Redirect }}<input type="hidden" name="redirect" value="{{ .Redirect }}">{{ end }}
                 
                 <!-- Email Field -->
                 <div style="margin-bottom: 1.25rem;">

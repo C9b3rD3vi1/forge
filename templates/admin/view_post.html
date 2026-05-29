@@ -21,9 +21,20 @@
             </div>
             <div style="display: flex; flex-wrap: wrap; gap: 1rem; font-family: var(--mono); font-size: 0.65rem; color: var(--white3);">
                 <span><strong style="color: var(--teal);">Slug:</strong> {{ .Post.Slug }}</span>
-                <span><strong style="color: var(--teal);">Tags:</strong> {{ .Post.Tags }}</span>
+                <span><strong style="color: var(--teal);">Category:</strong> {{ .Post.Category }}</span>
+                <span><strong style="color: var(--teal);">Reading Time:</strong> {{ .Post.ReadingTime }} min</span>
+                {{ if .Post.Featured }}<span style="color: var(--teal);">★ Featured</span>{{ end }}
+                {{ if .Post.Published }}<span style="color: var(--green);">● Published</span>{{ else }}<span style="color: var(--red);">● Draft</span>{{ end }}
             </div>
         </div>
+
+        <!-- Excerpt -->
+        {{ if .Post.Excerpt }}
+        <div style="padding: 1.5rem 2rem; border-bottom: 1px solid var(--rule);">
+            <div style="font-family: var(--mono); font-size: 0.6rem; color: var(--teal); letter-spacing: 0.1em; margin-bottom: 0.5rem;">EXCERPT</div>
+            <p style="font-size: 0.85rem; color: var(--white2); line-height: 1.6;">{{ .Post.Excerpt }}</p>
+        </div>
+        {{ end }}
 
         <!-- Post Image -->
         {{ if .Post.ImageURL }}
@@ -36,7 +47,7 @@
 
         <!-- Post Content -->
         <div style="padding: 2rem; border-bottom: 1px solid var(--rule);">
-            <div style="font-family: var(--body); font-size: 0.9rem; color: var(--white2); line-height: 1.7;">
+            <div style="font-family: var(--body); font-size: 0.9rem; color: var(--white2); line-height: 1.7; white-space: pre-wrap;">
                 {{ .Post.Content }}
             </div>
         </div>
@@ -47,16 +58,25 @@
             <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
                 {{ range .Post.Tags }}
                 <span style="font-family: var(--mono); font-size: 0.6rem; color: var(--teal); background: var(--teal-glow); border: 1px solid var(--teal-line); padding: 0.2rem 0.6rem;">
-                    {{ . }}
+                    {{ .Name }}
                 </span>
                 {{ end }}
             </div>
         </div>
         {{ end }}
 
+        <!-- Published Date -->
+        <div style="padding: 1rem 2rem; border-bottom: 1px solid var(--rule);">
+            <div style="font-family: var(--mono); font-size: 0.6rem; color: var(--white3);">
+                Published: {{ if .Post.PublishedAt }}{{ .Post.PublishedAt.Format "January 2, 2006" }}{{ end }}
+                · Created: {{ if .Post.CreatedAt }}{{ .Post.CreatedAt.Format "January 2, 2006" }}{{ end }}
+                · Author: {{ .Post.Author }}
+            </div>
+        </div>
+
         <!-- Actions -->
         <div style="padding: 1.5rem 2rem; display: flex; justify-content: center; gap: 1rem;">
-            <a href="/admin/posts/{{ .Post.ID }}/edit" class="btn-primary" style="display: inline-block; padding: 0.6rem 1.5rem;">Edit Post →</a>
+            <a href="/admin/posts/edit/{{ .Post.ID }}" class="btn-primary" style="display: inline-block; padding: 0.6rem 1.5rem;">Edit Post →</a>
             <a href="/admin/posts" class="btn-ghost" style="display: inline-block; padding: 0.6rem 1.5rem;">Back to List</a>
         </div>
     </div>

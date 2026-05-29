@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"strings"
+	"time"
 
 	"github.com/C9b3rD3vi1/forge/config"
 	"github.com/C9b3rD3vi1/forge/database"
@@ -56,9 +57,7 @@ func AdminCreateServices(c *fiber.Ctx) error {
 		return c.Redirect("/admin/login")
 	}
 
-	title := c.FormValue("title")
-	description := c.FormValue("description")
-	stackIDs := c.FormValue("techstacks") // comma-separated IDs
+	stackIDs := c.FormValue("techstacks")
 
 	var techStacks []models.TechStack
 	if stackIDs != "" {
@@ -67,14 +66,28 @@ func AdminCreateServices(c *fiber.Ctx) error {
 	}
 
 	imageURL, _ := utils.UploadImage(c, "image")
-	slug := utils.UniqueSlug(database.DB, "services", title)
+	slug := utils.UniqueSlug(database.DB, "services", c.FormValue("title"))
+
+	// Parse published_at
+	var publishedAt time.Time
+	if pa := c.FormValue("published_at"); pa != "" {
+		publishedAt, _ = time.Parse("2006-01-02", pa)
+	}
 
 	service := models.Services{
-		Title:       title,
-		Description: description,
-		Slug:        slug,
-		ImageURL:    imageURL,
-		TechStacks:  techStacks,
+		Title:            c.FormValue("title"),
+		Description:      c.FormValue("description"),
+		Slug:             slug,
+		ImageURL:         imageURL,
+		Category:         c.FormValue("category"),
+		Tags:             c.FormValue("tags"),
+		Featured:         c.FormValue("featured") == "on",
+		Published:        c.FormValue("published") == "on",
+		Status:           c.FormValue("status"),
+		PublishedAt:      publishedAt,
+		MetaDescription:  c.FormValue("meta_description"),
+		CanonicalURL:     c.FormValue("canonical_url"),
+		TechStacks:       techStacks,
 	}
 
 	if err := database.DB.Create(&service).Error; err != nil {
@@ -166,18 +179,28 @@ func AdminUpdateService(c *fiber.Ctx) error {
         return c.Status(404).SendString("Service not found")
     }
 
-    // Update fields
     service.Title = c.FormValue("title")
     service.Description = c.FormValue("description")
+    service.Category = c.FormValue("category")
+    service.Tags = c.FormValue("tags")
+    service.Featured = c.FormValue("featured") == "on"
+    service.Published = c.FormValue("published") == "on"
+    service.Status = c.FormValue("status")
+    service.MetaDescription = c.FormValue("meta_description")
+    service.CanonicalURL = c.FormValue("canonical_url")
+
+    if pa := c.FormValue("published_at"); pa != "" {
+        if parsed, err := time.Parse("2006-01-02", pa); err == nil {
+            service.PublishedAt = parsed
+        }
+    }
 
     if imageURL, _ := utils.UploadImage(c, "image"); imageURL != "" {
         service.ImageURL = imageURL
     }
 
-    // Update slug
     service.Slug = utils.UniqueSlug(database.DB, "services", service.Title)
 
-    // Update TechStacks
     stackIDs := c.FormValue("techstacks")
     if stackIDs != "" {
         ids := strings.Split(stackIDs, ",")

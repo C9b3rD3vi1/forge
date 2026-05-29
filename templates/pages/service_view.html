@@ -1,7 +1,110 @@
 {{ define "title" }}{{ .Service.Title }} | Forge.Hub{{ end }}
 
+{{ define "extra_css" }}
+<style>
+    .service-hero {
+        position: relative;
+        overflow: hidden;
+        margin-bottom: 2rem;
+        border: 1px solid var(--rule);
+        min-height: 400px;
+        display: flex;
+        align-items: flex-end;
+    }
+    .service-hero-overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(to top, var(--ink) 0%, rgba(8,12,16,0.4) 50%, rgba(8,12,16,0.7) 100%);
+        z-index: 1;
+    }
+    .service-hero-content {
+        position: relative;
+        z-index: 2;
+        padding: 3rem;
+        width: 100%;
+    }
+    .service-section {
+        background: var(--ink2);
+        border: 1px solid var(--rule);
+        padding: 2rem;
+        margin-bottom: 2rem;
+    }
+    .service-section-title {
+        font-family: var(--cond);
+        font-size: 1.3rem;
+        font-weight: 800;
+        color: var(--white);
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+    .service-section-title::before {
+        content: '';
+        width: 3px;
+        height: 1.2rem;
+        background: var(--teal);
+        flex-shrink: 0;
+    }
+    .gallery-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 1px;
+        background: var(--rule);
+    }
+    .gallery-grid img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        display: block;
+        transition: opacity 0.3s ease;
+    }
+    .gallery-grid img:hover {
+        opacity: 0.85;
+    }
+    .cat-badge {
+        font-family: var(--mono);
+        font-size: 0.6rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        padding: 0.25rem 0.75rem;
+        border-radius: 2px;
+    }
+    .cat-backend {
+        color: #4ec9b0;
+        background: rgba(78,201,176,0.12);
+        border: 1px solid rgba(78,201,176,0.3);
+    }
+    .cat-security {
+        color: #f48771;
+        background: rgba(244,135,113,0.12);
+        border: 1px solid rgba(244,135,113,0.3);
+    }
+    .cat-devops {
+        color: #d19a66;
+        background: rgba(209,154,102,0.12);
+        border: 1px solid rgba(209,154,102,0.3);
+    }
+    .cat-infrastructure {
+        color: #569cd6;
+        background: rgba(86,156,214,0.12);
+        border: 1px solid rgba(86,156,214,0.3);
+    }
+    .cat-consulting {
+        color: #c5a55a;
+        background: rgba(197,165,90,0.12);
+        border: 1px solid rgba(197,165,90,0.3);
+    }
+    .service-hero img {
+        transition: transform 0.4s ease;
+    }
+    .service-hero:hover img {
+        transform: scale(1.02);
+    }
+</style>
+{{ end }}
+
 {{ define "content" }}
-<!-- Hero Section -->
 <section class="sec" style="border-top: none;">
     <div class="sec-head">
         <div class="sec-num"><span class="teal">03</span> — Service</div>
@@ -9,85 +112,176 @@
     </div>
 </section>
 
-<!-- Service Container -->
 <div style="max-width: 1000px; margin: 0 auto; padding: 2rem 2rem 4rem;">
-    
-    <!-- Back Link -->
+
     <div style="margin-bottom: 2rem;">
-        <a href="/services" class="btn-ghost" style="display: inline-block; padding: 0.5rem 1rem;">
+        <a href="/services" class="btn-ghost" style="display: inline-block; padding: 0.5rem 1rem; font-size: 0.65rem;">
             ← Back to Services
         </a>
     </div>
 
-    <!-- Service Image -->
     {{ if .Service.ImageURL }}
-    <div style="margin-bottom: 2rem; overflow: hidden; border: 1px solid var(--rule);">
-        <img src="{{ .Service.ImageURL }}" alt="{{ .Service.Title }}" style="width: 100%; height: auto; display: block;">
+    <div class="service-hero">
+        <img src="{{ .Service.ImageURL }}" alt="{{ .Service.Title }}" style="width: 100%; height: 400px; object-fit: cover; display: block;">
+        <div class="service-hero-overlay"></div>
+        <div class="service-hero-content">
+            <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem;">
+                {{ if .Service.Category }}
+                <span class="cat-badge cat-{{ .Service.Category }}">{{ .Service.Category }}</span>
+                {{ end }}
+                {{ if .Service.Status }}
+                <span class="status-{{ .Service.Status }}">{{ .Service.Status }}</span>
+                {{ end }}
+            </div>
+            <h1 style="font-family: var(--cond); font-size: 2.5rem; font-weight: 900; color: var(--white); margin-bottom: 0.5rem; line-height: 1.1;">
+                {{ .Service.Title }}
+            </h1>
+            <div style="display: flex; align-items: center; gap: 0.75rem; font-family: var(--mono); font-size: 0.65rem; color: var(--white3);">
+                <span>{{ .Service.ViewCount }} views</span>
+                <span>·</span>
+                <span>{{ if .Service.PublishedAt }}{{ .Service.PublishedAt.Format "January 2, 2006" }}{{ else }}{{ .Service.CreatedAt.Format "January 2, 2006" }}{{ end }}</span>
+            </div>
+        </div>
+    </div>
+    {{ else }}
+    <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.5rem;">
+        {{ if .Service.Category }}
+        <span class="cat-badge cat-{{ .Service.Category }}">{{ .Service.Category }}</span>
+        {{ end }}
+        {{ if .Service.Status }}
+        <span class="status-{{ .Service.Status }}">{{ .Service.Status }}</span>
+        {{ end }}
+    </div>
+    <div style="display: flex; align-items: center; gap: 0.75rem; font-family: var(--mono); font-size: 0.65rem; color: var(--white3); margin-bottom: 2rem;">
+        <span>{{ .Service.ViewCount }} views</span>
+        <span>·</span>
+        <span>{{ if .Service.PublishedAt }}{{ .Service.PublishedAt.Format "January 2, 2006" }}{{ else }}{{ .Service.CreatedAt.Format "January 2, 2006" }}{{ end }}</span>
     </div>
     {{ end }}
 
-    <!-- Description -->
     {{ if .Service.Description }}
-    <div style="margin-bottom: 2rem; padding-bottom: 2rem; border-bottom: 1px solid var(--rule);">
-        <p style="font-size: 1.1rem; color: var(--white2); line-height: 1.7;">
+    <div class="service-section">
+        <div class="service-section-title">Overview</div>
+        <p style="font-size: 1rem; color: var(--white2); line-height: 1.8;">
             {{ .Service.Description }}
         </p>
     </div>
     {{ end }}
 
-    <!-- Tech Stack -->
     {{ if .Service.TechStacks }}
-    <div style="background: var(--ink2); border: 1px solid var(--rule); padding: 2rem; margin-bottom: 2rem;">
-        <h3 style="font-family: var(--cond); font-size: 1.3rem; font-weight: 800; color: var(--white); margin-bottom: 1rem;">
-            Technology Stack
-        </h3>
+    <div class="service-section">
+        <div class="service-section-title">Technology Stack</div>
         <div style="display: flex; flex-wrap: wrap; gap: 0.75rem;">
             {{ range .Service.TechStacks }}
-            <span style="font-family: var(--mono); font-size: 0.65rem; color: var(--teal); background: var(--teal-glow); border: 1px solid var(--teal-line); padding: 0.3rem 0.8rem;">
-                {{ . }}
-            </span>
+            <span style="font-family: var(--mono); font-size: 0.65rem; color: var(--teal); background: var(--teal-glow); border: 1px solid var(--teal-line); padding: 0.3rem 0.8rem; border-radius: 2px;">{{ .Name }}</span>
             {{ end }}
         </div>
     </div>
     {{ end }}
 
-    <!-- Key Features -->
-    <div style="background: var(--ink2); border: 1px solid var(--rule); padding: 2rem; margin-bottom: 2rem;">
-        <h3 style="font-family: var(--cond); font-size: 1.3rem; font-weight: 800; color: var(--white); margin-bottom: 1.5rem;">
-            Key Features
-        </h3>
-        <div style="display: flex; flex-direction: column; gap: 1rem;">
-            <div style="display: flex; align-items: flex-start; gap: 0.75rem;">
-                <span style="color: var(--teal);">→</span>
-                <span style="font-size: 0.9rem; color: var(--white2);">Advanced Security & Threat Detection</span>
+    {{ if .Service.Gallery }}
+    {{ $gallery := parseJSON .Service.Gallery }}
+    {{ if $gallery }}
+    <div class="service-section">
+        <div class="service-section-title">Gallery</div>
+        <div class="gallery-grid">
+            {{ range $gallery }}
+            <div style="background: var(--ink);">
+                <img src="{{ . }}" alt="Gallery image" loading="lazy">
             </div>
-            <div style="display: flex; align-items: flex-start; gap: 0.75rem;">
-                <span style="color: var(--teal);">→</span>
-                <span style="font-size: 0.9rem; color: var(--white2);">High-Performance Architecture</span>
-            </div>
-            <div style="display: flex; align-items: flex-start; gap: 0.75rem;">
-                <span style="color: var(--teal);">→</span>
-                <span style="font-size: 0.9rem; color: var(--white2);">Scalable Cloud Infrastructure</span>
-            </div>
-            <div style="display: flex; align-items: flex-start; gap: 0.75rem;">
-                <span style="color: var(--teal);">→</span>
-                <span style="font-size: 0.9rem; color: var(--white2);">Automated Deployment & Monitoring</span>
-            </div>
+            {{ end }}
         </div>
     </div>
+    {{ end }}
+    {{ end }}
 
-    <!-- CTA Section -->
-    <div style="text-align: center; margin-top: 2rem; padding: 2rem; background: var(--ink2); border: 1px solid var(--rule);">
+    {{ if .Service.Tags }}
+    {{ $tags := split .Service.Tags "," }}
+    <div class="service-section">
+        <div class="service-section-title">Tags</div>
+        <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+            {{ range $tags }}
+            <span style="font-family: var(--mono); font-size: 0.6rem; color: var(--teal); background: var(--teal-glow); border: 1px solid var(--teal-line); padding: 0.25rem 0.7rem; border-radius: 2px;">{{ trim . }}</span>
+            {{ end }}
+        </div>
+    </div>
+    {{ end }}
+
+    <div style="text-align: center; margin-top: 2rem; padding: 3rem; background: var(--ink2); border: 1px solid var(--rule);">
         <h3 style="font-family: var(--cond); font-size: 1.5rem; font-weight: 800; color: var(--white); margin-bottom: 1rem;">
             Ready to Get Started?
         </h3>
-        <p style="color: var(--white2); margin-bottom: 1.5rem;">
+        <p style="color: var(--white2); margin-bottom: 1.5rem; font-size: 0.9rem;">
             Let's discuss how we can implement this solution for your needs.
         </p>
-        <a href="/contact" class="btn-primary" style="display: inline-block;">
+        <a href="/contact" class="btn-primary" style="display: inline-block; font-size: 0.65rem; padding: 0.65rem 1.5rem;">
             Start Conversation →
         </a>
     </div>
 
 </div>
+
+<style>
+    .status-active, .status-planned {
+        font-family: var(--mono);
+        font-size: 0.6rem;
+        color: #569cd6;
+        background: rgba(86,156,214,0.12);
+        border: 1px solid rgba(86,156,214,0.3);
+        padding: 0.25rem 0.75rem;
+        border-radius: 2px;
+    }
+    .status-inactive, .status-archived {
+        font-family: var(--mono);
+        font-size: 0.6rem;
+        color: var(--white3);
+        border: 1px solid var(--rule);
+        padding: 0.25rem 0.75rem;
+        border-radius: 2px;
+    }
+    .status-coming-soon, .status-in-progress {
+        font-family: var(--mono);
+        font-size: 0.6rem;
+        color: #d19a66;
+        background: rgba(209,154,102,0.12);
+        border: 1px solid rgba(209,154,102,0.3);
+        padding: 0.25rem 0.75rem;
+        border-radius: 2px;
+    }
+    .status-completed {
+        font-family: var(--mono);
+        font-size: 0.6rem;
+        color: #4ec9b0;
+        background: rgba(78,201,176,0.12);
+        border: 1px solid rgba(78,201,176,0.3);
+        padding: 0.25rem 0.75rem;
+        border-radius: 2px;
+    }
+    .status-maintenance {
+        font-family: var(--mono);
+        font-size: 0.6rem;
+        color: #c5a55a;
+        background: rgba(197,165,90,0.12);
+        border: 1px solid rgba(197,165,90,0.3);
+        padding: 0.25rem 0.75rem;
+        border-radius: 2px;
+    }
+    @media (max-width: 768px) {
+        .service-hero {
+            min-height: 250px;
+        }
+        .service-hero img {
+            height: 250px !important;
+        }
+        .service-hero-content {
+            padding: 1.5rem;
+        }
+        .service-hero-content h1 {
+            font-size: 1.8rem !important;
+        }
+        .gallery-grid {
+            grid-template-columns: repeat(2, 1fr) !important;
+        }
+    }
+</style>
 {{ end }}

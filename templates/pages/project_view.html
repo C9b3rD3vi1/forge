@@ -1,7 +1,82 @@
 {{ define "title" }}{{ .Project.Title }} | Forge.Hub{{ end }}
 
+{{ define "extra_css" }}
+<style>
+    .project-hero {
+        position: relative; overflow: hidden; margin-bottom: 2rem;
+        border: 1px solid var(--rule); min-height: 400px;
+        display: flex; align-items: flex-end;
+    }
+    .project-hero-overlay {
+        position: absolute; inset: 0;
+        background: linear-gradient(to top, var(--ink) 0%, rgba(8,12,16,0.4) 50%, rgba(8,12,16,0.7) 100%);
+        z-index: 1;
+    }
+    .project-hero-content {
+        position: relative; z-index: 2; padding: 3rem; width: 100%;
+    }
+    .project-hero img { transition: transform 0.4s ease; }
+    .project-hero:hover img { transform: scale(1.02); }
+    .psection {
+        background: var(--ink2); border: 1px solid var(--rule);
+        padding: 2rem; margin-bottom: 2rem;
+    }
+    .psection-title {
+        font-family: var(--cond); font-size: 1.3rem; font-weight: 800;
+        margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.75rem;
+    }
+    .psection-title::before { content: ''; width: 3px; height: 1.2rem; flex-shrink: 0; }
+    .stat-grid {
+        display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 1px; background: var(--rule); margin-bottom: 2rem;
+    }
+    .stat-item { background: var(--ink2); padding: 1.5rem 1rem; text-align: center; }
+    .stat-value { font-family: var(--cond); font-size: 1.8rem; font-weight: 800; color: var(--teal); line-height: 1.2; }
+    .stat-label { font-family: var(--mono); font-size: 0.55rem; color: var(--white3); margin-top: 0.3rem; text-transform: uppercase; letter-spacing: 0.05em; }
+    .gallery-scroll {
+        display: flex; gap: 1rem; overflow-x: auto; padding-bottom: 0.5rem;
+        scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;
+    }
+    .gallery-scroll::-webkit-scrollbar { height: 6px; }
+    .gallery-scroll::-webkit-scrollbar-track { background: var(--ink); }
+    .gallery-scroll::-webkit-scrollbar-thumb { background: var(--rule); border-radius: 3px; }
+    .gallery-scroll::-webkit-scrollbar-thumb:hover { background: var(--mid); }
+    .gallery-item { flex: 0 0 300px; scroll-snap-align: start; border: 1px solid var(--rule); overflow: hidden; }
+    .gallery-item img { width: 100%; height: 200px; object-fit: cover; display: block; transition: opacity 0.3s ease; }
+    .gallery-item img:hover { opacity: 0.85; }
+    .action-bar { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 2rem; }
+    .btn-live { background: #00c9b1; color: #080c10; }
+    .btn-live:hover { background: #00a693; }
+    .btn-source { background: #569cd6; color: #fff; }
+    .btn-source:hover { background: #3d7bb5; }
+    .btn-video { background: #d19a66; color: #080c10; }
+    .btn-video:hover { background: #b8824f; }
+    .btn-docs { background: #4ec9b0; color: #080c10; }
+    .btn-docs:hover { background: #3aad96; }
+    .btn-action {
+        display: inline-flex; align-items: center; gap: 0.5rem;
+        font-family: var(--mono); font-size: 0.65rem; font-weight: 600;
+        letter-spacing: 0.1em; text-transform: uppercase;
+        padding: 0.65rem 1.5rem; text-decoration: none;
+        transition: background 0.15s, transform 0.12s;
+    }
+    .btn-action:hover { transform: translateY(-2px); }
+    .status-planned { font-family: var(--mono); font-size: 0.6rem; color: #569cd6; background: rgba(86,156,214,0.12); border: 1px solid rgba(86,156,214,0.3); padding: 0.25rem 0.75rem; border-radius: 2px; }
+    .status-in-progress { font-family: var(--mono); font-size: 0.6rem; color: #d19a66; background: rgba(209,154,102,0.12); border: 1px solid rgba(209,154,102,0.3); padding: 0.25rem 0.75rem; border-radius: 2px; }
+    .status-completed { font-family: var(--mono); font-size: 0.6rem; color: #4ec9b0; background: rgba(78,201,176,0.12); border: 1px solid rgba(78,201,176,0.3); padding: 0.25rem 0.75rem; border-radius: 2px; }
+    .status-maintenance { font-family: var(--mono); font-size: 0.6rem; color: #c5a55a; background: rgba(197,165,90,0.12); border: 1px solid rgba(197,165,90,0.3); padding: 0.25rem 0.75rem; border-radius: 2px; }
+    @media (max-width: 768px) {
+        .project-hero { min-height: 250px; }
+        .project-hero-content { padding: 1.5rem; }
+        .project-hero-content h1 { font-size: 1.8rem !important; }
+        .stat-grid { grid-template-columns: repeat(2, 1fr) !important; }
+        .action-bar { flex-direction: column; align-items: stretch; }
+        .gallery-item { flex: 0 0 240px; }
+    }
+</style>
+{{ end }}
+
 {{ define "content" }}
-<!-- Hero Section -->
 <section class="sec" style="border-top: none;">
     <div class="sec-head">
         <div class="sec-num"><span class="teal">03</span> — Project</div>
@@ -9,175 +84,191 @@
     </div>
 </section>
 
-<!-- Project Container -->
 <div style="max-width: 1000px; margin: 0 auto; padding: 2rem 2rem 4rem;">
-    
-    <!-- Back Link -->
+
     <div style="margin-bottom: 2rem;">
-        <a href="/projects" class="btn-ghost" style="display: inline-block; padding: 0.5rem 1rem;">
+        <a href="/projects" class="btn-ghost" style="display: inline-block; padding: 0.5rem 1rem; font-size: 0.65rem;">
             ← Back to Projects
         </a>
     </div>
 
-    <!-- Project Image -->
     {{ if .Project.ImageURL }}
-    <div style="margin-bottom: 2rem; overflow: hidden; border: 1px solid var(--rule);">
-        <img src="{{ .Project.ImageURL }}" alt="{{ .Project.Title }}" style="width: 100%; height: auto; display: block;">
+    <div class="project-hero">
+        <img src="{{ .Project.ImageURL }}" alt="{{ .Project.Title }}" style="width: 100%; height: 400px; object-fit: cover; display: block;">
+        <div class="project-hero-overlay"></div>
+        <div class="project-hero-content">
+            <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem;">
+                {{ if .Project.Category }}<span style="font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--teal); background: var(--teal-glow); border: 1px solid var(--teal-line); padding: 0.25rem 0.75rem; border-radius: 2px;">{{ .Project.Category }}</span>{{ end }}
+                <span class="status-{{ .Project.Status }}">{{ .Project.Status }}</span>
+                {{ if .Project.Difficulty }}<span style="font-family: var(--mono); font-size: 0.55rem; color: var(--white3); border: 1px solid var(--rule); padding: 0.2rem 0.6rem; border-radius: 2px; background: var(--ink2);">{{ .Project.Difficulty }}</span>{{ end }}
+                {{ if .Project.ProjectType }}<span style="font-family: var(--mono); font-size: 0.55rem; color: var(--white3); border: 1px solid var(--rule); padding: 0.2rem 0.6rem; border-radius: 2px; background: var(--ink2);">{{ .Project.ProjectType }}</span>{{ end }}
+            </div>
+            <h1 style="font-family: var(--cond); font-size: 2.5rem; font-weight: 900; color: var(--white); margin-bottom: 0.5rem; line-height: 1.1;">{{ .Project.Title }}</h1>
+            <div style="font-family: var(--mono); font-size: 0.65rem; color: var(--white3);">{{ .Project.ViewCount }} views</div>
+        </div>
+    </div>
+    {{ else }}
+    <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.5rem;">
+        {{ if .Project.Category }}<span style="font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--teal); background: var(--teal-glow); border: 1px solid var(--teal-line); padding: 0.25rem 0.75rem; border-radius: 2px;">{{ .Project.Category }}</span>{{ end }}
+        <span class="status-{{ .Project.Status }}">{{ .Project.Status }}</span>
+        {{ if .Project.Difficulty }}<span style="font-family: var(--mono); font-size: 0.55rem; color: var(--white3); border: 1px solid var(--rule); padding: 0.2rem 0.6rem; border-radius: 2px;">{{ .Project.Difficulty }}</span>{{ end }}
+        {{ if .Project.ProjectType }}<span style="font-family: var(--mono); font-size: 0.55rem; color: var(--white3); border: 1px solid var(--rule); padding: 0.2rem 0.6rem; border-radius: 2px;">{{ .Project.ProjectType }}</span>{{ end }}
+    </div>
+    <div style="font-family: var(--mono); font-size: 0.65rem; color: var(--white3); margin-bottom: 2rem;">{{ .Project.ViewCount }} views</div>
+    {{ end }}
+
+    <!-- Stats -->
+    {{ $hasStats := or .Project.DevelopmentTime .Project.TeamSize .Project.LinesOfCode .Project.UsersCount .Project.Uptime .Project.ResponseTime }}
+    {{ if $hasStats }}
+    <div class="stat-grid">
+        {{ if .Project.DevelopmentTime }}<div class="stat-item"><div class="stat-value">{{ .Project.DevelopmentTime }}</div><div class="stat-label">Development</div></div>{{ end }}
+        {{ if .Project.TeamSize }}<div class="stat-item"><div class="stat-value">{{ .Project.TeamSize }}</div><div class="stat-label">Team Size</div></div>{{ end }}
+        {{ if .Project.LinesOfCode }}<div class="stat-item"><div class="stat-value">{{ .Project.LinesOfCode }}</div><div class="stat-label">Lines of Code</div></div>{{ end }}
+        {{ if .Project.UsersCount }}<div class="stat-item"><div class="stat-value">{{ .Project.UsersCount }}</div><div class="stat-label">Users</div></div>{{ end }}
+        {{ if .Project.Uptime }}<div class="stat-item"><div class="stat-value">{{ .Project.Uptime }}</div><div class="stat-label">Uptime</div></div>{{ end }}
+        {{ if .Project.ResponseTime }}<div class="stat-item"><div class="stat-value">{{ .Project.ResponseTime }}</div><div class="stat-label">Response Time</div></div>{{ end }}
+        <div class="stat-item"><div class="stat-value">{{ .Project.ViewCount }}</div><div class="stat-label">Views</div></div>
     </div>
     {{ end }}
 
-    <!-- Project Badges -->
-    <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 2rem;">
-        {{ if .Project.Category }}
-        <span style="font-family: var(--mono); font-size: 0.6rem; color: var(--teal); background: var(--teal-glow); border: 1px solid var(--teal-line); padding: 0.25rem 0.75rem;">
-            {{ .Project.Category }}
-        </span>
-        {{ end }}
-        {{ if .Project.Status }}
-        <span style="font-family: var(--mono); font-size: 0.6rem; color: var(--green); background: rgba(45, 204, 122, 0.1); border: 1px solid rgba(45, 204, 122, 0.35); padding: 0.25rem 0.75rem;">
-            {{ .Project.Status }}
-        </span>
-        {{ end }}
-        {{ if .Project.ProjectType }}
-        <span style="font-family: var(--mono); font-size: 0.6rem; color: var(--white3); border: 1px solid var(--rule); padding: 0.25rem 0.75rem;">
-            {{ .Project.ProjectType }}
-        </span>
-        {{ end }}
+    <!-- Action Buttons (colored differently) -->
+    {{ if or .Project.Link .Project.GithubLink .Project.DemoLink .Project.DocsLink }}
+    <div class="action-bar">
+        {{ if .Project.Link }}<a href="{{ .Project.Link }}" target="_blank" class="btn-action btn-live">Live Demo →</a>{{ end }}
+        {{ if .Project.GithubLink }}<a href="{{ .Project.GithubLink }}" target="_blank" class="btn-action btn-source">Source Code →</a>{{ end }}
+        {{ if .Project.DemoLink }}<a href="{{ .Project.DemoLink }}" target="_blank" class="btn-action btn-video">Video Demo →</a>{{ end }}
+        {{ if .Project.DocsLink }}<a href="{{ .Project.DocsLink }}" target="_blank" class="btn-action btn-docs">Documentation →</a>{{ end }}
     </div>
+    {{ end }}
 
-    <!-- Description -->
+    <!-- Overview -->
     {{ if .Project.Description }}
-    <div style="margin-bottom: 2rem; padding-bottom: 2rem; border-bottom: 1px solid var(--rule);">
-        <p style="font-size: 1.1rem; color: var(--white2); line-height: 1.7;">
-            {{ .Project.Description }}
-        </p>
+    <div class="psection" style="margin-top: 2rem;">
+        <div class="psection-title" style="color: var(--white);">Overview</div>
+        <p style="font-size: 1rem; color: var(--white2); line-height: 1.8;">{{ .Project.Description }}</p>
     </div>
     {{ end }}
 
-    <!-- Problem & Solution Grid -->
+    <!-- Challenge + Solution + Results in grid -->
     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--rule); margin-bottom: 2rem;">
         {{ if .Project.ProblemStatement }}
-        <div style="background: var(--ink2); padding: 2rem;">
-            <h3 style="font-family: var(--cond); font-size: 1.3rem; font-weight: 800; color: var(--white); margin-bottom: 1rem;">
-                The Challenge
-            </h3>
-            <p style="font-size: 0.9rem; color: var(--mid); line-height: 1.7;">
-                {{ .Project.ProblemStatement }}
-            </p>
+        <div style="background: var(--ink2); padding: 2rem; border-left: 3px solid #f48771;">
+            <div class="psection-title" style="color: #f48771; margin-bottom: 1rem;">The Challenge</div>
+            <p style="font-size: 0.9rem; color: var(--mid); line-height: 1.7;">{{ .Project.ProblemStatement }}</p>
         </div>
         {{ end }}
-        
         {{ if .Project.SolutionApproach }}
-        <div style="background: var(--ink2); padding: 2rem;">
-            <h3 style="font-family: var(--cond); font-size: 1.3rem; font-weight: 800; color: var(--white); margin-bottom: 1rem;">
-                The Solution
-            </h3>
-            <p style="font-size: 0.9rem; color: var(--mid); line-height: 1.7;">
-                {{ .Project.SolutionApproach }}
-            </p>
+        <div style="background: var(--ink2); padding: 2rem; border-left: 3px solid #4ec9b0;">
+            <div class="psection-title" style="color: #4ec9b0; margin-bottom: 1rem;">The Solution</div>
+            <p style="font-size: 0.9rem; color: var(--mid); line-height: 1.7;">{{ .Project.SolutionApproach }}</p>
         </div>
         {{ end }}
     </div>
+
+    {{ if .Project.ResultsOutcome }}
+    <div class="psection" style="border-left: 3px solid #c5a55a; background: rgba(197,165,90,0.04);">
+        <div class="psection-title" style="color: #c5a55a;">The Results</div>
+        <p style="font-size: 0.95rem; color: var(--white2); line-height: 1.8;">{{ .Project.ResultsOutcome }}</p>
+    </div>
+    {{ end }}
+
+    <!-- Long Description -->
+    {{ if .Project.LongDescription }}
+    <div class="psection">
+        <div class="psection-title" style="color: var(--white);">Project Details</div>
+        <div style="font-size: 0.9rem; color: var(--mid); line-height: 1.7;">{{ .Project.LongDescription }}</div>
+    </div>
+    {{ end }}
 
     <!-- Key Features -->
     {{ if .Project.KeyFeatures }}
-    <div style="background: var(--ink2); border: 1px solid var(--rule); padding: 2rem; margin-bottom: 2rem;">
-        <h3 style="font-family: var(--cond); font-size: 1.3rem; font-weight: 800; color: var(--white); margin-bottom: 1.5rem;">
-            Key Features
-        </h3>
+    {{ $features := parseJSON .Project.KeyFeatures }}
+    {{ if $features }}
+    <div class="psection">
+        <div class="psection-title" style="color: var(--teal);">Key Features</div>
         <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem;">
-            {{ $features := split .Project.KeyFeatures "," }}
             {{ range $features }}
-            <div style="display: flex; align-items: center; gap: 0.75rem;">
-                <span style="color: var(--teal);">→</span>
-                <span style="font-size: 0.85rem; color: var(--white2);">{{ trim . }}</span>
+            <div style="display: flex; align-items: flex-start; gap: 0.75rem;">
+                <span style="color: var(--teal); font-family: var(--mono); font-size: 0.8rem;">→</span>
+                <span style="font-size: 0.85rem; color: var(--white2);">{{ . }}</span>
+            </div>
+            {{ end }}
+        </div>
+    </div>
+    {{ end }}
+    {{ end }}
+
+    <!-- Tech Stacks -->
+    {{ if .Project.TechStacks }}
+    <div class="psection">
+        <div class="psection-title" style="color: var(--white);">Technology Stack</div>
+        <div style="display: flex; flex-wrap: wrap; gap: 0.75rem;">
+            {{ range .Project.TechStacks }}
+            <span style="font-family: var(--mono); font-size: 0.65rem; color: var(--teal); background: var(--teal-glow); border: 1px solid var(--teal-line); padding: 0.3rem 0.8rem; border-radius: 2px;">{{ .Name }}</span>
+            {{ end }}
+        </div>
+    </div>
+    {{ end }}
+
+    <!-- Gallery (scrollable) -->
+    {{ if .Project.Gallery }}
+    {{ $gallery := parseJSON .Project.Gallery }}
+    {{ if $gallery }}
+    <div class="psection">
+        <div class="psection-title" style="color: var(--white);">Gallery</div>
+        <div class="gallery-scroll">
+            {{ range $gallery }}
+            <div class="gallery-item">
+                <img src="{{ . }}" alt="Gallery image" loading="lazy">
+            </div>
+            {{ end }}
+        </div>
+    </div>
+    {{ end }}
+    {{ end }}
+
+    <!-- Tags -->
+    {{ if .Project.Tags }}
+    {{ $tags := split .Project.Tags "," }}
+    <div class="psection">
+        <div class="psection-title" style="color: var(--white);">Tags</div>
+        <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+            {{ range $tags }}
+            <span style="font-family: var(--mono); font-size: 0.6rem; color: var(--teal); background: var(--teal-glow); border: 1px solid var(--teal-line); padding: 0.25rem 0.7rem; border-radius: 2px;">{{ trim . }}</span>
+            {{ end }}
+        </div>
+    </div>
+    {{ end }}
+
+    <!-- Timeline -->
+    {{ if or .Project.StartedAt .Project.CompletionDate }}
+    <div class="psection">
+        <div class="psection-title" style="color: var(--white);">Timeline</div>
+        <div style="display: flex; flex-wrap: wrap; gap: 2rem;">
+            {{ if .Project.StartedAt }}
+            <div>
+                <div style="font-family: var(--mono); font-size: 0.55rem; color: var(--white3); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.25rem;">Started</div>
+                <div style="font-family: var(--cond); font-size: 1.2rem; font-weight: 800; color: var(--white);">{{ .Project.StartedAt.Format "January 2006" }}</div>
+            </div>
+            {{ end }}
+            {{ if .Project.CompletionDate }}
+            <div>
+                <div style="font-family: var(--mono); font-size: 0.55rem; color: var(--white3); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.25rem;">Completed</div>
+                <div style="font-family: var(--cond); font-size: 1.2rem; font-weight: 800; color: var(--teal);">{{ .Project.CompletionDate.Format "January 2006" }}</div>
             </div>
             {{ end }}
         </div>
     </div>
     {{ end }}
 
-    <!-- Long Description -->
-    {{ if .Project.LongDescription }}
-    <div style="background: var(--ink2); border: 1px solid var(--rule); padding: 2rem; margin-bottom: 2rem;">
-        <h3 style="font-family: var(--cond); font-size: 1.3rem; font-weight: 800; color: var(--white); margin-bottom: 1rem;">
-            Project Details
-        </h3>
-        <div style="font-size: 0.9rem; color: var(--mid); line-height: 1.7;">
-            {{ .Project.LongDescription }}
+    <!-- CTA -->
+    <div style="text-align: center; margin-top: 2rem; padding: 3rem; background: var(--ink2); border: 1px solid var(--rule);">
+        <h3 style="font-family: var(--cond); font-size: 1.5rem; font-weight: 800; color: var(--white); margin-bottom: 1rem;">Interested in This Project?</h3>
+        <p style="color: var(--white2); margin-bottom: 1.5rem; font-size: 0.9rem;">Full source code and documentation available. Reach out for collaboration.</p>
+        <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+            <a href="/contact" class="btn-primary" style="display: inline-block; font-size: 0.65rem; padding: 0.65rem 1.5rem;">Get in Touch →</a>
+            <a href="/projects" class="btn-ghost" style="display: inline-block; font-size: 0.65rem; padding: 0.65rem 1.5rem;">All Projects →</a>
         </div>
-    </div>
-    {{ end }}
-
-    <!-- Tech Stack -->
-    {{ if .Project.TechStacks }}
-    <div style="background: var(--ink2); border: 1px solid var(--rule); padding: 2rem; margin-bottom: 2rem;">
-        <h3 style="font-family: var(--cond); font-size: 1.3rem; font-weight: 800; color: var(--white); margin-bottom: 1rem;">
-            Technology Stack
-        </h3>
-        <div style="display: flex; flex-wrap: wrap; gap: 0.75rem;">
-            {{ range .Project.TechStacks }}
-            <span style="font-family: var(--mono); font-size: 0.65rem; color: var(--teal); background: var(--teal-glow); border: 1px solid var(--teal-line); padding: 0.3rem 0.8rem;">
-                {{ .Name }}
-            </span>
-            {{ end }}
-        </div>
-    </div>
-    {{ end }}
-
-    <!-- Metrics Grid -->
-    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--rule); margin-bottom: 2rem;">
-        {{ if .Project.DevelopmentTime }}
-        <div style="background: var(--ink2); padding: 1.5rem; text-align: center;">
-            <div style="font-family: var(--cond); font-size: 1.8rem; font-weight: 800; color: var(--teal);">{{ .Project.DevelopmentTime }}</div>
-            <div style="font-family: var(--mono); font-size: 0.6rem; color: var(--white3);">Development</div>
-        </div>
-        {{ end }}
-        
-        {{ if .Project.TeamSize }}
-        <div style="background: var(--ink2); padding: 1.5rem; text-align: center;">
-            <div style="font-family: var(--cond); font-size: 1.8rem; font-weight: 800; color: var(--teal);">{{ .Project.TeamSize }}</div>
-            <div style="font-family: var(--mono); font-size: 0.6rem; color: var(--white3);">Team Size</div>
-        </div>
-        {{ end }}
-        
-        {{ if .Project.Uptime }}
-        <div style="background: var(--ink2); padding: 1.5rem; text-align: center;">
-            <div style="font-family: var(--cond); font-size: 1.8rem; font-weight: 800; color: var(--teal);">{{ .Project.Uptime }}</div>
-            <div style="font-family: var(--mono); font-size: 0.6rem; color: var(--white3);">Uptime</div>
-        </div>
-        {{ end }}
-        
-        {{ if .Project.UsersCount }}
-        <div style="background: var(--ink2); padding: 1.5rem; text-align: center;">
-            <div style="font-family: var(--cond); font-size: 1.8rem; font-weight: 800; color: var(--teal);">{{ .Project.UsersCount }}</div>
-            <div style="font-family: var(--mono); font-size: 0.6rem; color: var(--white3);">Users</div>
-        </div>
-        {{ end }}
-    </div>
-
-    <!-- Action Buttons -->
-    <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 2rem;">
-        {{ if .Project.Link }}
-        <a href="{{ .Project.Link }}" target="_blank" class="btn-primary" style="display: inline-flex; align-items: center; gap: 0.5rem;">
-            Live Demo <span>→</span>
-        </a>
-        {{ end }}
-        {{ if .Project.GithubLink }}
-        <a href="{{ .Project.GithubLink }}" target="_blank" class="btn-ghost" style="display: inline-flex; align-items: center; gap: 0.5rem;">
-            Source Code <span>→</span>
-        </a>
-        {{ end }}
-        {{ if .Project.DemoLink }}
-        <a href="{{ .Project.DemoLink }}" target="_blank" class="btn-ghost" style="display: inline-flex; align-items: center; gap: 0.5rem;">
-            Video Demo <span>→</span>
-        </a>
-        {{ end }}
-        {{ if .Project.DocsLink }}
-        <a href="{{ .Project.DocsLink }}" target="_blank" class="btn-ghost" style="display: inline-flex; align-items: center; gap: 0.5rem;">
-            Documentation <span>→</span>
-        </a>
-        {{ end }}
     </div>
 
 </div>

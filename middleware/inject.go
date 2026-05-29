@@ -3,6 +3,7 @@ package middleware
 import (
 	"strings"
 
+	"github.com/C9b3rD3vi1/forge/config"
 	"github.com/C9b3rD3vi1/forge/database"
 	"github.com/C9b3rD3vi1/forge/models"
 	"github.com/gofiber/fiber/v2"
@@ -26,6 +27,16 @@ func InjectGlobalData() fiber.Handler {
 		}
 
 		c.Locals("FooterServices", services)
+
+		// Check if user is logged in
+		sess, err := config.Store.Get(c)
+		if err == nil {
+			userID := sess.Get("user_id")
+			c.Locals("IsLoggedIn", userID != nil)
+		} else {
+			c.Locals("IsLoggedIn", false)
+		}
+
 		return c.Next()
 	}
 }

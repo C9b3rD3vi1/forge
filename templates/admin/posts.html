@@ -29,8 +29,10 @@
                 <thead style="background: var(--ink3); border-bottom: 1px solid var(--rule);">
                     <tr>
                         <th style="text-align: left; padding: 1rem; font-family: var(--mono); font-size: 0.55rem; color: var(--white3); letter-spacing: 0.05em;">POST</th>
-                        <th style="text-align: left; padding: 1rem; font-family: var(--mono); font-size: 0.55rem; color: var(--white3); letter-spacing: 0.05em; display: none;">SLUG</th>
-                        <th style="text-align: left; padding: 1rem; font-family: var(--mono); font-size: 0.55rem; color: var(--white3); letter-spacing: 0.05em;">ACTIONS</th>
+                        <th style="text-align: center; padding: 1rem; font-family: var(--mono); font-size: 0.55rem; color: var(--white3); letter-spacing: 0.05em;">CATEGORY</th>
+                        <th style="text-align: center; padding: 1rem; font-family: var(--mono); font-size: 0.55rem; color: var(--white3); letter-spacing: 0.05em;">STATUS</th>
+                        <th style="text-align: center; padding: 1rem; font-family: var(--mono); font-size: 0.55rem; color: var(--white3); letter-spacing: 0.05em;">READ</th>
+                        <th style="text-align: right; padding: 1rem; font-family: var(--mono); font-size: 0.55rem; color: var(--white3); letter-spacing: 0.05em;">ACTIONS</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -38,17 +40,32 @@
                     <tr style="border-bottom: 1px solid var(--rule);">
                         <td style="padding: 1rem;">
                             <div>
-                                <div style="font-family: var(--cond); font-size: 1rem; font-weight: 600; color: var(--white);">{{ .Title }}</div>
+                                <div style="font-family: var(--cond); font-size: 1rem; font-weight: 600; color: var(--white);">
+                                    {{ .Title }}
+                                    {{ if .Featured }}<span style="color: var(--teal); font-size: 0.8rem;">★</span>{{ end }}
+                                </div>
                                 <div style="font-size: 0.65rem; color: var(--white3); margin-top: 0.25rem;">
-                                    {{ if .CreatedAt }}{{ .CreatedAt.Format "Jan 2, 2006" }}{{ end }}
+                                    {{ if .PublishedAt }}{{ .PublishedAt.Format "Jan 2, 2006" }}{{ end }}
                                 </div>
                             </div>
                         </td>
-                        <td style="padding: 1rem; display: none;">
-                            <span style="font-family: var(--mono); font-size: 0.6rem; color: var(--teal); background: var(--teal-glow); border: 1px solid var(--teal-line); padding: 0.2rem 0.5rem;">/{{ .Slug }}</span>
+                        <td style="padding: 1rem; text-align: center;">
+                            {{ if .Category }}
+                            <span style="font-family: var(--mono); font-size: 0.55rem; color: var(--teal); background: var(--teal-glow); border: 1px solid var(--teal-line); padding: 0.15rem 0.5rem; text-transform: uppercase;">{{ .Category }}</span>
+                            {{ end }}
                         </td>
-                        <td style="padding: 1rem;">
-                            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                        <td style="padding: 1rem; text-align: center;">
+                            {{ if .Published }}
+                            <span style="color: var(--green); font-family: var(--mono); font-size: 0.55rem;">Published</span>
+                            {{ else }}
+                            <span style="color: var(--red); font-family: var(--mono); font-size: 0.55rem;">Draft</span>
+                            {{ end }}
+                        </td>
+                        <td style="padding: 1rem; text-align: center;">
+                            <span style="font-family: var(--mono); font-size: 0.6rem; color: var(--white3);">{{ .ReadingTime }} min</span>
+                        </td>
+                        <td style="padding: 1rem; text-align: right;">
+                            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: flex-end;">
                                 <a href="/admin/posts/{{ .Slug }}" style="font-family: var(--mono); font-size: 0.6rem; color: var(--teal); text-decoration: none; border: 1px solid var(--teal-line); padding: 0.3rem 0.8rem;">View</a>
                                 <a href="/admin/posts/edit/{{ .ID }}" style="font-family: var(--mono); font-size: 0.6rem; color: var(--teal); text-decoration: none; border: 1px solid var(--teal-line); padding: 0.3rem 0.8rem;">Edit</a>
                                 <form action="/admin/posts/delete/{{ .ID }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this post? This action cannot be undone.')" style="display: inline;">

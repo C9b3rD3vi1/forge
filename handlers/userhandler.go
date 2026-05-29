@@ -80,7 +80,9 @@ func UserRegisterHandlerForm(c *fiber.Ctx) error {
 }
 
 func UserLoginHandlerForm(c *fiber.Ctx) error {
-	return c.Render("pages/login", fiber.Map{})
+	return c.Render("pages/login", fiber.Map{
+		"Redirect": c.Query("redirect"),
+	})
 }
 
 func UserContactHandlerForm(c *fiber.Ctx) error {

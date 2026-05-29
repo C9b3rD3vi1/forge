@@ -65,6 +65,11 @@
                 <label for="solution_approach" style="display: block; font-family: var(--mono); font-size: 0.6rem; color: var(--white3); margin-bottom: 0.25rem;">SOLUTION APPROACH</label>
                 <textarea id="solution_approach" name="solution_approach" rows="3" style="width: 100%; background: var(--ink); border: 1px solid var(--rule); padding: 0.6rem; color: var(--white);">{{ .Project.SolutionApproach }}</textarea>
             </div>
+
+            <div style="margin-top: 1rem;">
+                <label for="results_outcome" style="display: block; font-family: var(--mono); font-size: 0.6rem; color: var(--white3); margin-bottom: 0.25rem;">RESULTS & OUTCOME</label>
+                <textarea id="results_outcome" name="results_outcome" rows="3" style="width: 100%; background: var(--ink); border: 1px solid var(--rule); padding: 0.6rem; color: var(--white);">{{ .Project.ResultsOutcome }}</textarea>
+            </div>
         </div>
 
         <!-- Links Section -->
@@ -194,7 +199,7 @@
                 </div>
             </div>
 
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem;">
                 <div>
                     <label for="uptime" style="display: block; font-family: var(--mono); font-size: 0.6rem; color: var(--white3); margin-bottom: 0.25rem;">UPTIME</label>
                     <input type="text" id="uptime" name="uptime" value="{{ .Project.Uptime }}" style="width: 100%; background: var(--ink); border: 1px solid var(--rule); padding: 0.6rem; color: var(--white);">
@@ -202,6 +207,10 @@
                 <div>
                     <label for="response_time" style="display: block; font-family: var(--mono); font-size: 0.6rem; color: var(--white3); margin-bottom: 0.25rem;">RESPONSE TIME</label>
                     <input type="text" id="response_time" name="response_time" value="{{ .Project.ResponseTime }}" style="width: 100%; background: var(--ink); border: 1px solid var(--rule); padding: 0.6rem; color: var(--white);">
+                </div>
+                <div>
+                    <label style="display: block; font-family: var(--mono); font-size: 0.6rem; color: var(--white3); margin-bottom: 0.25rem;">VIEWS</label>
+                    <div style="width: 100%; background: var(--ink); border: 1px solid var(--rule); padding: 0.6rem; color: var(--white3); font-size: 0.9rem;">{{ .Project.ViewCount }}</div>
                 </div>
             </div>
         </div>
@@ -255,6 +264,21 @@
                     <input type="checkbox" id="published" name="published" value="on" {{ if .Project.Published }}checked{{ end }} style="accent-color: var(--teal);">
                     <span style="font-family: var(--mono); font-size: 0.7rem; color: var(--white2);">Published</span>
                 </label>
+            </div>
+        </div>
+
+        <!-- SEO Section -->
+        <div style="background: var(--ink2); border: 1px solid var(--rule); margin-bottom: 1px; padding: 1.5rem;">
+            <h2 style="font-family: var(--cond); font-size: 1.2rem; font-weight: 800; color: var(--teal); margin-bottom: 1rem;">SEO</h2>
+
+            <div style="margin-bottom: 1rem;">
+                <label for="meta_description" style="display: block; font-family: var(--mono); font-size: 0.6rem; color: var(--white3); margin-bottom: 0.25rem;">META DESCRIPTION</label>
+                <textarea id="meta_description" name="meta_description" rows="3" style="width: 100%; background: var(--ink); border: 1px solid var(--rule); padding: 0.6rem; color: var(--white);">{{ .Project.MetaDescription }}</textarea>
+            </div>
+
+            <div>
+                <label for="canonical_url" style="display: block; font-family: var(--mono); font-size: 0.6rem; color: var(--white3); margin-bottom: 0.25rem;">CANONICAL URL</label>
+                <input type="url" id="canonical_url" name="canonical_url" value="{{ .Project.CanonicalURL }}" style="width: 100%; background: var(--ink); border: 1px solid var(--rule); padding: 0.6rem; color: var(--white);">
             </div>
         </div>
 

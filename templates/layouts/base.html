@@ -495,6 +495,64 @@
     </style>
     
     {{ block "extra_css" . }}{{ end }}
+    
+    {{ if .Post }}
+    <meta name="description" content="{{ if .Post.Excerpt }}{{ .Post.Excerpt }}{{ else }}{{ .Post.Title }}{{ end }}">
+    <meta property="og:title" content="{{ .Post.Title }}">
+    <meta property="og:description" content="{{ if .Post.Excerpt }}{{ .Post.Excerpt }}{{ else }}{{ .Post.Title }}{{ end }}">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="{{ .CanonicalURL }}">
+    {{ if .Post.ImageURL }}<meta property="og:image" content="{{ .Post.ImageURL }}">{{ end }}
+    <meta property="article:published_time" content="{{ if .Post.PublishedAt }}{{ .Post.PublishedAt.Format "2006-01-02T15:04:05Z07:00" }}{{ end }}">
+    <meta property="article:author" content="{{ .Post.Author }}">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ .Post.Title }}">
+    <meta name="twitter:description" content="{{ if .Post.Excerpt }}{{ .Post.Excerpt }}{{ else }}{{ .Post.Title }}{{ end }}">
+    {{ if .Post.ImageURL }}<meta name="twitter:image" content="{{ .Post.ImageURL }}">{{ end }}
+    <link rel="canonical" href="{{ .CanonicalURL }}">
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "headline": "{{ .Post.Title }}",
+        "description": "{{ if .Post.Excerpt }}{{ .Post.Excerpt }}{{ end }}",
+        "author": {
+            "@type": "Person",
+            "name": "{{ .Post.Author }}"
+        },
+        "datePublished": "{{ if .Post.PublishedAt }}{{ .Post.PublishedAt.Format "2006-01-02" }}{{ end }}",
+        "image": "{{ if .Post.ImageURL }}{{ .Post.ImageURL }}{{ end }}"
+    }
+    </script>
+    {{ end }}
+
+    {{ if .Service }}
+    <meta name="description" content="{{ if .Service.MetaDescription }}{{ .Service.MetaDescription }}{{ else }}{{ .Service.Title }}{{ end }}">
+    <meta property="og:title" content="{{ .Service.Title }}">
+    <meta property="og:description" content="{{ if .Service.MetaDescription }}{{ .Service.MetaDescription }}{{ else }}{{ .Service.Title }}{{ end }}">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ if .Service.CanonicalURL }}{{ .Service.CanonicalURL }}{{ else }}/service/{{ .Service.Slug }}{{ end }}">
+    {{ if .Service.ImageURL }}<meta property="og:image" content="{{ .Service.ImageURL }}">{{ end }}
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ .Service.Title }}">
+    <meta name="twitter:description" content="{{ if .Service.MetaDescription }}{{ .Service.MetaDescription }}{{ else }}{{ .Service.Title }}{{ end }}">
+    {{ if .Service.ImageURL }}<meta name="twitter:image" content="{{ .Service.ImageURL }}">{{ end }}
+    <link rel="canonical" href="{{ if .Service.CanonicalURL }}{{ .Service.CanonicalURL }}{{ else }}/service/{{ .Service.Slug }}{{ end }}">
+    {{ end }}
+
+    {{ if .Project }}
+    <meta name="description" content="{{ if .Project.MetaDescription }}{{ .Project.MetaDescription }}{{ else }}{{ .Project.Description }}{{ end }}">
+    <meta property="og:title" content="{{ .Project.Title }}">
+    <meta property="og:description" content="{{ if .Project.MetaDescription }}{{ .Project.MetaDescription }}{{ else }}{{ .Project.Description }}{{ end }}">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ if .Project.CanonicalURL }}{{ .Project.CanonicalURL }}{{ else }}/project/{{ .Project.Slug }}{{ end }}">
+    {{ if .Project.ImageURL }}<meta property="og:image" content="{{ .Project.ImageURL }}">{{ end }}
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ .Project.Title }}">
+    <meta name="twitter:description" content="{{ if .Project.MetaDescription }}{{ .Project.MetaDescription }}{{ else }}{{ .Project.Description }}{{ end }}">
+    {{ if .Project.ImageURL }}<meta name="twitter:image" content="{{ .Project.ImageURL }}">{{ end }}
+    <link rel="canonical" href="{{ if .Project.CanonicalURL }}{{ .Project.CanonicalURL }}{{ else }}/project/{{ .Project.Slug }}{{ end }}">
+    {{ end }}
 </head>
 <body>
 

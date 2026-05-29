@@ -2,8 +2,7 @@
 
 {{ define "content" }}
 <div style="max-width: 1200px; margin: 0 auto;">
-    
-    <!-- Header -->
+
     <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem; margin-bottom: 2rem;">
         <div>
             <div style="font-family: var(--cond); font-size: 1.5rem; font-weight: 800; color: var(--white); margin-bottom: 0.25rem;">
@@ -13,7 +12,7 @@
         </div>
         <div style="display: flex; align-items: center; gap: 1rem;">
             <div style="background: var(--ink2); padding: 0.5rem 1rem; border: 1px solid var(--rule); text-align: center;">
-                <div style="font-family: var(--cond); font-size: 1.5rem; font-weight: 800; color: var(--teal);">{{ .TotalServices }}</div>
+                <div style="font-family: var(--cond); font-size: 1.5rem; font-weight: 800; color: var(--teal);">{{ len .Services }}</div>
                 <div style="font-family: var(--mono); font-size: 0.55rem; color: var(--white3);">TOTAL SERVICES</div>
             </div>
             <a href="/admin/services/new" class="btn-primary" style="display: inline-flex; align-items: center; gap: 0.5rem;">
@@ -22,39 +21,26 @@
         </div>
     </div>
 
-    <!-- KPI Cards -->
-    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--rule); margin-bottom: 2rem;">
-        <div style="background: var(--ink2); padding: 1.5rem;">
-            <div style="font-family: var(--mono); font-size: 0.6rem; color: var(--white3); margin-bottom: 0.5rem;">TOTAL SERVICES</div>
-            <div style="font-family: var(--cond); font-size: 2rem; font-weight: 800; color: var(--teal);">{{ .TotalServices }}</div>
-        </div>
-        <div style="background: var(--ink2); padding: 1.5rem;">
-            <div style="font-family: var(--mono); font-size: 0.6rem; color: var(--white3); margin-bottom: 0.5rem;">ACTIVE SERVICES</div>
-            <div style="font-family: var(--cond); font-size: 2rem; font-weight: 800; color: var(--teal);">{{ .ActiveServices }}</div>
-        </div>
-        <div style="background: var(--ink2); padding: 1.5rem;">
-            <div style="font-family: var(--mono); font-size: 0.6rem; color: var(--white3); margin-bottom: 0.5rem;">PENDING TICKETS</div>
-            <div style="font-family: var(--cond); font-size: 2rem; font-weight: 800; color: var(--teal);">{{ .PendingTickets }}</div>
-        </div>
-        <div style="background: var(--ink2); padding: 1.5rem;">
-            <div style="font-family: var(--mono); font-size: 0.6rem; color: var(--white3); margin-bottom: 0.5rem;">UPTIME RATE</div>
-            <div style="font-family: var(--cond); font-size: 2rem; font-weight: 800; color: var(--teal);">{{ .UptimeRate }}</div>
-        </div>
+    <div style="background: var(--ink2); border: 1px solid var(--rule); margin-bottom: 2rem; padding: 1.5rem;">
+        <div style="font-family: var(--mono); font-size: 0.6rem; color: var(--white3); margin-bottom: 0.5rem;">TOTAL SERVICES</div>
+        <div style="font-family: var(--cond); font-size: 2rem; font-weight: 800; color: var(--teal);">{{ len .Services }}</div>
     </div>
 
-    <!-- Services Table -->
     <div style="background: var(--ink2); border: 1px solid var(--rule); overflow: hidden;">
         <div style="padding: 1rem 1.5rem; border-bottom: 1px solid var(--rule); display: flex; justify-content: space-between; align-items: center;">
             <h3 style="font-family: var(--cond); font-size: 1rem; font-weight: 800; color: var(--white);">All Services</h3>
         </div>
-        
+
         {{ if .Services }}
         <div style="overflow-x: auto;">
             <table style="width: 100%; border-collapse: collapse;">
                 <thead style="background: var(--ink3); border-bottom: 1px solid var(--rule);">
                     <tr>
                         <th style="text-align: left; padding: 0.75rem 1rem; font-family: var(--mono); font-size: 0.55rem; color: var(--white3);">TITLE</th>
-                        <th style="text-align: left; padding: 0.75rem 1rem; font-family: var(--mono); font-size: 0.55rem; color: var(--white3);">DESCRIPTION</th>
+                        <th style="text-align: left; padding: 0.75rem 1rem; font-family: var(--mono); font-size: 0.55rem; color: var(--white3);">CATEGORY</th>
+                        <th style="text-align: left; padding: 0.75rem 1rem; font-family: var(--mono); font-size: 0.55rem; color: var(--white3);">STATUS</th>
+                        <th style="text-align: left; padding: 0.75rem 1rem; font-family: var(--mono); font-size: 0.55rem; color: var(--white3);">FEATURED</th>
+                        <th style="text-align: left; padding: 0.75rem 1rem; font-family: var(--mono); font-size: 0.55rem; color: var(--white3);">VIEWS</th>
                         <th style="text-align: left; padding: 0.75rem 1rem; font-family: var(--mono); font-size: 0.55rem; color: var(--white3);">TECH STACKS</th>
                         <th style="text-align: right; padding: 0.75rem 1rem; font-family: var(--mono); font-size: 0.55rem; color: var(--white3);">ACTIONS</th>
                     </tr>
@@ -66,10 +52,35 @@
                             <div style="font-family: var(--cond); font-size: 0.9rem; font-weight: 600; color: var(--white);">{{ .Title }}</div>
                         </td>
                         <td style="padding: 0.75rem 1rem;">
-                            <div style="font-size: 0.75rem; color: var(--white2); max-width: 300px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ .Description }}</div>
+                            <div style="font-size: 0.75rem; color: var(--white2);">{{ if .Category }}{{ .Category }}{{ else }}<span style="color: var(--white3);">—</span>{{ end }}</div>
                         </td>
                         <td style="padding: 0.75rem 1rem;">
-                            <div style="font-size: 0.7rem; color: var(--teal);">{{ .TechStacks }}</div>
+                            {{ if eq .Status "active" }}
+                            <span style="font-family: var(--mono); font-size: 0.6rem; color: #fff; background: #4ec9b0; padding: 0.15rem 0.5rem;">Active</span>
+                            {{ else if eq .Status "inactive" }}
+                            <span style="font-family: var(--mono); font-size: 0.6rem; color: var(--ink); background: var(--white3); padding: 0.15rem 0.5rem;">Inactive</span>
+                            {{ else if eq .Status "coming-soon" }}
+                            <span style="font-family: var(--mono); font-size: 0.6rem; color: #fff; background: #d19a66; padding: 0.15rem 0.5rem;">Coming Soon</span>
+                            {{ else }}
+                            <span style="font-family: var(--mono); font-size: 0.6rem; color: var(--white2);">{{ .Status }}</span>
+                            {{ end }}
+                        </td>
+                        <td style="padding: 0.75rem 1rem;">
+                            {{ if .Featured }}
+                            <span style="font-family: var(--mono); font-size: 0.6rem; color: #fff; background: #c5a55a; padding: 0.15rem 0.5rem;">Featured</span>
+                            {{ else }}
+                            <span style="font-family: var(--mono); font-size: 0.6rem; color: var(--white3);">—</span>
+                            {{ end }}
+                        </td>
+                        <td style="padding: 0.75rem 1rem;">
+                            <div style="font-size: 0.75rem; color: var(--white2);">{{ .ViewCount }}</div>
+                        </td>
+                        <td style="padding: 0.75rem 1rem;">
+                            <div style="display: flex; flex-wrap: wrap; gap: 0.25rem;">
+                            {{ range .TechStacks }}
+                            <span style="font-family: var(--mono); font-size: 0.55rem; color: var(--teal); background: var(--teal-glow); border: 1px solid var(--teal-line); padding: 0.1rem 0.4rem;">{{ .Name }}</span>
+                            {{ end }}
+                            </div>
                         </td>
                         <td style="padding: 0.75rem 1rem; text-align: right;">
                             <div style="display: flex; gap: 0.5rem; justify-content: flex-end;">
@@ -94,7 +105,6 @@
     </div>
 </div>
 
-<!-- Delete Confirmation Modal -->
 <div id="delete-modal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.7); z-index: 1000; align-items: center; justify-content: center;">
     <div style="background: var(--ink2); border: 1px solid var(--rule); padding: 1.5rem; max-width: 400px; width: 90%;">
         <div style="margin-bottom: 1rem;">

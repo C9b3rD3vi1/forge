@@ -3,6 +3,7 @@ package handlers
 import (
 	"errors"
 	"strings"
+	"time"
 
 	"github.com/C9b3rD3vi1/forge/config"
 	"github.com/C9b3rD3vi1/forge/database"
@@ -12,9 +13,6 @@ import (
 	"gorm.io/gorm"
 )
 
-// --- Posts ---
-
-// List all posts
 func AdminPostList(c *fiber.Ctx) error {
 	admin := config.GetCurrentUser(c)
 	if admin == nil || !admin.IsAdmin {
@@ -33,16 +31,19 @@ func AdminPostList(c *fiber.Ctx) error {
 	})
 }
 
-// Show new post form
 func AdminNewPostForm(c *fiber.Ctx) error {
 	admin := config.GetCurrentUser(c)
 	if admin == nil || !admin.IsAdmin {
 		return c.Redirect("/admin/login")
 	}
 
+	var allTags []models.Tag
+	database.DB.Order("name asc").Find(&allTags)
+
 	return c.Render("admin/new_post", fiber.Map{
-		"Title": "Add New Post",
-		"Admin": admin,
+		"Title":   "Add New Post",
+		"Admin":   admin,
+		"AllTags": allTags,
 	})
 }
 
@@ -54,10 +55,20 @@ func AdminCreatePost(c *fiber.Ctx) error {
 
 	title := c.FormValue("title")
 	content := c.FormValue("content")
+	excerpt := c.FormValue("excerpt")
+	category := c.FormValue("category")
 	tagNames := c.FormValue("tag")
+	featured := c.FormValue("featured") == "on"
 
 	imageURL, _ := utils.UploadImage(c, "image")
 	slug := utils.UniqueSlug(database.DB, "posts", title)
+
+	publishedAt := time.Now()
+	if pa := c.FormValue("published_at"); pa != "" {
+		if parsed, err := time.Parse("2006-01-02", pa); err == nil {
+			publishedAt = parsed
+		}
+	}
 
 	var tags []models.Tag
 	for _, t := range strings.Split(tagNames, ",") {
@@ -78,20 +89,25 @@ func AdminCreatePost(c *fiber.Ctx) error {
 		tags = append(tags, tag)
 	}
 
+	readingTime := utils.ComputeReadingTime(content)
+
 	post := models.Post{
-		Title:    title,
-		Content:  content,
-		Slug:     slug,
-		ImageURL: imageURL,
-		Author:   admin.Username,
+		Title:       title,
+		Content:     content,
+		Excerpt:     excerpt,
+		Category:    category,
+		Slug:        slug,
+		ImageURL:    imageURL,
+		Author:      admin.Username,
+		Featured:    featured,
+		PublishedAt: publishedAt,
+		ReadingTime: readingTime,
 	}
 
-	// Step 1: Create the Post. This populates the post.ID
 	if err := database.DB.Create(&post).Error; err != nil {
 		return c.Status(500).SendString("Error saving post")
 	}
 
-	// Step 2: Use Association() to create the links in the join table
 	if len(tags) > 0 {
 		err := database.DB.Model(&post).Association("Tags").Replace(tags)
 		if err != nil {
@@ -102,9 +118,6 @@ func AdminCreatePost(c *fiber.Ctx) error {
 	return c.Redirect("/admin/posts")
 }
 
-
-
-// View single post
 func AdminViewPosts(c *fiber.Ctx) error {
 	admin := config.GetCurrentUser(c)
 	if admin == nil || !admin.IsAdmin {
@@ -117,6 +130,11 @@ func AdminViewPosts(c *fiber.Ctx) error {
 		return c.Status(404).Render("errors/404", fiber.Map{"Message": "Post not found"})
 	}
 
+	rt := post.ReadingTime
+	if rt == 0 {
+		rt = utils.ComputeReadingTime(post.Content)
+	}
+
 	return c.Render("admin/view_post", fiber.Map{
 		"Title": "View Post",
 		"Admin": admin,
@@ -124,9 +142,6 @@ func AdminViewPosts(c *fiber.Ctx) error {
 	})
 }
 
-
-
-// Show edit form
 func AdminEditPostsForm(c *fiber.Ctx) error {
 	admin := config.GetCurrentUser(c)
 	if admin == nil || !admin.IsAdmin {
@@ -135,86 +150,99 @@ func AdminEditPostsForm(c *fiber.Ctx) error {
 
 	id := c.Params("id")
 	var post models.Post
-	if err := database.DB.Preload("Tags").First(&post, id).Error; err != nil {
+	if err := database.DB.Where("id = ?", id).Preload("Tags").First(&post).Error; err != nil {
 		return c.Status(404).Render("errors/404", fiber.Map{"Message": "Post not found"})
 	}
 
+	var allTags []models.Tag
+	database.DB.Order("name asc").Find(&allTags)
+
 	return c.Render("admin/edit_post", fiber.Map{
-		"Title": "Edit Post",
-		"Admin": admin,
-		"Post":  post,
+		"Title":   "Edit Post",
+		"Admin":   admin,
+		"Post":    post,
+		"AllTags": allTags,
 	})
 }
 
-
-// Update post
 func AdminUpdatePost(c *fiber.Ctx) error {
-    admin := config.GetCurrentUser(c)
-    if admin == nil || !admin.IsAdmin {
-        return c.Redirect("/admin/login")
-    }
+	admin := config.GetCurrentUser(c)
+	if admin == nil || !admin.IsAdmin {
+		return c.Redirect("/admin/login")
+	}
 
-    id := c.Params("id")
-    var post models.Post
-    if err := database.DB.Preload("Tags").First(&post, id).Error; err != nil {
-        return c.Status(404).Render("errors/404", fiber.Map{"Message": "Post not found"})
-    }
+	id := c.Params("id")
+	var post models.Post
+	if err := database.DB.Where("id = ?", id).Preload("Tags").First(&post).Error; err != nil {
+		return c.Status(404).Render("errors/404", fiber.Map{"Message": "Post not found"})
+	}
 
-    title := c.FormValue("title")
-    content := c.FormValue("content")
-    tagNames := strings.Split(c.FormValue("tags"), ",")
+	title := c.FormValue("title")
+	content := c.FormValue("content")
+	excerpt := c.FormValue("excerpt")
+	category := c.FormValue("category")
+	tagNames := c.FormValue("tag")
+	featured := c.FormValue("featured") == "on"
 
-    // Update fields
-    post.Title = title
-    post.Content = content
-    post.Slug = utils.UniqueSlug(database.DB, "posts", title)
+	slug := utils.UniqueSlug(database.DB, "posts", title)
 
-    if imageURL, _ := utils.UploadImage(c, "image"); imageURL != "" {
-        post.ImageURL = imageURL
-    }
+	publishedAt := post.PublishedAt
+	if pa := c.FormValue("published_at"); pa != "" {
+		if parsed, err := time.Parse("2006-01-02", pa); err == nil {
+			publishedAt = parsed
+		}
+	}
 
-    // Handle tags
-    var tags []models.Tag
-    for _, t := range tagNames {
-        t = strings.TrimSpace(t)
-        if t == "" {
-            continue
-        }
+	post.Title = title
+	post.Content = content
+	post.Excerpt = excerpt
+	post.Category = category
+	post.Slug = slug
+	post.Featured = featured
+	post.PublishedAt = publishedAt
+	post.ReadingTime = utils.ComputeReadingTime(content)
 
-        var tag models.Tag
-        if err := database.DB.Where("name = ?", t).First(&tag).Error; err != nil {
-            if errors.Is(err, gorm.ErrRecordNotFound) {
-                tag = models.Tag{Name: t}
-                database.DB.Create(&tag)
-            } else {
-                return c.Status(500).SendString("Error fetching tags")
-            }
-        }
-        tags = append(tags, tag)
-    }
+	if imageURL, _ := utils.UploadImage(c, "image"); imageURL != "" {
+		post.ImageURL = imageURL
+	}
 
-    // Replace old tags with new ones
-    if err := database.DB.Model(&post).Association("Tags").Replace(tags); err != nil {
-        return c.Status(500).SendString("Error updating post tags")
-    }
+	var tags []models.Tag
+	for _, t := range strings.Split(tagNames, ",") {
+		t = strings.TrimSpace(t)
+		if t == "" {
+			continue
+		}
 
-    // Validation
-    if post.Title == "" || post.Slug == "" {
-        return c.Render("admin/edit_post", fiber.Map{
-            "Post":  post,
-            "Error": "Title and Slug are required",
-        })
-    }
+		var tag models.Tag
+		if err := database.DB.Where("name = ?", t).First(&tag).Error; err != nil {
+			if errors.Is(err, gorm.ErrRecordNotFound) {
+				tag = models.Tag{Name: t}
+				database.DB.Create(&tag)
+			} else {
+				return c.Status(500).SendString("Error fetching tags")
+			}
+		}
+		tags = append(tags, tag)
+	}
 
-    if err := database.DB.Save(&post).Error; err != nil {
-        return c.Status(500).SendString("Error updating post")
-    }
+	if err := database.DB.Model(&post).Association("Tags").Replace(tags); err != nil {
+		return c.Status(500).SendString("Error updating post tags")
+	}
 
-    return c.Redirect("/admin/posts")
+	if post.Title == "" || post.Slug == "" {
+		return c.Render("admin/edit_post", fiber.Map{
+			"Post":  post,
+			"Error": "Title and Slug are required",
+		})
+	}
+
+	if err := database.DB.Save(&post).Error; err != nil {
+		return c.Status(500).SendString("Error updating post")
+	}
+
+	return c.Redirect("/admin/posts")
 }
 
-
-// Delete post
 func AdminDeletePost(c *fiber.Ctx) error {
 	admin := config.GetCurrentUser(c)
 	if admin == nil || !admin.IsAdmin {
@@ -222,23 +250,23 @@ func AdminDeletePost(c *fiber.Ctx) error {
 	}
 
 	id := c.Params("id")
-	if err := database.DB.Delete(&models.Post{}, id).Error; err != nil {
+	if err := database.DB.Where("id = ?", id).Delete(&models.Post{}).Error; err != nil {
 		return c.Status(500).SendString("Error deleting post")
 	}
 
 	return c.Redirect("/admin/posts")
 }
 
-
-// Fetch all tags and render them in the template
 func AdminFetchTags(c *fiber.Ctx) error {
-	tags := []models.Tag{}
-	if err := database.DB.Find(&tags).Error; err != nil {
-		return c.Status(500).SendString("Error fetching tags")
+	admin := config.GetCurrentUser(c)
+	if admin == nil || !admin.IsAdmin {
+		return c.Redirect("/admin/login")
 	}
 
+	var allTags []models.Tag
+	database.DB.Order("name asc").Find(&allTags)
+
 	return c.Render("admin/new_post", fiber.Map{
-		"AllTags": tags,
+		"AllTags": allTags,
 	})
 }
-
