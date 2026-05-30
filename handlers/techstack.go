@@ -51,9 +51,9 @@ func AdminCreateTechStack(c *fiber.Ctx) error {
 	if _, err := c.FormFile("icon"); err == nil {
 		iconURL, err = utils.UploadImage(c, "icon")
 		if err != nil {
-			return c.Status(500).Render("error/500", fiber.Map{
-				"Error": "Error uploading icon",
-				"Admin": admin,
+			return c.Status(500).Render("errors/500", fiber.Map{
+				"Message": "Error uploading icon",
+				"Admin":   admin,
 			})
 		}
 	}
@@ -72,8 +72,8 @@ func AdminCreateTechStack(c *fiber.Ctx) error {
 	}
 
 	if err := database.DB.Create(&tech).Error; err != nil {
-		return c.Status(500).Render("error/500", fiber.Map{
-			"Error": "Error saving tech stack",
+		return c.Status(500).Render("errors/500", fiber.Map{
+			"Message": "Error saving tech stack",
 			"Admin": admin,
 		})
 	}
@@ -91,16 +91,16 @@ func AdminEditTechStackForm(c *fiber.Ctx) error {
 	idStr := c.Params("id")
 	techID, err := uuid.Parse(idStr)
 	if err != nil {
-		return c.Status(400).Render("error/400", fiber.Map{
-			"Error": "Invalid Tech Stack ID",
+		return c.Status(400).Render("errors/400", fiber.Map{
+			"Message": "Invalid Tech Stack ID",
 			"Admin": admin,
 		})
 	}
 
 	var tech models.TechStack
 	if err := database.DB.First(&tech, "id = ?", techID).Error; err != nil {
-		return c.Status(404).Render("error/404", fiber.Map{
-			"Error": "Tech Stack not found",
+		return c.Status(404).Render("errors/404", fiber.Map{
+			"Message": "Tech Stack not found",
 			"Admin": admin,
 		})
 	}
@@ -154,15 +154,15 @@ func AdminDeleteTechStack(c *fiber.Ctx) error {
 	idStr := c.Params("id")
 	techID, err := uuid.Parse(idStr)
 	if err != nil {
-		return c.Status(400).Render("error/400", fiber.Map{
-			"Error": "Invalid Tech Stack ID",
+		return c.Status(400).Render("errors/400", fiber.Map{
+			"Message": "Invalid Tech Stack ID",
 			"Admin": admin,
 		})
 	}
 
 	if err := database.DB.Delete(&models.TechStack{}, "id = ?", techID).Error; err != nil {
-		return c.Status(500).Render("error/500", fiber.Map{
-			"Error": "Error deleting tech stack",
+		return c.Status(500).Render("errors/500", fiber.Map{
+			"Message": "Error deleting tech stack",
 			"Admin": admin,
 		})
 	}

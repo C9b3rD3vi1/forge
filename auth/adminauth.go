@@ -44,7 +44,7 @@ func AdminAuthHandler(c *fiber.Ctx) error {
 	sess, err := config.Store.Get(c)
 	if err != nil {
 		fmt.Println(" Session error:", err)
-		return c.Status(500).Render("error/500", fiber.Map{"Error": "Session error"})
+		return c.Status(500).Render("errors/500", fiber.Map{"Message": "Session error"})
 	}
 
 	if admin.TwoFASecret != "" {
@@ -53,7 +53,7 @@ func AdminAuthHandler(c *fiber.Ctx) error {
 		sess.SetExpiry(10 * time.Minute)
 		if err := sess.Save(); err != nil {
 			fmt.Println(" Error saving session for 2FA:", err)
-			return c.Status(500).Render("error/500", fiber.Map{"Error": "Session error"})
+			return c.Status(500).Render("errors/500", fiber.Map{"Message": "Session error"})
 		}
 		return c.Redirect("/admin/verify-otp")
 	}
@@ -66,7 +66,7 @@ func AdminAuthHandler(c *fiber.Ctx) error {
 	}
 	if err := sess.Save(); err != nil {
 		fmt.Println(" Error saving session:", err)
-		return c.Status(500).Render("error/500", fiber.Map{"Error": "Session error"})
+		return c.Status(500).Render("errors/500", fiber.Map{"Message": "Session error"})
 	}
 
 	c.Locals("user", &admin)
@@ -134,7 +134,7 @@ func VerifyOTPHandler(c *fiber.Ctx) error {
 	sess.SetExpiry(24 * time.Hour)
 	if err := sess.Save(); err != nil {
 		fmt.Println(" Error saving session after OTP verification:", err)
-		return c.Status(500).Render("error/500", fiber.Map{"Error": "Session error"})
+		return c.Status(500).Render("errors/500", fiber.Map{"Message": "Session error"})
 	}
 
 	c.Locals("user", &user)

@@ -7,7 +7,6 @@ import (
 	"os"
 	"strings"
 
-	"github.com/C9b3rD3vi1/forge/config"
 	"github.com/C9b3rD3vi1/forge/database"
 	"github.com/C9b3rD3vi1/forge/models"
 	"github.com/C9b3rD3vi1/forge/utils"
@@ -130,23 +129,14 @@ type ContactForm struct {
 }
 
 func UserContactHandler(c *fiber.Ctx) error {
-	sess, err := config.Store.Get(c)
-	if err != nil {
-		return c.Status(500).Render("error/500", fiber.Map{
-			"Error": utils.GetFlash(c, "error"),
-		})
-	}
-
 	form := new(ContactForm)
 	if err := c.BodyParser(form); err != nil {
-		sess.Set("error", "Invalid form data")
-		sess.Save()
+		utils.SetFlash(c, "error", "Invalid form data")
 		return c.Redirect("/contact")
 	}
 
 	if form.Name == "" || form.Email == "" || form.Subject == "" || form.Message == "" {
-		sess.Set("error", "All fields are required")
-		sess.Save()
+		utils.SetFlash(c, "error", "All fields are required")
 		return c.Redirect("/contact")
 	}
 
@@ -164,8 +154,7 @@ func UserContactHandler(c *fiber.Ctx) error {
 	}
 
 	if err := database.DB.Create(&message).Error; err != nil {
-		sess.Set("error", "Failed to save message")
-		sess.Save()
+		utils.SetFlash(c, "error", "Failed to save message")
 		return c.Redirect("/contact")
 	}
 
@@ -191,8 +180,7 @@ func UserContactHandler(c *fiber.Ctx) error {
 		})
 	}
 
-	sess.Set("success", "Your message has been sent!")
-	sess.Save()
+	utils.SetFlash(c, "success", "Your message has been sent!")
 
 	return c.Redirect("/contact")
 }

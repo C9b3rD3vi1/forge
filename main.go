@@ -129,6 +129,13 @@ func main() {
 	// github stats
 	app.Get("/api/github-stats", handlers.GitHubStatsHandler)
 
+	// Global 404 catch-all (must be last route)
+	app.Use(func(c *fiber.Ctx) error {
+		return c.Status(404).Render("errors/404", fiber.Map{
+			"Message": "Page not found",
+		})
+	})
+
 	port := os.Getenv("APP_PORT")
 	if port == "" {
 		port = "3031"

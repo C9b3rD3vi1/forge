@@ -5,8 +5,7 @@ import (
     "math"
     "strconv"
 
-    "github.com/C9b3rD3vi1/forge/config"
-    "github.com/C9b3rD3vi1/forge/database"
+	"github.com/C9b3rD3vi1/forge/database"
     "github.com/C9b3rD3vi1/forge/models"
     "github.com/C9b3rD3vi1/forge/utils"
     "github.com/gofiber/fiber/v2"
@@ -148,13 +147,11 @@ func AdminContactReply(c *fiber.Ctx) error {
         return c.Status(404).SendString("Message not found")
     }
 
-    replyBody := c.FormValue("reply_body")
-    if replyBody == "" {
-        sess, _ := config.Store.Get(c)
-        sess.Set("error", "Reply body is required")
-        sess.Save()
-        return c.Redirect("/admin/contacts/" + idStr)
-    }
+	replyBody := c.FormValue("reply_body")
+	if replyBody == "" {
+		utils.SetFlash(c, "error", "Reply body is required")
+		return c.Redirect("/admin/contacts/" + idStr)
+	}
 
     siteURL := utils.GetEnv("SITE_URL", "http://localhost:3031")
 
@@ -166,9 +163,7 @@ func AdminContactReply(c *fiber.Ctx) error {
         SiteURL:        siteURL,
     })
 
-    sess, _ := config.Store.Get(c)
-    sess.Set("success", "Reply sent to "+contact.Email)
-    sess.Save()
+	utils.SetFlash(c, "success", "Reply sent to "+contact.Email)
 
-    return c.Redirect("/admin/contacts/" + idStr)
+	return c.Redirect("/admin/contacts/" + idStr)
 }
