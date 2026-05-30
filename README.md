@@ -138,81 +138,74 @@ Forge Hub follows a **Modular Monolith Architecture**, designed for high efficie
 ### 🗺️ System Diagram
 ```mermaid
 graph TB
-    subgraph Client_Layer [Client Layer]
+    subgraph Client_Layer[Client Layer]
         Visitor((Visitor Browser))
         Admin((Admin Browser))
     end
 
-    subgraph Presentation_Layer [Presentation Layer — Fiber v2]
+    subgraph Presentation_Layer[Presentation Layer - Fiber v2]
         direction TB
         Router[Fiber Router]
-        MW_Inject[InjectGlobalData\nfooter services, login state]
-        MW_Layout[DynamicLayoutMiddleware\npublic ↔ admin layout]
-        MW_Auth[RequireAdminAuth\nsession check + admin guard]
-        TEngine[Go Template Engine\nlayouts/admin.html\nlayouts/base.html]
-        Static[Static Files\n/static /uploads]
+        MW_Inject[InjectGlobalData]
+        MW_Layout[DynamicLayoutMiddleware]
+        MW_Auth[RequireAdminAuth]
+        TEngine[Go Template Engine]
+        Static[Static Files]
     end
 
-    subgraph Handler_Layer [Handler Layer]
+    subgraph Handler_Layer[Handler Layer]
         direction TB
-        PublicH[Public Handlers\nHome · About · Contact\nServices · Projects · Posts]
-        AdminH[Admin Handlers\nDashboard · CRUD Services\nCRUD Projects · CRUD Posts\nCRUD TechStacks · CRUD Tags\nContacts · Settings]
-        GitHubH[GitHub Handlers\nStats · Chart · User Stats]
-        AuthH[Auth Handlers\nLogin · Register · TOTP 2FA]
+        PublicH[Public Handlers]
+        AdminH[Admin Handlers]
+        GitHubH[GitHub Handlers]
+        AuthH[Auth Handlers]
     end
 
-    subgraph Data_Layer [Persistence]
+    subgraph Data_Layer[Persistence]
         direction LR
-        DB[(SQLite\nGORM)]
-        Session[(Cookie Session\nfiber session store)]
-        Uploads[(File System\n/uploads)]
+        DB[(SQLite)]
+        Session[(Cookie Session)]
+        Uploads[(File Uploads)]
     end
 
-    subgraph External_Layer [External Integrations]
+    subgraph External_Layer[External Integrations]
         GH_API[GitHub REST API]
-        SMTP[SMTP Server\ncontact auto-reply\nadmin notify · admin reply]
+        SMTP[SMTP Server]
     end
 
-    %% Request flow — Public
     Visitor -->|GET/POST| Router
     Router --> MW_Inject
     MW_Inject --> MW_Layout
-    MW_Layout -->|public routes| PublicH
-    MW_Layout -->|/health| Router
+    MW_Layout -->|public| PublicH
+    MW_Layout -->|health| Router
     PublicH --> DB
     PublicH --> SMTP
 
-    %% Request flow — Admin
-    Admin -->|GET/POST /admin/*| Router
+    Admin -->|/admin/*| Router
     Router --> MW_Inject
     MW_Inject --> MW_Layout
-    MW_Layout -->|/admin/login, /admin/verify-otp| AuthH
-    MW_Layout -->|/admin/*| MW_Auth
+    MW_Layout -->|login| AuthH
+    MW_Layout -->|admin| MW_Auth
     MW_Auth --> AdminH
     MW_Auth --> AuthH
     AdminH --> DB
     AdminH --> Uploads
     AdminH --> SMTP
 
-    %% Auth
     AuthH --> Session
     AuthH --> DB
 
-    %% GitHub
     GitHubH --> GH_API
 
-    %% Template rendering
     PublicH --> TEngine
     AdminH --> TEngine
     AuthH --> TEngine
     TEngine --> Visitor
     TEngine --> Admin
 
-    %% Static
     Static --> Visitor
     Static --> Admin
 
-    %% Styling
     style Client_Layer fill:#f9f9f9,stroke:#333,stroke-width:2px
     style Presentation_Layer fill:#e1f5fe,stroke:#01579b,stroke-width:2px
     style Handler_Layer fill:#fff3e0,stroke:#e65100,stroke-width:2px
