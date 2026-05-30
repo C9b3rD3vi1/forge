@@ -102,7 +102,6 @@ func SendHTMLEmail(to, subject, templateFile string, data EmailData) error {
 	msg.WriteString(fmt.Sprintf("Subject: %s\r\n", subject))
 	msg.WriteString("MIME-Version: 1.0\r\n")
 	msg.WriteString("Content-Type: text/html; charset=\"UTF-8\"\r\n")
-	msg.WriteString("Content-Transfer-Encoding: quoted-printable\r\n")
 	msg.WriteString("\r\n")
 	msg.WriteString(body.String())
 
