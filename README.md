@@ -2,9 +2,9 @@
 
 Forge Hub is a high-performance, production-ready professional portfolio and blogging platform designed for software engineers and creators. It provides a comprehensive suite of tools to showcase projects, publish technical blog posts, manage service offerings with tech stack associations, and handle client inquiries—all managed through a robust administrative dashboard.
 
-![Dashboard Preview](./static/images/forge_dashboard.png)
+![Dashboard Preview](./static/images/dashboard.png)
 
-![Home Page Preview](./static/images/forge.png)
+![Home Page Preview](./static/images/landing.png)
 
 ## ✨ Key Features
 
