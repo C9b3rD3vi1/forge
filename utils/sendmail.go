@@ -69,8 +69,9 @@ func SendHTMLEmail(to, subject, templateFile string, data EmailData) error {
 		data.RecipientEmail = to
 	}
 
+	layoutPath := filepath.Join("templates", "email", "layout.html")
 	tmplPath := filepath.Join("templates", "email", templateFile)
-	tmpl, err := template.ParseFiles(tmplPath)
+	tmpl, err := template.ParseFiles(layoutPath, tmplPath)
 	if err != nil {
 		return fmt.Errorf("parse email template %s: %w", tmplPath, err)
 	}

@@ -8,8 +8,7 @@
   body{margin:0;padding:0;background:#080c10;font-family:'Helvetica Neue',Arial,sans-serif;}
   .container{max-width:600px;margin:0 auto;padding:20px;}
   .header{background:#111820;border-bottom:2px solid #00c9b1;padding:24px 32px;text-align:center;}
-  .header h1{margin:0;font-size:22px;font-weight:800;color:#e8f0f8;letter-spacing:2px;text-transform:uppercase;}
-  .header span{color:#00c9b1;}
+  .header img{height:36px;width:auto;display:block;margin:0 auto;}
   .body{background:#111820;padding:32px;color:#c8d0d8;font-size:14px;line-height:1.7;}
   .body h2{color:#e8f0f8;font-size:18px;margin:0 0 16px;}
   .body p{margin:0 0 12px;}
@@ -25,7 +24,7 @@
 <body>
 <div class="container">
   <div class="header">
-    <h1>N.<span>WEKONGO</span></h1>
+    <img src="{{.SiteURL}}/static/logo/Forge_Hub.png" alt="Forge.Hub">
   </div>
   <div class="body">
     {{template "content" .}}

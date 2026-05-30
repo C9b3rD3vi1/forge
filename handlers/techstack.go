@@ -47,12 +47,15 @@ func AdminCreateTechStack(c *fiber.Ctx) error {
 		return c.Redirect("/admin/login")
 	}
 
-	iconURL, err := utils.UploadImage(c, "icon")
-	if err != nil {
-		return c.Status(500).Render("error/500", fiber.Map{
-			"Error": "Error uploading icon",
-			"Admin": admin,
-		})
+	iconURL := ""
+	if _, err := c.FormFile("icon"); err == nil {
+		iconURL, err = utils.UploadImage(c, "icon")
+		if err != nil {
+			return c.Status(500).Render("error/500", fiber.Map{
+				"Error": "Error uploading icon",
+				"Admin": admin,
+			})
+		}
 	}
 
 	name := c.FormValue("name")
@@ -126,11 +129,12 @@ func AdminUpdateTechStack(c *fiber.Ctx) error {
 		return c.Status(404).SendString("Tech stack not found")
 	}
 
-	iconURL, _ := utils.UploadImage(c, "icon")
-
 	tech.Name = c.FormValue("name")
-	if iconURL != "" {
-		tech.IconURL = iconURL
+
+	if _, err := c.FormFile("icon"); err == nil {
+		if iconURL, err := utils.UploadImage(c, "icon"); err == nil && iconURL != "" {
+			tech.IconURL = iconURL
+		}
 	}
 
 	if err := database.DB.Save(&tech).Error; err != nil {

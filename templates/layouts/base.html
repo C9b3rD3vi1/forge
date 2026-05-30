@@ -5,6 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ block "title" . }}Forge.Hub — Senior Backend & Infrastructure Engineer{{ end }}</title>
     
+    <!-- favicon -->
+    <link rel="icon" type="image/png" href="/static/favicon/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="/static/favicon/favicon.svg" />
+    <link rel="shortcut icon" href="/static/favicon/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/static/favicon/apple-touch-icon.png" />
+    <link rel="manifest" href="/static/site.webmanifest" />
+    
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,600;1,300&family=Barlow+Condensed:wght@300;400;600;700;800;900&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
@@ -36,8 +43,8 @@
             --amber: #f0a030;
             --green: #2dcc7a;
             --white: #e8f0f8;
-            --white2: rgba(232, 240, 248, 0.6);
-            --white3: rgba(232, 240, 248, 0.25);
+            --white2: rgba(232, 240, 248, 0.78);
+            --white3: rgba(232, 240, 248, 0.5);
             --white4: rgba(232, 240, 248, 0.08);
             --mono: 'IBM Plex Mono', monospace;
             --cond: 'Barlow Condensed', sans-serif;
@@ -45,6 +52,7 @@
         }
         
         html {
+            font-size: 16px;
             scroll-behavior: smooth;
         }
         
@@ -52,9 +60,17 @@
             background: var(--paper);
             color: var(--white);
             font-family: var(--body);
+            font-size: 1rem;
             overflow-x: hidden;
-            cursor: none;
             line-height: 1.5;
+        }
+        
+        @media (hover: hover) and (pointer: fine) {
+            body { cursor: none; }
+            #cursor, #cursor-ring { display: block; }
+        }
+        @media (hover: none), (pointer: coarse) {
+            #cursor, #cursor-ring { display: none !important; }
         }
         
         /* BG Grid */
@@ -78,7 +94,7 @@
             background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 0, 0, 0.08) 2px, rgba(0, 0, 0, 0.08) 4px);
             pointer-events: none;
             z-index: 0;
-            opacity: 0.4;
+            opacity: 0.12;
         }
         
         /* ========== CUSTOM CURSOR ========== */
@@ -112,7 +128,7 @@
             background: var(--ink2);
             border-bottom: 1px solid var(--teal-line);
             font-family: var(--mono);
-            font-size: 0.63rem;
+            font-size: 0.75rem;
             letter-spacing: 0.07em;
             padding: 0.45rem 0;
             overflow: hidden;
@@ -154,26 +170,17 @@
         }
         
         .nav-logo {
-            font-family: var(--cond);
-            font-weight: 900;
-            font-size: 1.1rem;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            padding: 0 2rem;
+            padding: 0 1.5rem;
             display: flex;
             align-items: center;
-            gap: 0.6rem;
             border-right: 1px solid var(--rule);
             text-decoration: none;
-            color: var(--white);
         }
         
-        .nav-logo .ndot {
-            width: 8px;
-            height: 8px;
-            background: var(--teal);
-            border-radius: 50%;
-            box-shadow: 0 0 8px var(--teal);
+        .nav-logo img {
+            height: 28px;
+            width: auto;
+            display: block;
         }
         
         nav ul {
@@ -183,7 +190,7 @@
         
         nav ul li a {
             font-family: var(--mono);
-            font-size: 0.65rem;
+            font-size: 0.8rem;
             letter-spacing: 0.08em;
             text-transform: uppercase;
             color: var(--white3);
@@ -210,7 +217,7 @@
         
         .nav-cta {
             font-family: var(--mono);
-            font-size: 0.68rem;
+            font-size: 0.8rem;
             font-weight: 600;
             letter-spacing: 0.1em;
             text-transform: uppercase;
@@ -298,7 +305,7 @@
         
         .sec-num {
             font-family: var(--mono);
-            font-size: 0.6rem;
+            font-size: 0.75rem;
             letter-spacing: 0.1em;
             color: var(--white3);
             padding: 1.8rem 2rem;
@@ -331,7 +338,7 @@
             border: 1px solid rgba(45, 204, 122, 0.35);
             color: var(--green);
             font-family: var(--mono);
-            font-size: 0.6rem;
+            font-size: 0.7rem;
             letter-spacing: 0.08em;
             padding: 0.22rem 0.65rem;
             border-radius: 2px;
@@ -382,17 +389,13 @@
         }
         
         .footer-logo {
-            font-family: var(--cond);
-            font-weight: 900;
-            font-size: 1.2rem;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            color: var(--white);
             margin-bottom: 1rem;
         }
         
-        .footer-logo span {
-            color: var(--teal);
+        .footer-logo img {
+            height: 32px;
+            width: auto;
+            display: block;
         }
         
         .footer-desc {
@@ -436,7 +439,7 @@
             justify-content: space-between;
             align-items: center;
             font-family: var(--mono);
-            font-size: 0.6rem;
+            font-size: 0.75rem;
             color: var(--white3);
         }
         
@@ -490,6 +493,9 @@
             }
             .container {
                 padding: 0 1rem;
+            }
+            .nav-right {
+                display: none !important;
             }
         }
     </style>
@@ -586,8 +592,7 @@
     <!-- NAVIGATION -->
     <nav>
         <a href="/" class="nav-logo">
-            <div class="ndot"></div>
-            Forge.Hub
+            <img src="/static/logo/Forge_Hub.png" alt="Forge.Hub">
         </a>
         <ul>
             <li><a href="/">Home</a></li>
@@ -619,7 +624,7 @@
     <footer>
         <div class="footer-grid">
             <div>
-                <div class="footer-logo">Forge.<span>Hub</span></div>
+                <div class="footer-logo"><img src="/static/logo/Forge_Hub.png" alt="Forge.Hub"></div>
                 <p class="footer-desc">Senior Backend & Infrastructure Engineer. Building secure, scalable systems with Go, Docker, and Linux.</p>
             </div>
             <div>
@@ -648,50 +653,57 @@
         </div>
         <div class="footer-bottom">
             <div>© 2025 Forge.Hub · All rights reserved</div>
-            <div>SIMUX<span style="color: var(--teal);">TECH</span></div>
+            <div><a href="https://simuxtech.com" target="_blank" style="text-decoration:none;"><span style="color: #003b6f;">Simux</span><span style="color: var(--teal);">Tech</span></a></div>
         </div>
     </footer>
 
     <script>
-        // Custom cursor
-        const cur = document.getElementById('cursor');
-        const ring = document.getElementById('cursor-ring');
-        let mx = 0, my = 0, rx = 0, ry = 0;
-        
-        document.addEventListener('mousemove', function(e) {
-            mx = e.clientX;
-            my = e.clientY;
-            cur.style.left = mx + 'px';
-            cur.style.top = my + 'px';
-        });
-        
-        function animateRing() {
-            rx += (mx - rx) * 0.12;
-            ry += (my - ry) * 0.12;
-            ring.style.left = rx + 'px';
-            ring.style.top = ry + 'px';
-            requestAnimationFrame(animateRing);
+        // Custom cursor (mouse devices only)
+        const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+        if (!isTouch) {
+            const cur = document.getElementById('cursor');
+            const ring = document.getElementById('cursor-ring');
+            let mx = 0, my = 0, rx = 0, ry = 0;
+            
+            document.addEventListener('mousemove', function(e) {
+                mx = e.clientX;
+                my = e.clientY;
+                cur.style.left = mx + 'px';
+                cur.style.top = my + 'px';
+            });
+            
+            function animateRing() {
+                rx += (mx - rx) * 0.12;
+                ry += (my - ry) * 0.12;
+                ring.style.left = rx + 'px';
+                ring.style.top = ry + 'px';
+                requestAnimationFrame(animateRing);
+            }
+            animateRing();
+            
+            // Hover effects for interactive elements
+            const interactive = document.querySelectorAll('a, button, .btn-primary, .btn-ghost');
+            interactive.forEach(function(el) {
+                el.addEventListener('mouseenter', function() {
+                    cur.style.width = '6px';
+                    cur.style.height = '6px';
+                    ring.style.width = '52px';
+                    ring.style.height = '52px';
+                    ring.style.borderColor = 'var(--teal)';
+                });
+                el.addEventListener('mouseleave', function() {
+                    cur.style.width = '10px';
+                    cur.style.height = '10px';
+                    ring.style.width = '32px';
+                    ring.style.height = '32px';
+                    ring.style.borderColor = 'var(--teal-line)';
+                });
+            });
+        } else {
+            // Remove cursor elements on touch devices
+            document.getElementById('cursor')?.remove();
+            document.getElementById('cursor-ring')?.remove();
         }
-        animateRing();
-        
-        // Hover effects for interactive elements
-        const interactive = document.querySelectorAll('a, button, .btn-primary, .btn-ghost');
-        interactive.forEach(function(el) {
-            el.addEventListener('mouseenter', function() {
-                cur.style.width = '6px';
-                cur.style.height = '6px';
-                ring.style.width = '52px';
-                ring.style.height = '52px';
-                ring.style.borderColor = 'var(--teal)';
-            });
-            el.addEventListener('mouseleave', function() {
-                cur.style.width = '10px';
-                cur.style.height = '10px';
-                ring.style.width = '32px';
-                ring.style.height = '32px';
-                ring.style.borderColor = 'var(--teal-line)';
-            });
-        });
         
         // Scroll reveal
         const observer = new IntersectionObserver(function(entries) {
@@ -724,6 +736,24 @@
                         navUl.style.background = 'var(--ink2)';
                         navUl.style.borderBottom = '1px solid var(--rule)';
                         navUl.style.padding = '1rem 0';
+                        // Include login/signup links on small screens
+                        if (window.innerWidth <= 640) {
+                            const navRight = document.querySelector('.nav-right');
+                            if (navRight) {
+                                const links = navRight.querySelectorAll('a');
+                                links.forEach(function(a) {
+                                    const li = document.createElement('li');
+                                    li.style.borderTop = '1px solid var(--rule)';
+                                    const clone = a.cloneNode(true);
+                                    clone.style.fontSize = '0.65rem';
+                                    clone.style.padding = '0.8rem 1.3rem';
+                                    clone.style.height = 'auto';
+                                    clone.style.border = 'none';
+                                    li.appendChild(clone);
+                                    navUl.appendChild(li);
+                                });
+                            }
+                        }
                     }
                 }
             });

@@ -29,8 +29,8 @@
   --amber:#f0a030;
   --green:#2dcc7a;
   --white:#e8f0f8;
-  --white2:rgba(232,240,248,0.6);
-  --white3:rgba(232,240,248,0.25);
+  --white2:rgba(232,240,248,0.78);
+  --white3:rgba(232,240,248,0.5);
   --white4:rgba(232,240,248,0.08);
   --mono:'IBM Plex Mono',monospace;
   --cond:'Barlow Condensed',sans-serif;
@@ -41,8 +41,13 @@ body{
   background:var(--paper);
   color:var(--white);
   font-family:var(--body);
+  font-size:16px;
+  line-height:1.6;
   overflow-x:hidden;
-  cursor:none;
+}
+
+@media(hover:hover)and(pointer:fine){
+  body{cursor:none;}
 }
 
 /* BG GRID */
@@ -61,7 +66,7 @@ body::after{
   content:'';
   position:fixed;inset:0;
   background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.08) 2px,rgba(0,0,0,0.08) 4px);
-  pointer-events:none;z-index:0;opacity:0.4;
+  pointer-events:none;z-index:0;opacity:0.12;
 }
 
 /* CURSOR */
@@ -401,15 +406,20 @@ h1 .l3{
 
 /* ─── STACK ─── */
 .stack-chip{
-  display:inline-flex;align-items:center;gap:.4rem;
+  display:inline-flex;align-items:center;gap:.5rem;
   background:var(--ink2);border:1px solid var(--rule);
-  padding:.35rem .85rem;border-radius:2px;
-  font-family:var(--cond);font-size:.75rem;font-weight:600;
+  padding:.45rem 1rem;border-radius:2px;
+  font-family:var(--cond);font-size:.9rem;font-weight:600;
   color:var(--white);letter-spacing:.02em;
   transition:border-color .15s;
 }
 .stack-chip:hover{border-color:var(--teal);}
-.sc-icon{font-size:.85rem;line-height:1;}
+.sc-icon{font-size:1.1rem;line-height:1;}
+
+@media(max-width:640px){
+  .stack-chip{font-size:.8rem;padding:.35rem .7rem;}
+  .sc-icon{font-size:1rem;}
+}
 
 /* ─── CONTACT ─── */
 #contact{
@@ -770,15 +780,22 @@ footer{
     <div style="font-family:var(--mono);font-size:.55rem;color:var(--white3);letter-spacing:.1em;margin-bottom:1rem;">DAILY TOOLCHAIN</div>
     <div style="display:flex;flex-wrap:wrap;gap:.5rem;">
       <span class="stack-chip"><span class="sc-icon">⌨</span> Go</span>
+      <span class="stack-chip"><span class="sc-icon">🐍</span> Python</span>
       <span class="stack-chip"><span class="sc-icon">🐳</span> Docker</span>
+      <span class="stack-chip"><span class="sc-icon">☸️</span> Kubernetes</span>
       <span class="stack-chip"><span class="sc-icon">🗄️</span> PostgreSQL</span>
       <span class="stack-chip"><span class="sc-icon">⚡</span> Redis</span>
       <span class="stack-chip"><span class="sc-icon">🌐</span> Nginx</span>
       <span class="stack-chip"><span class="sc-icon">🐧</span> Linux</span>
       <span class="stack-chip"><span class="sc-icon">📊</span> Grafana</span>
+      <span class="stack-chip"><span class="sc-icon">📈</span> Prometheus</span>
       <span class="stack-chip"><span class="sc-icon">🤖</span> GitHub Actions</span>
+      <span class="stack-chip"><span class="sc-icon">🔄</span> GitLab CI</span>
+      <span class="stack-chip"><span class="sc-icon">🏗️</span> Terraform</span>
       <span class="stack-chip"><span class="sc-icon">🔗</span> Fiber</span>
       <span class="stack-chip"><span class="sc-icon">☁️</span> VPS</span>
+      <span class="stack-chip"><span class="sc-icon">🔐</span> Let's Encrypt</span>
+      <span class="stack-chip"><span class="sc-icon">📦</span> Traefik</span>
     </div>
   </div>
 
