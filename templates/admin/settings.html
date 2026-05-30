@@ -68,6 +68,31 @@
 </div>
 
 <div class="settings-section">
+    <div class="settings-section-header">Hero Stats</div>
+    <div class="settings-section-body">
+        <p style="font-size:0.75rem;color:var(--white3);margin-bottom:1rem;">These appear on the homepage and about page. "Live Systems" is computed automatically from published project count.</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
+            <div class="form-group">
+                <label>Faster Deploys</label>
+                <input type="text" name="stat_faster_deploys" value="{{ index .Settings "stat_faster_deploys" }}">
+            </div>
+            <div class="form-group">
+                <label>Uptime</label>
+                <input type="text" name="stat_uptime" value="{{ index .Settings "stat_uptime" }}">
+            </div>
+            <div class="form-group">
+                <label>Certifications</label>
+                <input type="text" name="stat_certifications" value="{{ index .Settings "stat_certifications" }}">
+            </div>
+            <div class="form-group">
+                <label>Yrs Production</label>
+                <input type="text" name="stat_yrs_production" value="{{ index .Settings "stat_yrs_production" }}">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="settings-section">
     <div class="settings-section-header">Social Links</div>
     <div class="settings-section-body">
         <div class="form-group">
