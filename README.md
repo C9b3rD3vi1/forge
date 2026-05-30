@@ -137,85 +137,64 @@ Forge Hub follows a **Modular Monolith Architecture**, designed for high efficie
 
 ### 🗺️ System Diagram
 ```mermaid
-graph TB
-    subgraph Client_Layer[Client Layer]
-        Visitor((Visitor Browser))
-        Admin((Admin Browser))
+graph LR
+    subgraph Client[Client Layer]
+        Visitor((Visitor))
+        Admin((Admin))
     end
 
-    subgraph Presentation_Layer[Presentation Layer - Fiber v2]
-        direction TB
+    subgraph Presentation[Presentation Layer]
         Router[Fiber Router]
-        MW_Inject[InjectGlobalData]
-        MW_Layout[DynamicLayoutMiddleware]
-        MW_Auth[RequireAdminAuth]
-        TEngine[Go Template Engine]
-        Static[Static Files]
+        MW[Middleware Chain]
+        TEngine[Template Engine]
+        Static[Static Assets]
     end
 
-    subgraph Handler_Layer[Handler Layer]
-        direction TB
-        PublicH[Public Handlers]
+    subgraph Handlers[Handler Layer]
+        Public[Public Handlers]
         AdminH[Admin Handlers]
-        GitHubH[GitHub Handlers]
-        AuthH[Auth Handlers]
+        Auth[Auth Handlers]
+        GitHub[GitHub Handlers]
     end
 
-    subgraph Data_Layer[Persistence]
-        direction LR
+    subgraph Persistence[Data Layer]
         DB[(SQLite)]
-        Session[(Cookie Session)]
-        Uploads[(File Uploads)]
+        Sess[(Sessions)]
+        Files[(Uploads)]
     end
 
-    subgraph External_Layer[External Integrations]
-        GH_API[GitHub REST API]
-        SMTP[SMTP Server]
+    subgraph External[External]
+        GH_API[GitHub API]
+        SMTP[SMTP Email]
     end
 
     Visitor -->|GET/POST| Router
-    Router --> MW_Inject
-    MW_Inject --> MW_Layout
-    MW_Layout -->|public| PublicH
-    MW_Layout -->|health| Router
-    PublicH --> DB
-    PublicH --> SMTP
-
-    Admin -->|/admin/*| Router
-    Router --> MW_Inject
-    MW_Inject --> MW_Layout
-    MW_Layout -->|login| AuthH
-    MW_Layout -->|admin| MW_Auth
-    MW_Auth --> AdminH
-    MW_Auth --> AuthH
+    Admin -->|GET/POST| Router
+    Router --> MW
+    MW --> Public
+    MW -->|/admin/*| AdminH
+    MW -->|login| Auth
+    Public --> DB
+    Public --> SMTP
     AdminH --> DB
-    AdminH --> Uploads
+    AdminH --> Files
     AdminH --> SMTP
-
-    AuthH --> Session
-    AuthH --> DB
-
-    GitHubH --> GH_API
-
-    PublicH --> TEngine
+    Auth --> Sess
+    Auth --> DB
+    GitHub --> GH_API
+    Public --> TEngine
     AdminH --> TEngine
-    AuthH --> TEngine
+    Auth --> TEngine
     TEngine --> Visitor
     TEngine --> Admin
-
     Static --> Visitor
     Static --> Admin
 
-    style Client_Layer fill:#f9f9f9,stroke:#333,stroke-width:2px
-    style Presentation_Layer fill:#e1f5fe,stroke:#01579b,stroke-width:2px
-    style Handler_Layer fill:#fff3e0,stroke:#e65100,stroke-width:2px
-    style Data_Layer fill:#e8f5e9,stroke:#1b5e20,stroke-width:2px
-    style External_Layer fill:#f3e5f5,stroke:#4a148c,stroke-width:2px
-    
-    style DB fill:#C5E1A5,stroke:#33691E
-    style Session fill:#FFCDD2,stroke:#B71C1C
-    style GH_API fill:#D1C4E9,stroke:#311B92
-    style SMTP fill:#BBDEFB,stroke:#0D47A1
+    style Client fill:#2b6cb0,stroke:#1a365d,color:#fff
+    style Presentation fill:#2d3748,stroke:#1a202c,color:#fff
+    style Handlers fill:#276749,stroke:#22543d,color:#fff
+    style Persistence fill:#97266d,stroke:#702459,color:#fff
+    style External fill:#5a67d8,stroke:#4c51bf,color:#fff
 ```
 
 ### ⚙️ Architectural Analysis
@@ -236,10 +215,11 @@ graph TB
 ### 🎨 Component Legend
 | Color | Layer | Responsibility |
 | :--- | :--- | :--- |
-| **Blue** | Presentation | HTTP Routing, Middleware Chain, Static Files |
-| **Orange** | Handler | Business Logic — Public, Admin, Auth, GitHub Handlers |
-| **Green** | Data | SQLite Persistence & Cookie Sessions & File Uploads |
-| **Purple** | External | Third-party API Integrations & SMTP Email |
+| **Blue** | Client | Browsers — Visitor and Admin users |
+| **Dark Grey** | Presentation | Fiber Router, Middleware, Template Engine, Static Assets |
+| **Green** | Handler | Business Logic — Public, Admin, Auth, GitHub Handlers |
+| **Pink** | Data | SQLite persistence, Cookie Sessions, File Uploads |
+| **Purple** | External | GitHub REST API integration, SMTP Email sending |
 
 ### 📂 Directory Structure
 ```text
