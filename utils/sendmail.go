@@ -8,6 +8,7 @@ import (
 	"net/smtp"
 	"os"
 	"path/filepath"
+	"strings"
 	"time"
 )
 
@@ -70,15 +71,27 @@ func SendHTMLEmail(to, subject, templateFile string, data EmailData) error {
 	}
 
 	layoutPath := filepath.Join("templates", "email", "layout.html")
-	tmplPath := filepath.Join("templates", "email", templateFile)
-	tmpl, err := template.ParseFiles(layoutPath, tmplPath)
+	layoutBytes, err := os.ReadFile(layoutPath)
 	if err != nil {
-		return fmt.Errorf("parse email template %s: %w", tmplPath, err)
+		return fmt.Errorf("read email layout: %w", err)
+	}
+
+	tmplPath := filepath.Join("templates", "email", templateFile)
+	contentBytes, err := os.ReadFile(tmplPath)
+	if err != nil {
+		return fmt.Errorf("read email template %s: %w", tmplPath, err)
+	}
+
+	combined := strings.Replace(string(layoutBytes), "{{template \"content\" .}}", string(contentBytes), 1)
+
+	tmpl, err := template.New("email").Parse(combined)
+	if err != nil {
+		return fmt.Errorf("parse email template: %w", err)
 	}
 
 	var body bytes.Buffer
 	if err := tmpl.Execute(&body, data); err != nil {
-		return fmt.Errorf("execute email template %s: %w", tmplPath, err)
+		return fmt.Errorf("execute email template: %w", err)
 	}
 
 	cfg := GetEmailConfig()
