@@ -49,6 +49,9 @@ func main() {
 	engine.AddFunc("now", func() string {
 		return time.Now().Format("2006-01-02 15:04:05")
 	})
+	engine.AddFunc("year", func() int {
+		return time.Now().Year()
+	})
 	
 	app := fiber.New(fiber.Config{
 		Views: engine,
@@ -56,6 +59,9 @@ func main() {
 	
 	// inject global template data (footer services, etc.)
 	app.Use(middleware.InjectGlobalData())
+
+	// track page views for analytics
+	app.Use(middleware.TrackPageView())
 
 	// provide layout for different pages
 	app.Use(middleware.DynamicLayoutMiddleware(engine))

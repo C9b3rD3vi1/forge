@@ -15,6 +15,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/google/uuid"
 	"github.com/yuin/goldmark"
+	"gorm.io/gorm"
 )
 
 type PostListItem struct {
@@ -127,6 +128,8 @@ func PublicPostDetail(c *fiber.Ctx) error {
 	if comments == nil {
 		comments = []models.Comment{}
 	}
+
+	database.DB.Model(&post).UpdateColumn("view_count", gorm.Expr("view_count + 1"))
 
 	canonicalURL := post.CanonicalURL
 	if canonicalURL == "" {

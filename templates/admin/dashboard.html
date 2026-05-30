@@ -7,61 +7,93 @@
     <p style="color: var(--white2); font-size: 0.85rem;">Welcome back, {{ .Admin.Username }}. Here's what's happening with your content.</p>
 </div>
 
-<!-- Search Bar -->
-<div style="margin-bottom: 2rem;">
-    <div style="position: relative; max-width: 400px;">
-        <input type="search" placeholder="Search content..." 
-               style="width: 100%; background: var(--ink2); border: 1px solid var(--rule); padding: 0.6rem 1rem 0.6rem 2rem; color: var(--white); font-family: var(--body); font-size: 0.8rem; border-radius: 2px;">
+<!-- Stats Grid -->
+<div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--rule); margin-bottom: 1.5rem;">
+    <div style="background: var(--ink2); padding: 1.5rem;">
+        <div style="font-family: var(--mono); font-size: 0.6rem; color: var(--white3); margin-bottom: 0.5rem;">TOTAL VIEWS</div>
+        <div style="font-family: var(--cond); font-size: 2rem; font-weight: 800; color: var(--teal);">{{ .Stats.TotalViewCount }}</div>
+        <div style="font-size: 0.7rem; color: var(--white3); margin-top: 0.5rem;">Across all content</div>
+    </div>
+    <div style="background: var(--ink2); padding: 1.5rem;">
+        <div style="font-family: var(--mono); font-size: 0.6rem; color: var(--white3); margin-bottom: 0.5rem;">POSTS</div>
+        <div style="font-family: var(--cond); font-size: 2rem; font-weight: 800; color: var(--teal);">{{ .Stats.TotalPosts }}</div>
+        <div style="font-size: 0.7rem; color: var(--white3); margin-top: 0.5rem;">
+            <span style="color: var(--green);">{{ .Stats.PublishedPosts }}</span> published
+            <span style="color: var(--white3); margin-left: 0.5rem;">+{{ .Stats.PostsThisWeek }} this week</span>
+        </div>
+    </div>
+    <div style="background: var(--ink2); padding: 1.5rem;">
+        <div style="font-family: var(--mono); font-size: 0.6rem; color: var(--white3); margin-bottom: 0.5rem;">PROJECTS</div>
+        <div style="font-family: var(--cond); font-size: 2rem; font-weight: 800; color: var(--teal);">{{ .Stats.TotalProjects }}</div>
+        <div style="font-size: 0.7rem; color: var(--white3); margin-top: 0.5rem;">
+            <span style="color: var(--teal);">{{ .Stats.FeaturedProjects }}</span> featured
+        </div>
+    </div>
+    <div style="background: var(--ink2); padding: 1.5rem;">
+        <div style="font-family: var(--mono); font-size: 0.6rem; color: var(--white3); margin-bottom: 0.5rem;">SERVICES</div>
+        <div style="font-family: var(--cond); font-size: 2rem; font-weight: 800; color: var(--teal);">{{ .Stats.TotalServices }}</div>
+        <div style="font-size: 0.7rem; color: var(--white3); margin-top: 0.5rem;">All services active</div>
+    </div>
+    <div style="background: var(--ink2); padding: 1.5rem;">
+        <div style="font-family: var(--mono); font-size: 0.6rem; color: var(--white3); margin-bottom: 0.5rem;">MESSAGES</div>
+        <div style="font-family: var(--cond); font-size: 2rem; font-weight: 800; color: var(--teal);">{{ .Stats.TotalMessages }}</div>
+        <div style="font-size: 0.7rem; color: var(--white3); margin-top: 0.5rem;">
+            <span style="color: var(--red);">{{ .Stats.UnreadMessages }}</span> unread
+            <span style="color: var(--white3); margin-left: 0.5rem;">+{{ .Stats.MessagesThisWeek }} this week</span>
+        </div>
+    </div>
+    <div style="background: var(--ink2); padding: 1.5rem;">
+        <div style="font-family: var(--mono); font-size: 0.6rem; color: var(--white3); margin-bottom: 0.5rem;">USERS</div>
+        <div style="font-family: var(--cond); font-size: 2rem; font-weight: 800; color: var(--teal);">{{ .Stats.TotalUsers }}</div>
+        <div style="font-size: 0.7rem; color: var(--white3); margin-top: 0.5rem;">
+            <span style="color: var(--teal);">{{ .Stats.AdminUsers }}</span> admins
+            <span style="color: var(--white3); margin-left: 0.5rem;">+{{ .Stats.UsersThisWeek }} this week</span>
+        </div>
     </div>
 </div>
 
-<!-- Stats Grid -->
-<div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--rule); margin-bottom: 2rem;">
-    <div style="background: var(--ink2); padding: 1.5rem;">
-        <div style="font-family: var(--mono); font-size: 0.6rem; color: var(--white3); margin-bottom: 0.5rem;">TOTAL POSTS</div>
-        <div style="font-family: var(--cond); font-size: 2rem; font-weight: 800; color: var(--teal);">{{ len .Posts }}</div>
-        <div style="font-size: 0.7rem; color: var(--white3); margin-top: 0.5rem;">
-            {{ $published := 0 }}
-            {{ range .Posts }}
-                {{ if .Published }}{{ $published = add $published 1 }}{{ end }}
+<!-- Top Content Row -->
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--rule); margin-bottom: 2rem;">
+    <!-- Top Projects -->
+    <div style="background: var(--ink2);">
+        <div style="padding: 1.5rem; border-bottom: 1px solid var(--rule);">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <h3 style="font-family: var(--cond); font-size: 1.1rem; font-weight: 800; color: var(--white);">Top Projects</h3>
+                    <p style="font-size: 0.7rem; color: var(--white3);">Most viewed</p>
+                </div>
+            </div>
+        </div>
+        <div>
+            {{ range .TopProjects }}
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 1.5rem; border-bottom: 1px solid var(--rule);">
+                <div style="font-family: var(--cond); font-size: 0.85rem; font-weight: 600; color: var(--white);">{{ .Title }}</div>
+                <div style="font-family: var(--mono); font-size: 0.6rem; color: var(--teal);">{{ .ViewCount }} views</div>
+            </div>
+            {{ else }}
+            <div style="padding: 2rem; text-align: center; color: var(--white3);">No projects yet</div>
             {{ end }}
-            <span style="color: var(--green);">{{ $published }}</span> published
         </div>
     </div>
-    
-    <div style="background: var(--ink2); padding: 1.5rem;">
-        <div style="font-family: var(--mono); font-size: 0.6rem; color: var(--white3); margin-bottom: 0.5rem;">PROJECTS</div>
-        <div style="font-family: var(--cond); font-size: 2rem; font-weight: 800; color: var(--teal);">{{ len .Projects }}</div>
-        <div style="font-size: 0.7rem; color: var(--white3); margin-top: 0.5rem;">
-            {{ $featured := 0 }}
-            {{ range .Projects }}
-                {{ if .Featured }}{{ $featured = add $featured 1 }}{{ end }}
-            {{ end }}
-            <span style="color: var(--teal);">{{ $featured }}</span> featured
+    <!-- Top Services -->
+    <div style="background: var(--ink2);">
+        <div style="padding: 1.5rem; border-bottom: 1px solid var(--rule);">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <h3 style="font-family: var(--cond); font-size: 1.1rem; font-weight: 800; color: var(--white);">Top Services</h3>
+                    <p style="font-size: 0.7rem; color: var(--white3);">Most viewed</p>
+                </div>
+            </div>
         </div>
-    </div>
-    
-    <div style="background: var(--ink2); padding: 1.5rem;">
-        <div style="font-family: var(--mono); font-size: 0.6rem; color: var(--white3); margin-bottom: 0.5rem;">SERVICES</div>
-        <div style="font-family: var(--cond); font-size: 2rem; font-weight: 800; color: var(--teal);">{{ len .Services }}</div>
-        <div style="font-size: 0.7rem; color: var(--white3); margin-top: 0.5rem;">All services active</div>
-    </div>
-    
-    <div style="background: var(--ink2); padding: 1.5rem;">
-        <div style="font-family: var(--mono); font-size: 0.6rem; color: var(--white3); margin-bottom: 0.5rem;">MESSAGES</div>
-        <div style="font-family: var(--cond); font-size: 2rem; font-weight: 800; color: var(--teal);">{{ len .Messages }}</div>
-        <div style="font-size: 0.7rem; color: var(--white3); margin-top: 0.5rem;">Total received</div>
-    </div>
-    
-    <div style="background: var(--ink2); padding: 1.5rem;">
-        <div style="font-family: var(--mono); font-size: 0.6rem; color: var(--white3); margin-bottom: 0.5rem;">USERS</div>
-        <div style="font-family: var(--cond); font-size: 2rem; font-weight: 800; color: var(--teal);">{{ len .Users }}</div>
-        <div style="font-size: 0.7rem; color: var(--white3); margin-top: 0.5rem;">
-            {{ $admins := 0 }}
-            {{ range .Users }}
-                {{ if .IsAdmin }}{{ $admins = add $admins 1 }}{{ end }}
+        <div>
+            {{ range .TopServices }}
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 1.5rem; border-bottom: 1px solid var(--rule);">
+                <div style="font-family: var(--cond); font-size: 0.85rem; font-weight: 600; color: var(--white);">{{ .Title }}</div>
+                <div style="font-family: var(--mono); font-size: 0.6rem; color: var(--teal);">{{ .ViewCount }} views</div>
+            </div>
+            {{ else }}
+            <div style="padding: 2rem; text-align: center; color: var(--white3);">No services yet</div>
             {{ end }}
-            <span style="color: var(--teal);">{{ $admins }}</span> administrators
         </div>
     </div>
 </div>
@@ -81,11 +113,12 @@
         </div>
         <div>
             {{ range .Posts }}
-            <div style="display: flex; justify-content: space-between; align-items: center; padding: 1rem 1.5rem; border-bottom: 1px solid var(--rule);">
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 1.5rem; border-bottom: 1px solid var(--rule);">
                 <div>
-                    <div style="font-family: var(--cond); font-size: 0.9rem; font-weight: 600; color: var(--white);">{{ .Title }}</div>
-                    <div style="font-size: 0.65rem; margin-top: 0.25rem;">
+                    <div style="font-family: var(--cond); font-size: 0.85rem; font-weight: 600; color: var(--white);">{{ .Title }}</div>
+                    <div style="font-size: 0.65rem; margin-top: 0.2rem;">
                         {{ if .Published }}<span style="color: var(--green);">● Live</span>{{ else }}<span style="color: var(--amber);">● Draft</span>{{ end }}
+                        <span style="color: var(--white3); margin-left: 0.5rem;">{{ .ViewCount }} views</span>
                     </div>
                 </div>
                 <div style="display: flex; gap: 0.5rem;">
@@ -112,10 +145,10 @@
         </div>
         <div>
             {{ range .Projects }}
-            <div style="display: flex; justify-content: space-between; align-items: center; padding: 1rem 1.5rem; border-bottom: 1px solid var(--rule);">
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 1.5rem; border-bottom: 1px solid var(--rule);">
                 <div>
-                    <div style="font-family: var(--cond); font-size: 0.9rem; font-weight: 600; color: var(--white);">{{ .Title }}</div>
-                    <div style="font-size: 0.65rem; color: var(--white3); margin-top: 0.25rem;">{{ .Category }}</div>
+                    <div style="font-family: var(--cond); font-size: 0.85rem; font-weight: 600; color: var(--white);">{{ .Title }}</div>
+                    <div style="font-size: 0.65rem; color: var(--white3); margin-top: 0.2rem;">{{ .Category }} · {{ .ViewCount }} views</div>
                 </div>
                 <div style="display: flex; gap: 0.5rem;">
                     <a href="/admin/projects/edit/{{ .ID }}" style="font-family: var(--mono); font-size: 0.55rem; color: var(--teal); text-decoration: none;">Edit</a>
@@ -144,10 +177,10 @@
         </div>
         <div>
             {{ range .Services }}
-            <div style="display: flex; justify-content: space-between; align-items: center; padding: 1rem 1.5rem; border-bottom: 1px solid var(--rule);">
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 1.5rem; border-bottom: 1px solid var(--rule);">
                 <div style="flex: 1;">
-                    <div style="font-family: var(--cond); font-size: 0.9rem; font-weight: 600; color: var(--white);">{{ .Title }}</div>
-                    <div style="font-size: 0.65rem; color: var(--white3); margin-top: 0.25rem; max-width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ .Description }}</div>
+                    <div style="font-family: var(--cond); font-size: 0.85rem; font-weight: 600; color: var(--white);">{{ .Title }}</div>
+                    <div style="font-size: 0.65rem; color: var(--white3); margin-top: 0.2rem; max-width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ .Description }} · {{ .ViewCount }} views</div>
                 </div>
                 <div style="display: flex; gap: 0.5rem;">
                     <a href="/admin/services/edit/{{ .ID }}" style="font-family: var(--mono); font-size: 0.55rem; color: var(--teal); text-decoration: none;">Edit</a>
@@ -220,6 +253,40 @@
     </div>
 </div>
 
+<!-- Recent Activity -->
+{{ if .RecentViews }}
+<div style="background: var(--ink2); border: 1px solid var(--rule); margin-bottom: 2rem;">
+    <div style="padding: 1.5rem; border-bottom: 1px solid var(--rule);">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div>
+                <h3 style="font-family: var(--cond); font-size: 1.1rem; font-weight: 800; color: var(--white);">Recent Activity</h3>
+                <p style="font-size: 0.7rem; color: var(--white3);">Latest page views</p>
+            </div>
+        </div>
+    </div>
+    <div style="overflow-x: auto;">
+        <table style="width: 100%; border-collapse: collapse;">
+            <thead>
+                <tr style="background: var(--ink3);">
+                    <th style="text-align: left; padding: 0.75rem 1rem; font-family: var(--mono); font-size: 0.55rem; color: var(--white3);">Path</th>
+                    <th style="text-align: left; padding: 0.75rem 1rem; font-family: var(--mono); font-size: 0.55rem; color: var(--white3);">Type</th>
+                    <th style="text-align: right; padding: 0.75rem 1rem; font-family: var(--mono); font-size: 0.55rem; color: var(--white3);">Time</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{ range .RecentViews }}
+                <tr style="border-bottom: 1px solid var(--rule);">
+                    <td style="padding: 0.75rem 1rem; font-size: 0.7rem; font-family: var(--mono); color: var(--white);">{{ .Path }}</td>
+                    <td style="padding: 0.75rem 1rem;"><span style="font-size: 0.55rem; color: var(--teal);">{{ .Entity }}</span></td>
+                    <td style="padding: 0.75rem 1rem; text-align: right; font-size: 0.6rem; color: var(--white3);">{{ .CreatedAt.Format "15:04 Jan 02" }}</td>
+                </tr>
+                {{ end }}
+            </tbody>
+        </table>
+    </div>
+</div>
+{{ end }}
+
 <!-- Messages Section -->
 {{ if .Messages }}
 <div style="background: var(--ink2); border: 1px solid var(--rule); margin-bottom: 2rem;">
@@ -227,7 +294,7 @@
         <div style="display: flex; justify-content: space-between; align-items: center;">
             <div>
                 <h3 style="font-family: var(--cond); font-size: 1.1rem; font-weight: 800; color: var(--white);">Messages</h3>
-                <p style="font-size: 0.7rem; color: var(--white3);">Total: {{ len .Messages }}</p>
+                <p style="font-size: 0.7rem; color: var(--white3);">Total: {{ len .Messages }} · <span style="color: var(--red);">{{ .Stats.UnreadMessages }}</span> unread</p>
             </div>
         </div>
     </div>
@@ -273,6 +340,6 @@
         <span style="font-size: 0.6rem; color: var(--teal);">●</span>
         <span style="font-family: var(--mono); font-size: 0.55rem; color: var(--white3);">Secure Admin Dashboard</span>
     </div>
-    <div style="font-family: var(--mono); font-size: 0.55rem; color: var(--white3);">© {{ .now }} Forge.Hub</div>
+    <div style="font-family: var(--mono); font-size: 0.55rem; color: var(--white3);">© {{ year }} Forge.Hub</div>
 </div>
 {{ end }}

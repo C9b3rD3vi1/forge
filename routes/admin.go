@@ -89,6 +89,11 @@ func SetupAdminRoutes(app *fiber.App) {
     admin.Post("/contacts/:id/reply", handlers.AdminContactReply)
 
     // Settings
+    // Analytics API
+    admin.Get("/api/analytics/views", handlers.AnalyticsViews)
+    admin.Get("/api/analytics/top", handlers.AnalyticsTop)
+    admin.Get("/api/analytics/summary", handlers.AnalyticsSummary)
+
     admin.Get("/settings", handlers.AdminSettings)
     admin.Post("/settings", handlers.AdminSettingsUpdate)
     admin.Post("/settings/profile", handlers.AdminProfileUpdate)

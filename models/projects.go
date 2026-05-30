@@ -12,8 +12,10 @@ type Projects struct {
     Slug        string    `gorm:"uniqueIndex;not null"`
     Description string    `gorm:"type:text"`
     
-    // Enhanced content fields
-    LongDescription string    `gorm:"type:text"`           // Detailed project story
+	ContentText    string    `gorm:"type:text"`           // Plain text for AI/analytics
+
+	// Enhanced content fields
+	LongDescription string    `gorm:"type:text"`           // Detailed project story
     ProblemStatement string   `gorm:"type:text"`           // What problem does it solve?
     SolutionApproach string   `gorm:"type:text"`           // How does it solve it?
     KeyFeatures      string   `gorm:"type:text"`           // JSON array of features
@@ -72,6 +74,7 @@ type Services struct {
 	Title       string    `gorm:"size:200;not null"`
 	Slug        string    `gorm:"uniqueIndex;not null"`
 	Description string    `gorm:"type:text"`
+	ContentText string    `gorm:"type:text"`           // Plain text for AI/analytics
 	ImageURL    string    `gorm:"type:text"`
 
 	// Categorization & metadata
@@ -126,12 +129,32 @@ func (u *Projects) BeforeCreate(tx *gorm.DB) (err error) {
     if u.ID == uuid.Nil {
         u.ID = uuid.New()
     }
+    if u.ContentText == "" && u.LongDescription != "" {
+        u.ContentText = StripMarkdown(u.LongDescription)
+    }
+    return
+}
+
+func (u *Projects) BeforeUpdate(tx *gorm.DB) (err error) {
+    if u.LongDescription != "" {
+        u.ContentText = StripMarkdown(u.LongDescription)
+    }
     return
 }
 
 func (u *Services) BeforeCreate(tx *gorm.DB) (err error) {
     if u.ID == uuid.Nil {
         u.ID = uuid.New()
+    }
+    if u.ContentText == "" && u.Description != "" {
+        u.ContentText = StripMarkdown(u.Description)
+    }
+    return
+}
+
+func (u *Services) BeforeUpdate(tx *gorm.DB) (err error) {
+    if u.Description != "" {
+        u.ContentText = StripMarkdown(u.Description)
     }
     return
 }

@@ -53,7 +53,9 @@ func InitDB() (*gorm.DB, error) {
         &models.Tag{},
         &models.ContactMessage{},
         &models.TechStack{},
-        &models.Setting{}); err != nil {
+        &models.Setting{},
+        &models.PageView{},
+        &models.DailyStat{}); err != nil {
         log.Fatal("Failed to migrate the database schema:", err)
         return nil, err
     }

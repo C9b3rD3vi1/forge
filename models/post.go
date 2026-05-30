@@ -17,6 +17,9 @@ type Post struct {
 	Author    string    `gorm:"size:100;not null;default:'Nickson Wekongo'"`
 	ReadingTime int     `gorm:"default:0"`
 
+	ViewCount   int       `gorm:"default:0"`
+	ContentText string    `gorm:"type:text"`
+
 	Featured    bool      `gorm:"default:false"`
 	Published   bool      `gorm:"default:true"`
 	PublishedAt time.Time `gorm:"autoCreateTime"`
@@ -47,6 +50,16 @@ func (t *Tag) BeforeCreate(tx *gorm.DB) (err error) {
 func (p *Post) BeforeCreate(tx *gorm.DB) (err error) {
 	if p.ID == uuid.Nil {
 		p.ID = uuid.New()
+	}
+	if p.ContentText == "" && p.Content != "" {
+		p.ContentText = StripMarkdown(p.Content)
+	}
+	return
+}
+
+func (p *Post) BeforeUpdate(tx *gorm.DB) (err error) {
+	if p.Content != "" {
+		p.ContentText = StripMarkdown(p.Content)
 	}
 	return
 }
