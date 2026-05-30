@@ -19,6 +19,7 @@ var (
 func trackPageView(c *fiber.Ctx, entity, entityID string) {
 	path := c.Path()
 	ip := c.IP()
+	ua := c.Get("User-Agent")
 
 	key := ip + ":" + path
 	viewDedupMu.Lock()
@@ -35,7 +36,7 @@ func trackPageView(c *fiber.Ctx, entity, entityID string) {
 			Entity:    entity,
 			EntityID:  entityID,
 			IP:        ip,
-			UserAgent: c.Get("User-Agent"),
+			UserAgent: ua,
 		}
 		database.DB.Create(&pv)
 	}()
